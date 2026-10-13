@@ -28,6 +28,6 @@ func _criar_fileiras() -> void:
 		for i: int in PLANTAS_POR_FILEIRA:
 			var planta := MeshInstance3D.new()
 			planta.mesh = malha_planta
-			planta.surface_material_override(0, mat)
+			planta.set_surface_override_material(0, mat)
 			planta.position = Vector3(float(f["x"]), 0.45, Z_INICIAL + float(i) * ESPACAMENTO)
 			add_child(planta)

@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://cbdmtguowruts"]
+
+[ext_resource type="PackedScene" uid="uid://dcucsh6m5gurg" path="res://scenes/world/jogador.tscn" id="1_gls5b"]
+[ext_resource type="PackedScene" uid="uid://crbgbbqyqkl40" path="res://scenes/ui/hud.tscn" id="2_7gx2p"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3qrtt"]
+size = Vector3(40, 1, 40)
+
+[node name="FaseTeste" type="Node3D" unique_id=1099084121]
+
+[node name="Sol" type="DirectionalLight3D" parent="." unique_id=589711861]
+transform = Transform3D(0.87758255, -0.37554693, 0.2980157, 0, 0.62161, 0.7833269, -0.47942555, -0.687434, 0.54551405, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Solo" type="StaticBody3D" parent="." unique_id=498939751]
+
+[node name="Malha" type="CSGBox3D" parent="Solo" unique_id=738612578]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+size = Vector3(40, 1, 40)
+
+[node name="Colisao" type="CollisionShape3D" parent="Solo" unique_id=1775999893]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("BoxShape3D_3qrtt")
+
+[node name="Marco" type="CSGBox3D" parent="." unique_id=1554493359]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -6)
+size = Vector3(2, 3, 2)
+
+[node name="Jogador" parent="." unique_id=1161009451 instance=ExtResource("1_gls5b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 8)
+
+[node name="HUD" parent="." unique_id=657714139 instance=ExtResource("2_7gx2p")]

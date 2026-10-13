@@ -13,6 +13,22 @@ const ACOES: Dictionary = {
 	"diario": [KEY_TAB],
 }
 
+## Botoes do controle (Xbox): A pula, LB corre, X interage, Y abre o caderno.
+const BOTOES_PAD: Dictionary = {
+	"pular": [JOY_BUTTON_A],
+	"correr": [JOY_BUTTON_LEFT_SHOULDER],
+	"interagir": [JOY_BUTTON_X],
+	"diario": [JOY_BUTTON_Y],
+}
+
+## Stick esquerdo no lugar do WASD (eixo + lado que ativa).
+const EIXOS_PAD: Dictionary = {
+	"mover_esq": [JOY_AXIS_LEFT_X, -1.0],
+	"mover_dir": [JOY_AXIS_LEFT_X, 1.0],
+	"mover_frente": [JOY_AXIS_LEFT_Y, -1.0],
+	"mover_tras": [JOY_AXIS_LEFT_Y, 1.0],
+}
+
 
 func _ready() -> void:
 	for acao: String in ACOES.keys():
@@ -23,3 +39,19 @@ func _ready() -> void:
 			var evento := InputEventKey.new()
 			evento.physical_keycode = tecla
 			InputMap.action_add_event(acao, evento)
+	for acao: String in BOTOES_PAD.keys():
+		if not InputMap.has_action(acao):
+			InputMap.add_action(acao, 0.2)
+		for botao: int in BOTOES_PAD[acao]:
+			var evento_pad := InputEventJoypadButton.new()
+			evento_pad.button_index = botao as JoyButton
+			InputMap.action_add_event(acao, evento_pad)
+	for acao: String in EIXOS_PAD.keys():
+		if not InputMap.has_action(acao):
+			InputMap.add_action(acao, 0.2)
+		var dados: Array = EIXOS_PAD[acao]
+		var evento_eixo := InputEventJoypadMotion.new()
+		evento_eixo.axis = dados[0] as JoyAxis
+		evento_eixo.axis_value = float(dados[1])
+		InputMap.action_add_event(acao, evento_eixo)
+

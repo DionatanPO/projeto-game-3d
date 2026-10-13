@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bp2r2s6jpnkqf"]
+
+[ext_resource type="Script" uid="uid://dfojldqaprbjd" path="res://scripts/world/ponto_educativo.gd" id="1_byx8c"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_byx8c"]
+size = Vector3(2, 2.5, 2)
+
+[node name="PontoEducativo" type="Area3D" unique_id=444410979]
+script = ExtResource("1_byx8c")
+
+[node name="Colisao" type="CollisionShape3D" parent="." unique_id=1097519853]
+shape = SubResource("BoxShape3D_byx8c")
+
+[node name="Poste" type="MeshInstance3D" parent="." unique_id=312944011]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="Titulo" type="Label3D" parent="." unique_id=1201210540]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+text = "Placa Educativa"
+
+[node name="Prompt" type="Label3D" parent="." unique_id=121404853]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+billboard = 1
+text = "Pressione E para ler"
