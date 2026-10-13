@@ -1,0 +1,22 @@
+# Godot 4+ specific ignores
+.godot/
+
+# MCP local cache (undo history, visualizer)
+addons/godot_mcp/cache/
+
+# Imported translations (rebuild on import)
+*.translation
+
+# Export artifacts
+android/
+ios/
+build/
+*.apk
+*.aab
+*.exe
+*.zip
+
+# OS / editor clutter
+.DS_Store
+Thumbs.db
+*~

@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://cao82jhs1a3ql"]
+
+[ext_resource type="Script" uid="uid://bwsv8a8f2ruo8" path="res://scripts/ui/menu_inicial.gd" id="1_u5np1"]
+
+[node name="MenuInicial" type="Control" unique_id=155984901]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_u5np1")
+
+[node name="Fundo" type="ColorRect" parent="." unique_id=398973396]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.24, 0.42, 0.24, 1)
+
+[node name="Centro" type="CenterContainer" parent="." unique_id=570647731]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Painel" type="PanelContainer" parent="Centro" unique_id=2019010788]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Centro/Painel" unique_id=1498828341]
+layout_mode = 2
+
+[node name="Titulo" type="Label" parent="Centro/Painel/VBox" unique_id=1228379378]
+layout_mode = 2
+text = "AgroBrasil 3D"
+horizontal_alignment = 1
+
+[node name="Subtitulo" type="Label" parent="Centro/Painel/VBox" unique_id=353189747]
+layout_mode = 2
+text = "Aprenda sobre o agronegocio brasileiro"
+horizontal_alignment = 1
+
+[node name="BotaoNovo" type="Button" parent="Centro/Painel/VBox" unique_id=1765872477]
+layout_mode = 2
+text = "Novo Jogo"
+
+[node name="BotaoContinuar" type="Button" parent="Centro/Painel/VBox" unique_id=1551634180]
+layout_mode = 2
+text = "Continuar"
+
+[node name="BotaoSair" type="Button" parent="Centro/Painel/VBox" unique_id=575060423]
+layout_mode = 2
+text = "Sair"
+
+[node name="Info" type="Label" parent="Centro/Painel/VBox" unique_id=1090735264]
+layout_mode = 2
+text = "Nenhum progresso salvo."
+horizontal_alignment = 1
+
+[connection signal="pressed" from="Centro/Painel/VBox/BotaoNovo" to="." method="_on_novo_jogo"]
+[connection signal="pressed" from="Centro/Painel/VBox/BotaoContinuar" to="." method="_on_continuar"]
+[connection signal="pressed" from="Centro/Painel/VBox/BotaoSair" to="." method="_on_sair"]
