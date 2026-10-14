@@ -9,6 +9,8 @@ const ACOES: Dictionary = {
 	"mover_dir": [KEY_D, KEY_RIGHT],
 	"pular": [KEY_SPACE],
 	"descer": [KEY_C, KEY_CTRL],
+	"ligar_motor": [KEY_L],
+	"pulverizar": [KEY_E],
 	"correr": [KEY_SHIFT],
 	"interagir": [KEY_E],
 	"diario": [KEY_TAB],
@@ -18,6 +20,7 @@ const ACOES: Dictionary = {
 const BOTOES_PAD: Dictionary = {
 	"pular": [JOY_BUTTON_A],
 	"descer": [JOY_BUTTON_B],
+	"ligar_motor": [JOY_BUTTON_RIGHT_SHOULDER],
 	"correr": [JOY_BUTTON_LEFT_SHOULDER],
 	"interagir": [JOY_BUTTON_X],
 	"diario": [JOY_BUTTON_Y],
@@ -29,6 +32,7 @@ const EIXOS_PAD: Dictionary = {
 	"mover_dir": [JOY_AXIS_LEFT_X, 1.0],
 	"mover_frente": [JOY_AXIS_LEFT_Y, -1.0],
 	"mover_tras": [JOY_AXIS_LEFT_Y, 1.0],
+	"pulverizar": [JOY_AXIS_TRIGGER_RIGHT, 1.0],
 }
 
 
