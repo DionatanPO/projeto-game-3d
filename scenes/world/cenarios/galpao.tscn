@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://b44bjbgn45737"]
+
+[ext_resource type="PackedScene" uid="uid://b16j3ohgck8je" path="res://assets/models/galpao.glb" id="1_g"]
+[ext_resource type="PackedScene" uid="uid://b1h7m7e821mpa" path="res://assets/models/trator.glb" id="2_g"]
+[ext_resource type="PackedScene" uid="uid://ckebuqyh1fac" path="res://assets/models/colhedeira.glb" id="3_g"]
+
+[node name="Galpao" type="Node3D" unique_id=187377887]
+
+[node name="Referencia" type="Marker3D" parent="." unique_id=1089668274]
+
+[node name="galpao" parent="." unique_id=243821035 instance=ExtResource("1_g")]
+transform = Transform3D(-0.99997586, 0, -0.0069516655, 0, 1, 0, 0.0069516655, 0, -0.99997586, 0, 0, 0)
+
+[node name="Trator" parent="." unique_id=675261283 instance=ExtResource("2_g")]
+transform = Transform3D(0.9396926, 0, 0.3420201, 0, 1, 0, -0.3420201, 0, 0.9396926, 10, 0, 4)
+
+[node name="Colhedeira" parent="." unique_id=1530989931 instance=ExtResource("3_g")]
+transform = Transform3D(0.9396926, 0, -0.3420201, 0, 1, 0, 0.3420201, 0, 0.9396926, -10, 0, 6)

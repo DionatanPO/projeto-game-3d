@@ -16,7 +16,7 @@ sustentabilidade no campo. Protótipo base (Godot 4.7, GDScript).
 ## Como abrir
 
 1. Godot → Importar → selecione `project.godot` desta pasta.
-2. Abra `scenes/ui/menu_inicial.tscn` (cena principal) e pressione F5.
+2. Abra `scenes/world/mundo.tscn` (cena principal) e pressione F5.
 3. Na primeira execução, ative o plugin **Godot MCP** em
    Projeto → Configurações do Projeto → Plugins (integração com IA).
 
@@ -41,8 +41,8 @@ data/
   conteudos.json   # textos educativos das placas (título, texto, fonte)
   missoes.json     # definição das missões (pontos exigidos)
 scenes/
-  ui/menu_inicial.tscn  # cena principal: Novo jogo / Continuar / Sair
   ui/hud.tscn           # HUD + diálogo + diário
+  world/mundo.tscn      # cena principal: mundo com os 4 cenarios
   mundo/fazenda.tscn    # propriedade rural: plantação, celeiro, lagoa, placas
   player/jogador.tscn   # personagem terceira pessoa
   interagiveis/ponto_educativo.tscn  # placa educativa (reutilizável)
@@ -51,7 +51,7 @@ scripts/
   player/   # jogador.gd
   mundo/    # fazenda.gd (gera fileiras de plantas)
   interagiveis/  # ponto_educativo.gd
-  ui/       # menu_inicial.gd, hud.gd
+  ui/       # hud.gd
 addons/godot_mcp/  # ponte MCP (Godot ↔ assistente de IA)
 Documentos/  # proposta do projeto
 ```

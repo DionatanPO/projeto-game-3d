@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://c4f0hcxriit3c"]
+
+[ext_resource type="PackedScene" uid="uid://dflmtmeymob0y" path="res://assets/models/torre.glb" id="1_hjaf4"]
+
+[node name="PlantacaoSoja" type="Node3D" unique_id=883103101]
+
+[node name="Referencia" type="Marker3D" parent="." unique_id=883103102]
+
+[node name="torre" parent="." unique_id=855163279 instance=ExtResource("1_hjaf4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.894064, 0, -4.291437)

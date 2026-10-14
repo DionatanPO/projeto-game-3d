@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dx6solqh36lk7"]
+
+[ext_resource type="Script" uid="uid://cce5j2emqk0k" path="res://scripts/world/estrada_sede.gd" id="1_giewx"]
+
+[node name="EstradaSede" type="Node3D" unique_id=993713081]
+script = ExtResource("1_giewx")

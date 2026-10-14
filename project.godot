@@ -22,7 +22,7 @@ InputSetup="*res://scripts/autoload/input_setup.gd"
 SaveSystem="*res://scripts/autoload/save_system.gd"
 Missoes="*res://scripts/autoload/missoes.gd"
 Jogo="*res://scripts/autoload/jogo.gd"
-MCPRuntime="*uid://dqsc3th8iemdb"
+MCPRuntime="*res://addons/godot_mcp/runtime/mcp_runtime.gd"
 
 [display]
 

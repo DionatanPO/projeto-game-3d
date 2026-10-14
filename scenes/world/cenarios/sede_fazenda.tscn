@@ -1,0 +1,109 @@
+[gd_scene format=3 uid="uid://deh4olcgnovb1"]
+
+[ext_resource type="PackedScene" uid="uid://c8nvktoeb1chj" path="res://assets/models/casa.glb" id="1_4djr4"]
+[ext_resource type="PackedScene" uid="uid://dflmtmeymob0y" path="res://assets/models/torre.glb" id="2_mppku"]
+[ext_resource type="PackedScene" uid="uid://c46okpc0pum1y" path="res://assets/models/carroca.glb" id="3_mv3fs"]
+[ext_resource type="PackedScene" uid="uid://dmqimn1r3kkhh" path="res://assets/models/carrinho_mao.glb" id="4_k13i3"]
+[ext_resource type="PackedScene" uid="uid://8765swe114wv" path="res://assets/models/vaso_decoracao.glb" id="5_k13i3"]
+[ext_resource type="PackedScene" path="res://scenes/world/interactables/cerca.tscn" id="7_8q5ub"]
+
+[sub_resource type="StandardMaterial3D" id="PorteiraMad"]
+albedo_color = Color(0.42, 0.27, 0.14, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="PorteiraPoste"]
+size = Vector3(0.22, 2, 0.22)
+
+[node name="SedeFazenda" type="Node3D" unique_id=883101101]
+
+[node name="Referencia" type="Marker3D" parent="." unique_id=883101102]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6619644, 0, 1.2709212)
+
+[node name="casa" parent="." unique_id=1746693848 instance=ExtResource("1_4djr4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.232767, -0.058893204, -2.646997)
+
+[node name="torre" parent="." unique_id=855163279 instance=ExtResource("2_mppku")]
+transform = Transform3D(-2.7527528, 0, -2.9450635e-07, 0, 2.240028, 0, 2.406533e-07, 0, -3.3687599, -18.245264, -0.05913067, -3.2684705)
+
+[node name="carroca" parent="." unique_id=1213653915 instance=ExtResource("3_mv3fs")]
+transform = Transform3D(1.6278276, 0, 0, 0, 1.5810635, 0, 0, 0, 1.8073813, -15.213236, 0, -17.34436)
+
+[node name="carrinho_mao" parent="." unique_id=1892461759 instance=ExtResource("4_k13i3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.8268433, 0, -13.005615)
+
+[node name="vaso_decoracao" parent="." unique_id=978205854 instance=ExtResource("5_k13i3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.4801254, 0, -9.857006)
+
+[node name="vaso_decoracao2" parent="." unique_id=2130122075 instance=ExtResource("5_k13i3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1011772, 0, -9.882164)
+
+[node name="Cercado" type="Node3D" parent="." unique_id=869289689]
+
+[node name="CercaS5" parent="Cercado" unique_id=1849331956 instance=ExtResource("7_8q5ub")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 6.9123774)
+
+[node name="CercaW3" parent="Cercado" unique_id=985728843 instance=ExtResource("7_8q5ub")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -12.65, 0, -4)
+
+[node name="CercaW4" parent="Cercado" unique_id=1570801548 instance=ExtResource("7_8q5ub")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -12.65, 0, 0.26)
+
+[node name="CercaW5" parent="Cercado" unique_id=616388764 instance=ExtResource("7_8q5ub")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -12.65, 0, 4.52)
+
+[node name="CercaN1" parent="Cercado" unique_id=625019949 instance=ExtResource("7_8q5ub")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.52, 0, -14)
+
+[node name="CercaN2" parent="Cercado" unique_id=93227807 instance=ExtResource("7_8q5ub")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.26, 0, -14)
+
+[node name="CercaN4" parent="Cercado" unique_id=1929693932 instance=ExtResource("7_8q5ub")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.26, 0, -14)
+
+[node name="CercaN5" parent="Cercado" unique_id=385351145 instance=ExtResource("7_8q5ub")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.52, 0, -14)
+
+[node name="CercaS1" parent="Cercado" unique_id=2128176783 instance=ExtResource("7_8q5ub")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.52, 0, 6.9145184)
+
+[node name="CercaS2" parent="Cercado" unique_id=914381728 instance=ExtResource("7_8q5ub")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.26, 0, 6.9145184)
+
+[node name="CercaS3" parent="Cercado" unique_id=857622852 instance=ExtResource("7_8q5ub")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.26, 0, 6.9145184)
+
+[node name="CercaS4" parent="Cercado" unique_id=2120210422 instance=ExtResource("7_8q5ub")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.52, 0, 6.9145184)
+
+[node name="CercaW1" parent="Cercado" unique_id=1636635343 instance=ExtResource("7_8q5ub")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -12.65, 0, -12.52)
+
+[node name="CercaW2" parent="Cercado" unique_id=848673019 instance=ExtResource("7_8q5ub")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -12.65, 0, -8.26)
+
+[node name="CercaE1" parent="Cercado" unique_id=604693262 instance=ExtResource("7_8q5ub")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 8.65, 0, -12.52)
+
+[node name="CercaE2" parent="Cercado" unique_id=212135087 instance=ExtResource("7_8q5ub")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 8.65, 0, -8.26)
+
+[node name="CercaE3" parent="Cercado" unique_id=759176402 instance=ExtResource("7_8q5ub")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 8.65, 0, -4)
+
+[node name="CercaE4" parent="Cercado" unique_id=1646890316 instance=ExtResource("7_8q5ub")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 8.65, 0, 0.26)
+
+[node name="CercaE5" parent="Cercado" unique_id=2066643872 instance=ExtResource("7_8q5ub")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 8.65, 0, 4.52)
+
+[node name="PorteiraOeste" type="Node3D" parent="." unique_id=779014950]
+
+[node name="PosteNorte" type="MeshInstance3D" parent="PorteiraOeste" unique_id=1686333993]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.65, 1, -3.7)
+material_override = SubResource("PorteiraMad")
+mesh = SubResource("PorteiraPoste")
+
+[node name="PosteSul" type="MeshInstance3D" parent="PorteiraOeste" unique_id=1199020868]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.65, 1, 5.15)
+material_override = SubResource("PorteiraMad")
+mesh = SubResource("PorteiraPoste")

@@ -20,7 +20,7 @@ var _angulo_vertical := -0.35
 
 func _ready() -> void:
     add_to_group("jogador")
-    var pos: Variant = SaveSystem.dados.get("posicao_jogador", [0.0, 1.0, 14.0])
+    var pos: Variant = SaveSystem.dados.get("posicao_jogador", [-96.79012, 1.5, 0.73486805])
     if pos is Array and (pos as Array).size() == 3:
         position = Vector3(float(pos[0]), float(pos[1]), float(pos[2]))
 

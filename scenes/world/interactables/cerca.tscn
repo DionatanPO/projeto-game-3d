@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://cipvb243ucvor" path="res://assets/models/cerca.glb" id="1_cerca"]
+
+[sub_resource type="BoxShape3D" id="ColCerca"]
+size = Vector3(4.26, 1.4, 0.4)
+
+[node name="Cerca" type="StaticBody3D"]
+
+[node name="Modelo" parent="." instance=ExtResource("1_cerca")]
+
+[node name="Colisao" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+shape = SubResource("ColCerca")

@@ -19,11 +19,11 @@ func _ready() -> void:
 
 func _on_novo_jogo() -> void:
 	SaveSystem.apagar()
-	get_tree().change_scene_to_file("res://scenes/world/environment/fazenda.tscn")
+	get_tree().change_scene_to_file("res://scenes/world/mundo.tscn")
 
 
 func _on_continuar() -> void:
-	get_tree().change_scene_to_file("res://scenes/world/environment/fazenda.tscn")
+	get_tree().change_scene_to_file("res://scenes/world/mundo.tscn")
 
 
 func _on_sair() -> void:

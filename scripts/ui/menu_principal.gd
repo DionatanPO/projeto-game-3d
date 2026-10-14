@@ -1,7 +1,7 @@
 extends Control
 ## Menu principal responsivo, com estados de save claros e foco de teclado.
 
-const CENA_FAZENDA := "res://scenes/world/environment/fazenda.tscn"
+const CENA_MUNDO := "res://scenes/world/mundo.tscn"
 
 @onready var botao_novo: Button = $SafeArea/Columns/ActionPanel/Inset/Content/BotaoNovo
 @onready var botao_continuar: Button = $SafeArea/Columns/ActionPanel/Inset/Content/BotaoContinuar
@@ -88,25 +88,25 @@ func _atualizar_progresso() -> void:
 	progresso.text = "PROGRESSO LOCAL\n%d descoberta(s)   •   %d/%d missões" % [Jogo.total_descobertas(), Missoes.total_concluidas(), Missoes.total_missoes()]
 
 func _on_novo_jogo() -> void:
-	_abrir_fazenda(false)
+	_abrir_mundo(false)
 
 func _on_continuar() -> void:
 	if not _tem_progresso():
 		botao_continuar.disabled = true
 		status.text = "Nenhum progresso disponível. Comece uma nova jornada."
 		return
-	_abrir_fazenda(true)
+	_abrir_mundo(true)
 
-func _abrir_fazenda(continuar: bool) -> void:
-	if not ResourceLoader.exists(CENA_FAZENDA):
-		status.text = "O menu está pronto. A cena da fazenda ainda está sendo preparada."
+func _abrir_mundo(continuar: bool) -> void:
+	if not ResourceLoader.exists(CENA_MUNDO):
+		status.text = "O menu está pronto. A cena do mundo ainda está sendo preparada."
 		return
 	if not continuar:
 		SaveSystem.apagar()
-	var erro := get_tree().change_scene_to_file(CENA_FAZENDA)
+	var erro := get_tree().change_scene_to_file(CENA_MUNDO)
 	if erro != OK:
 		status.text = "Não foi possível abrir o jogo. Tente novamente."
-		push_error("MenuPrincipal: falha ao abrir a cena da fazenda (%s)." % error_string(erro))
+		push_error("MenuPrincipal: falha ao abrir a cena do mundo (%s)." % error_string(erro))
 
 func _on_sair() -> void:
 	get_tree().quit()
