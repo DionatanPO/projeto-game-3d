@@ -8,6 +8,7 @@ const ACOES: Dictionary = {
 	"mover_esq": [KEY_A, KEY_LEFT],
 	"mover_dir": [KEY_D, KEY_RIGHT],
 	"pular": [KEY_SPACE],
+	"descer": [KEY_C, KEY_CTRL],
 	"correr": [KEY_SHIFT],
 	"interagir": [KEY_E],
 	"diario": [KEY_TAB],
@@ -16,6 +17,7 @@ const ACOES: Dictionary = {
 ## Botoes do controle (Xbox): A pula, LB corre, X interage, Y abre o caderno.
 const BOTOES_PAD: Dictionary = {
 	"pular": [JOY_BUTTON_A],
+	"descer": [JOY_BUTTON_B],
 	"correr": [JOY_BUTTON_LEFT_SHOULDER],
 	"interagir": [JOY_BUTTON_X],
 	"diario": [JOY_BUTTON_Y],

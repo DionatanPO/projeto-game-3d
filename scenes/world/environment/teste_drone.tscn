@@ -1,0 +1,111 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/world/drone_jogador.tscn" id="1_t"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat_t1"]
+sky_top_color = Color(0.2, 0.45, 0.8, 1)
+sky_horizon_color = Color(0.55, 0.72, 0.88, 1)
+ground_bottom_color = Color(0.2, 0.28, 0.2, 1)
+ground_horizon_color = Color(0.65, 0.75, 0.8, 1)
+
+[sub_resource type="Sky" id="Sky_t1"]
+sky_material = SubResource("SkyMat_t1")
+
+[sub_resource type="Environment" id="Env_t1"]
+background_mode = 2
+sky = SubResource("Sky_t1")
+ambient_light_source = 3
+ambient_light_energy = 0.7
+tonemap_mode = 3
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.75, 0.86, 0.94, 1)
+fog_depth_begin = 60.0
+fog_depth_end = 220.0
+fog_sky_affect = 0.0
+
+[sub_resource type="PlaneMesh" id="Plane_t1"]
+size = Vector2(120, 120)
+
+[sub_resource type="StandardMaterial3D" id="MatChao_t1"]
+albedo_color = Color(0.35, 0.6, 0.3, 1)
+roughness = 0.95
+
+[sub_resource type="WorldBoundaryShape3D" id="ShapeChao_t1"]
+
+[sub_resource type="StandardMaterial3D" id="MatPortao_t1"]
+albedo_color = Color(0.95, 0.5, 0.1, 1)
+roughness = 0.6
+
+[sub_resource type="StandardMaterial3D" id="MatCone_t1"]
+albedo_color = Color(0.95, 0.8, 0.1, 1)
+roughness = 0.6
+
+[node name="TesteDrone" type="Node3D" unique_id=882345101]
+
+[node name="Mundo" type="WorldEnvironment" parent="." unique_id=882345102]
+environment = SubResource("Env_t1")
+
+[node name="Sol" type="DirectionalLight3D" parent="." unique_id=882345103]
+transform = Transform3D(0.87758255, -0.37554693, 0.2980157, 0, 0.62161, 0.7833269, -0.47942555, -0.687434, 0.54551405, 0, 0, 0)
+light_color = Color(1, 0.96, 0.88, 1)
+light_energy = 1.2
+shadow_enabled = true
+
+[node name="Solo" type="StaticBody3D" parent="." unique_id=882345104]
+
+[node name="Chao" type="MeshInstance3D" parent="Solo" unique_id=882345105]
+mesh = SubResource("Plane_t1")
+material_override = SubResource("MatChao_t1")
+
+[node name="Colisao" type="CollisionShape3D" parent="Solo" unique_id=882345106]
+shape = SubResource("ShapeChao_t1")
+
+[node name="Portao1" type="CSGTorus3D" parent="." unique_id=882345107]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 4, -8)
+material = SubResource("MatPortao_t1")
+inner_radius = 2.5
+outer_radius = 3.0
+
+[node name="Portao2" type="CSGTorus3D" parent="." unique_id=882345108]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 6, 5, -24)
+material = SubResource("MatPortao_t1")
+inner_radius = 2.5
+outer_radius = 3.0
+
+[node name="Portao3" type="CSGTorus3D" parent="." unique_id=882345109]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -6, 6, -40)
+material = SubResource("MatPortao_t1")
+inner_radius = 2.5
+outer_radius = 3.0
+
+[node name="Cone1" type="CSGCylinder3D" parent="." unique_id=882345110]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1, 0)
+material = SubResource("MatCone_t1")
+top_radius = 0.05
+bottom_radius = 0.5
+height = 2.0
+
+[node name="Cone2" type="CSGCylinder3D" parent="." unique_id=882345111]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1, 0)
+material = SubResource("MatCone_t1")
+top_radius = 0.05
+bottom_radius = 0.5
+height = 2.0
+
+[node name="Cone3" type="CSGCylinder3D" parent="." unique_id=882345112]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1, -30)
+material = SubResource("MatCone_t1")
+top_radius = 0.05
+bottom_radius = 0.5
+height = 2.0
+
+[node name="Cone4" type="CSGCylinder3D" parent="." unique_id=882345113]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1, -30)
+material = SubResource("MatCone_t1")
+top_radius = 0.05
+bottom_radius = 0.5
+height = 2.0
+
+[node name="DroneJogador" parent="." unique_id=882345114 instance=ExtResource("1_t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 12)

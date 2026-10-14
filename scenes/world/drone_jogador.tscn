@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/player/drone_jogador.gd" id="1_d"]
+[ext_resource type="PackedScene" path="res://assets/models/drone_agricola.glb" id="2_d"]
+[ext_resource type="PackedScene" path="res://assets/models/elice_drone.glb" id="3_d"]
+
+[sub_resource type="BoxShape3D" id="Box_d1"]
+size = Vector3(3.2, 1.0, 3.2)
+
+[node name="DroneJogador" type="CharacterBody3D" unique_id=881234501]
+script = ExtResource("1_d")
+
+[node name="Colisao" type="CollisionShape3D" parent="." unique_id=881234502]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+shape = SubResource("Box_d1")
+
+[node name="Modelo" type="Node3D" parent="." unique_id=881234503]
+
+[node name="Corpo" parent="Modelo" unique_id=881234504 instance=ExtResource("2_d")]
+
+[node name="Helice01" parent="Modelo" unique_id=881234505 instance=ExtResource("3_d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.803, 2.85, 1.803)
+
+[node name="Helice02" parent="Modelo" unique_id=881234506 instance=ExtResource("3_d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.803, 2.85, -1.803)
+
+[node name="Helice03" parent="Modelo" unique_id=881234507 instance=ExtResource("3_d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.803, 2.85, 1.803)
+
+[node name="Helice04" parent="Modelo" unique_id=881234508 instance=ExtResource("3_d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.803, 2.85, -1.803)
+
+[node name="CameraRig" type="Node3D" parent="." unique_id=881234509]
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig" unique_id=881234510]
+current = true
+fov = 70.0
