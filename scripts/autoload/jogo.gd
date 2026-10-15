@@ -18,7 +18,10 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	tempo_sessao += delta
 	SaveSystem.dados["tempo_jogado_seg"] = float(SaveSystem.dados.get("tempo_jogado_seg", 0.0)) + delta
-	if Input.is_action_just_pressed("diario"):
+
+
+func _unhandled_input(evento: InputEvent) -> void:
+	if evento.is_action_pressed("diario"):
 		alternar_diario.emit()
 
 

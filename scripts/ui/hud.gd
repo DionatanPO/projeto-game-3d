@@ -121,7 +121,7 @@ func _on_fechar_diario() -> void:
 	scrim.hide()
 	get_tree().paused = false
 
-func _unhandled_key_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 	if diario.visible and (event.is_action_pressed("diario") or event.is_action_pressed("ui_cancel")):
 		_on_fechar_diario()
 		get_viewport().set_input_as_handled()

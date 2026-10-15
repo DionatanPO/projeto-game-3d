@@ -8,7 +8,7 @@ extends StaticBody3D
 
 @export var tamanho := 300.0
 @export var celulas := 100
-@export var altura_max := 10.0
+@export var altura_max := 0.0
 @export var seed := 20240
 @export var material: Material
 
@@ -69,7 +69,7 @@ func _gerar() -> void:
 			var b := a + 1
 			var c := a + n
 			var d := c + 1
-			idx.append_array([a, d, b, a, c, d])
+			idx.append_array([a, b, d, a, d, c])
 	var arr := []
 	arr.resize(Mesh.ARRAY_MAX)
 	arr[Mesh.ARRAY_VERTEX] = verts
@@ -112,17 +112,9 @@ func _normal_grade(g: PackedFloat32Array, n: int, passo: float, i: int, j: int) 
 	return Vector3(-dx, ex, -dz).normalized() if ex > 0.0 and ez > 0.0 else Vector3.UP
 
 
-## Altura final: ruido * mascara (0 nos pontos, 1 longe).
-func altura(x: float, z: float) -> float:
-	var m := 1.0
-	var piso := 1.0
-	for p in PONTOS:
-		var d := Vector2(x, z).distance_to(Vector2(p[0], p[1]))
-		var mi := smoothstep(p[2], p[2] + 55.0, d)
-		if mi < m:
-			m = mi
-			piso = p[3]
-	return fbm(x, z) * altura_max * lerpf(piso, 1.0, m)
+## Altura final: mapa 100% plano (relevo desativado por decisao de design).
+func altura(_x: float, _z: float) -> float:
+	return 0.0
 
 
 ## Ruido de valor com 4 oitavas, deterministico (-1..1).

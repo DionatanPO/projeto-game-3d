@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://deh4olcgnovb1"]
 
 [ext_resource type="PackedScene" uid="uid://c8nvktoeb1chj" path="res://assets/models/casa.glb" id="1_4djr4"]
-[ext_resource type="PackedScene" uid="uid://dflmtmeymob0y" path="res://assets/models/torre.glb" id="2_mppku"]
 [ext_resource type="PackedScene" uid="uid://c46okpc0pum1y" path="res://assets/models/carroca.glb" id="3_mv3fs"]
 [ext_resource type="PackedScene" uid="uid://dmqimn1r3kkhh" path="res://assets/models/carrinho_mao.glb" id="4_k13i3"]
 [ext_resource type="PackedScene" uid="uid://8765swe114wv" path="res://assets/models/vaso_decoracao.glb" id="5_k13i3"]
@@ -12,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://bw6hrplsmph4" path="res://assets/models/Plant_4.fbx" id="10_7dg1v"]
 [ext_resource type="PackedScene" uid="uid://dp5ntul8i6nhy" path="res://assets/models/Plant_5.fbx" id="11_0vq04"]
 [ext_resource type="PackedScene" uid="uid://cajyg0brnlul7" path="res://assets/models/arvore_tripo.glb" id="12_1f3ff"]
+[ext_resource type="PackedScene" uid="uid://dia5g4xm1qne6" path="res://assets/models/WaterTower.fbx" id="12_xiqcx"]
 
 [sub_resource type="StandardMaterial3D" id="PorteiraMad"]
 albedo_color = Color(0.42, 0.27, 0.14, 1)
@@ -27,9 +27,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6619644, 0, 1.2709212)
 
 [node name="casa" parent="." unique_id=1746693848 instance=ExtResource("1_4djr4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.232767, -0.058893204, -2.646997)
-
-[node name="torre" parent="." unique_id=855163279 instance=ExtResource("2_mppku")]
-transform = Transform3D(-2.7527528, 0, -2.9450635e-07, 0, 2.240028, 0, 2.406533e-07, 0, -3.3687599, -18.245264, -0.05913067, -3.2684705)
 
 [node name="carroca" parent="." unique_id=1213653915 instance=ExtResource("3_mv3fs")]
 transform = Transform3D(1.6278276, 0, 0, 0, 1.5810635, 0, 0, 0, 1.8073813, -15.213236, 0, -17.34436)
@@ -131,3 +128,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.203875, 0, -12.859404)
 
 [node name="arvore_tripo" parent="." unique_id=1848774593 instance=ExtResource("12_1f3ff")]
 transform = Transform3D(11.316645, 0, 0, 0, 9.349401, 0, 0, 0, 9.009692, 4.040209, 4.5627093, -12.26379)
+
+[node name="WaterTower" parent="." unique_id=1855116524 instance=ExtResource("12_xiqcx")]
+transform = Transform3D(1.3228648, 0, 0, 0, 1.9748445, 0, 0, 0, 1.7840604, -15.141521, 0, -3.4757206)

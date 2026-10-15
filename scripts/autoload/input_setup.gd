@@ -25,7 +25,7 @@ const BOTOES_PAD: Dictionary = {
 	"correr": [JOY_BUTTON_LEFT_SHOULDER],
 	"interagir": [JOY_BUTTON_X],
 	"buzinar": [JOY_BUTTON_BACK, JOY_BUTTON_LEFT_SHOULDER],
-	"diario": [JOY_BUTTON_Y],
+	"diario": [JOY_BUTTON_START],
 }
 
 ## Stick esquerdo no lugar do WASD (eixo + lado que ativa).

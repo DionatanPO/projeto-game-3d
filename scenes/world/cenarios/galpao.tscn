@@ -14,7 +14,7 @@
 transform = Transform3D(-0.99997586, 0, -0.0069516655, 0, 1, 0, 0.0069516655, 0, -0.99997586, 0, 0, 0)
 
 [node name="Colhedeira" parent="." unique_id=1530989931 instance=ExtResource("3_g")]
-transform = Transform3D(-1.3938459, 0, 1.2991431, 0, 1.9685614, 0, -1.2185153, 0, -1.486075, -13.44342, 0, 12.179443)
+transform = Transform3D(5.291828, 0, -7.2095785, 0, 9.795608, 0, 8.752747, 0, 4.3588433, -13.44342, 2.6556695, 12.179443)
 
 [node name="Windmill" parent="." unique_id=661049673 instance=ExtResource("4_21bep")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.037537, 0, -0.9324951)

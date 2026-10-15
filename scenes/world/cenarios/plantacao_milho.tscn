@@ -2,16 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://t4f5e0itvaus" path="res://assets/models/solo.glb" id="1_3wgao"]
 [ext_resource type="Script" uid="uid://daj22jbty6pil" path="res://scripts/world/plantacao_milho.gd" id="2_mi"]
-[ext_resource type="PackedScene" uid="uid://dia5g4xm1qne6" path="res://assets/models/WaterTower.fbx" id="2_qq2i4"]
-[ext_resource type="PackedScene" uid="uid://cajyg0brnlul7" path="res://assets/models/arvore_tripo.glb" id="3_av6nf"]
 [ext_resource type="PackedScene" uid="uid://d1ysh3jtqjypi" path="res://assets/models/Corn_2.fbx" id="4_j1uji"]
 [ext_resource type="PackedScene" path="res://scenes/world/interactables/cerca.tscn" id="6_sam4n"]
 
 [node name="PlantacaoMilho" type="Node3D" unique_id=883102101]
 script = ExtResource("2_mi")
-
-[node name="WaterTower" parent="." unique_id=1855116524 instance=ExtResource("2_qq2i4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 12)
 
 [node name="Solo" parent="." unique_id=1629394446 instance=ExtResource("1_3wgao")]
 transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, -12.6, 0, -20.6)
@@ -1849,20 +1844,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.6, 0.45, 5.6)
 [node name="Milho_Corn2_576" parent="." unique_id=639603446 instance=ExtResource("4_j1uji")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.6, 0.45, 7.6)
 
-[node name="arvore_tripo" parent="." unique_id=1848774593 instance=ExtResource("3_av6nf")]
-transform = Transform3D(11.316645, 0, 0, 0, 9.349401, 0, 0, 0, 9.009692, 37.104668, 4.5627093, 15.461309)
-
 [node name="Cerca_N_1" parent="." unique_id=290105458 instance=ExtResource("6_sam4n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.947369, 0, -26)
 
-[node name="Cerca_S_1" parent="." unique_id=1347370520 instance=ExtResource("6_sam4n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.947369, 0, 10)
-
 [node name="Cerca_N_2" parent="." unique_id=86009154 instance=ExtResource("6_sam4n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.842105, 0, -26)
-
-[node name="Cerca_S_2" parent="." unique_id=497864650 instance=ExtResource("6_sam4n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.842105, 0, 10)
 
 [node name="Cerca_N_3" parent="." unique_id=2072761687 instance=ExtResource("6_sam4n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.736842, 0, -26)
@@ -1870,35 +1856,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.736842, 0, -26)
 [node name="Cerca_N_4" parent="." unique_id=453050158 instance=ExtResource("6_sam4n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.631579, 0, -26)
 
-[node name="Cerca_S_4" parent="." unique_id=1147083303 instance=ExtResource("6_sam4n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.631579, 0, 10)
-
 [node name="Cerca_N_5" parent="." unique_id=1626970303 instance=ExtResource("6_sam4n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.47368422, 0, -26)
-
-[node name="Cerca_S_5" parent="." unique_id=244682742 instance=ExtResource("6_sam4n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.47368422, 0, 10)
 
 [node name="Cerca_N_6" parent="." unique_id=611440325 instance=ExtResource("6_sam4n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5789475, 0, -26)
 
-[node name="Cerca_S_6" parent="." unique_id=1345147848 instance=ExtResource("6_sam4n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5789475, 0, 10)
-
-[node name="Cerca_S_7" parent="." unique_id=504564071 instance=ExtResource("6_sam4n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.684211, 0, 10)
-
 [node name="Cerca_N_8" parent="." unique_id=1282412509 instance=ExtResource("6_sam4n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.789474, 0, -26)
 
-[node name="Cerca_S_8" parent="." unique_id=1650083020 instance=ExtResource("6_sam4n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.789474, 0, 10)
-
 [node name="Cerca_N_9" parent="." unique_id=648610 instance=ExtResource("6_sam4n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.894737, 0, -26)
-
-[node name="Cerca_S_9" parent="." unique_id=603558430 instance=ExtResource("6_sam4n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.894737, 0, 10)
 
 [node name="Cerca_N_10" parent="." unique_id=888506315 instance=ExtResource("6_sam4n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 0, -26)
@@ -1909,47 +1877,23 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.105263, 0, -26)
 [node name="Cerca_N_12" parent="." unique_id=1968194689 instance=ExtResource("6_sam4n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.210526, 0, -26)
 
-[node name="Cerca_S_12" parent="." unique_id=1623845325 instance=ExtResource("6_sam4n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.210526, 0, 10)
-
 [node name="Cerca_N_13" parent="." unique_id=1407725820 instance=ExtResource("6_sam4n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.31579, 0, -26)
-
-[node name="Cerca_S_13" parent="." unique_id=264137786 instance=ExtResource("6_sam4n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.31579, 0, 10)
 
 [node name="Cerca_N_14" parent="." unique_id=2003420817 instance=ExtResource("6_sam4n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.42105, 0, -26)
 
-[node name="Cerca_S_14" parent="." unique_id=783865071 instance=ExtResource("6_sam4n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.42105, 0, 10)
-
 [node name="Cerca_N_15" parent="." unique_id=1268663243 instance=ExtResource("6_sam4n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.526318, 0, -26)
-
-[node name="Cerca_S_15" parent="." unique_id=815416648 instance=ExtResource("6_sam4n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.526318, 0, 10)
-
-[node name="Cerca_S_16" parent="." unique_id=1300959313 instance=ExtResource("6_sam4n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.63158, 0, 10)
 
 [node name="Cerca_N_17" parent="." unique_id=1549798532 instance=ExtResource("6_sam4n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.736843, 0, -26)
 
-[node name="Cerca_S_17" parent="." unique_id=1939194787 instance=ExtResource("6_sam4n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.736843, 0, 10)
-
 [node name="Cerca_N_18" parent="." unique_id=2115851220 instance=ExtResource("6_sam4n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.842106, 0, -26)
 
-[node name="Cerca_S_18" parent="." unique_id=353572290 instance=ExtResource("6_sam4n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.842106, 0, 10)
-
 [node name="Cerca_N_19" parent="." unique_id=2017127369 instance=ExtResource("6_sam4n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.94737, 0, -26)
-
-[node name="Cerca_S_19" parent="." unique_id=1824072489 instance=ExtResource("6_sam4n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.94737, 0, 10)
 
 [node name="Cerca_W_1" parent="." unique_id=947825460 instance=ExtResource("6_sam4n")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -18, 0, -24)

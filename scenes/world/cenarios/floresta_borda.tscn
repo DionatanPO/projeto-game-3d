@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://c8u77w02hdvec"]
+
+[ext_resource type="Script" uid="uid://dhjc1q3de7lfk" path="res://scripts/world/floresta_borda.gd" id="1_powuj"]
+
+[node name="FlorestaBorda" type="Node3D" unique_id=1039376944]
+script = ExtResource("1_powuj")

@@ -6,6 +6,12 @@ extends CharacterBody3D
 
 @export var velocidade_andar := 4.5
 @export var velocidade_correr := 7.0
+## Fator sobre a velocidade nativa do clip de andar (1.0 = nativa).
+## Sobe corpo e animacao juntos, entao os pes continuam casando.
+@export var fator_andar := 1.3
+## Rampa de velocidade (m/s^2): suaviza andar<->correr e saidas/paradas.
+@export var aceleracao := 10.0
+@export var desaceleracao := 14.0
 @export var forca_pulo := 3.2
 @export var sensibilidade_mouse := 0.003
 @export var sensibilidade_stick := 2.8
@@ -26,6 +32,11 @@ var _som_passo_andar: AudioStream
 var _som_passo_corrida: AudioStream
 var _som_pulo: AudioStream
 var _tempo_entre_passos := 0.0
+## Velocidade nativa dos clips Mixamo (m/s, medida do root motion do quadril
+## antes de remove-lo). Serve para sincronizar a passada com o corpo e evitar
+## o "deslizamento" (chao mais rapido que os pes).
+var _nativa_andar := 0.0
+var _nativa_correr := 0.0
 ## Antecipacao do pulo (s): paradinha freando o corpo antes de lancar.
 const ANTECIPACAO_PULO := 0.18
 const ANTECIPACAO_PULO_CORRIDA := 0.06
@@ -43,6 +54,9 @@ var _pulo_andando := false
 const BLEND_TERRA := 0.22
 const BLEND_PULO_SAIDA := 0.1
 const BLEND_POUSO := 0.25
+## Velocidade em que o intervalo do passo (0.48 s) foi regulado. Serve para
+## preservar passos-por-metro quando o andar e calibrado pela animacao.
+const PASSO_REF_ANDAR := 4.5
 
 
 func _ready() -> void:
@@ -53,6 +67,12 @@ func _ready() -> void:
 	animador = modelo.find_child("AnimationPlayer", true, false) as AnimationPlayer
 	if animador != null:
 		_importar_animacoes_personagem()
+		# Calibra o andar pela animacao: o corpo anda na velocidade nativa do
+		# clip vezes o fator_andar (corpo e animacao sobem juntos, pes casam).
+		# A corrida nao mexe (ja estava certa).
+		if _nativa_andar > 0.01:
+			velocidade_andar = _nativa_andar * fator_andar
+			print("ANDAR_NATIVO=", _nativa_andar, " ANDAR_AJUSTADO=", velocidade_andar)
 		_atualizar_animacao("Idle")
 	_configurar_sons_passos()
 
@@ -132,11 +152,34 @@ func _importar_animacoes_personagem() -> void:
 				nome_clip = String(lista[0])
 		if ap != null and ap.has_animation(nome_clip):
 			var clip: Animation = ap.get_animation(nome_clip).duplicate()
+			if nome == "Walk":
+				_nativa_andar = _velocidade_nativa(clip)
+			elif nome == "Run":
+				_nativa_correr = _velocidade_nativa(clip)
 			_remover_root_motion(clip)
 			lib.add_animation(nome, clip)
 		else:
 			push_warning("[Jogador] Sem animacao em: %s" % caminho)
 		inst.queue_free()
+
+
+## Mede a velocidade "nativa" do clip (m/s): deslocamento horizontal do quadril
+## dividido pela duracao. O Walk/Run do Mixamo avancam para frente; esse valor
+## e a velocidade em que a passada casa com o deslocamento em 1.0x.
+func _velocidade_nativa(clip: Animation) -> float:
+	if clip.length <= 0.0:
+		return 0.0
+	for i in clip.get_track_count():
+		if not ("Hips" in String(clip.track_get_path(i))):
+			continue
+		if clip.track_get_key_count(i) < 2:
+			continue
+		if typeof(clip.track_get_key_value(i, 0)) != TYPE_VECTOR3:
+			continue
+		var p0: Vector3 = clip.track_get_key_value(i, 0)
+		var p1: Vector3 = clip.track_get_key_value(i, clip.track_get_key_count(i) - 1)
+		return Vector2(p1.x - p0.x, p1.z - p0.z).length() / clip.length
+	return 0.0
 
 
 ## Remove o "root motion" do Mixamo: a track de POSICAO do quadril desloca o
@@ -226,16 +269,35 @@ func _physics_process(delta: float) -> void:
 		var alvo_yaw := atan2(-direcao.x, -direcao.z)
 		modelo.rotation.y = lerp_angle(modelo.rotation.y, alvo_yaw, 1.0 - exp(-10.0 * delta))
 	if _pulo_preparando <= 0.0:
-		velocity.x = direcao.x * vel
-		velocity.z = direcao.z * vel
+		# Rampa em vez de corte seco: o corpo acelera/freia ate o alvo,
+		# entao andar<->correr (e soltar o stick) fica suave.
+		var alvo_x := direcao.x * vel
+		var alvo_z := direcao.z * vel
+		var taxa := aceleracao
+		if Vector2(alvo_x, alvo_z).length() < Vector2(velocity.x, velocity.z).length():
+			taxa = desaceleracao
+		velocity.x = move_toward(velocity.x, alvo_x, taxa * delta)
+		velocity.z = move_toward(velocity.z, alvo_z, taxa * delta)
 	move_and_slide()
 	no_chao = is_on_floor()
 	var em_movimento := entrada.length() > 0.01
+	# Animacao segue a velocidade REAL do corpo (com histerese), nao o botao:
+	# troca no meio da rampa, sem piscar na borda.
+	var rapidez := Vector2(velocity.x, velocity.z).length()
+	var meio := (velocidade_andar + velocidade_correr) * 0.5
+	var animacao_movimento := "Walk"
+	if rapidez > meio:
+		animacao_movimento = "Run"
+	elif _animacao_atual == "Run" and rapidez > velocidade_andar + 0.4:
+		animacao_movimento = "Run"
+	var correndo_anim := animacao_movimento == "Run"
 	if no_chao and em_movimento:
-		var intervalo_passo := 0.31 if Input.is_action_pressed("correr") else 0.48
+		# Intervalo do passo preserva passos-por-metro da regulagem original
+		# (0.48 s a 4.5 m/s): com o andar mais lento, o passo sai mais espacado.
+		var intervalo_passo := 0.31 if correndo_anim else 0.48 * (PASSO_REF_ANDAR / velocidade_andar)
 		_tempo_entre_passos += delta
 		if _tempo_entre_passos >= intervalo_passo:
-			_tocar_som_passo(Input.is_action_pressed("correr"))
+			_tocar_som_passo(correndo_anim)
 			_tempo_entre_passos = 0.0
 	else:
 		_tempo_entre_passos = 0.0
@@ -243,7 +305,6 @@ func _physics_process(delta: float) -> void:
 		_tempo_parado += delta
 	else:
 		_tempo_parado = 0.0
-	var animacao_movimento := "Run" if Input.is_action_pressed("correr") else "Walk"
 	var animacao_alvo := "RunJump" if _pulo_em_corrida else ("WalkJump" if _pulo_andando else "Jump")
 	if no_chao and _pulo_preparando <= 0.0:
 		if em_movimento:
@@ -253,6 +314,9 @@ func _physics_process(delta: float) -> void:
 		else:
 			animacao_alvo = "Idle"
 	_atualizar_animacao(animacao_alvo)
+	# Animacao acompanha o fator: corpo e pernas na mesma proporcao.
+	if animador != null:
+		animador.speed_scale = fator_andar if animacao_alvo == "Walk" else 1.0
 	SaveSystem.dados["posicao_jogador"] = [position.x, position.y, position.z]
 
 

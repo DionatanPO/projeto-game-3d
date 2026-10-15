@@ -4,7 +4,7 @@ extends Area3D
 ## Drone fica com colisao e visual fundidos (prefab), some junto se excluir.
 
 const RAIO := 6.0
-const HOME_DRONE := Vector3(-2.0, 1.0, -50.0)
+const HOME_DRONE := Vector3(15.5, 1.0, 3.4)
 
 var _prompt: Label3D
 var _jogador: CharacterBody3D
