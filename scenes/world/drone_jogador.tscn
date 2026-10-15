@@ -1,13 +1,15 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene format=3 uid="uid://bpc1popflov1v"]
 
-[ext_resource type="Script" path="res://scripts/player/drone_jogador.gd" id="1_d"]
-[ext_resource type="PackedScene" path="res://assets/models/drone_agricola.glb" id="2_d"]
-[ext_resource type="PackedScene" path="res://assets/models/elice_drone.glb" id="3_d"]
+[ext_resource type="Script" uid="uid://48qkr8due10b" path="res://scripts/player/drone_jogador.gd" id="1_d"]
+[ext_resource type="PackedScene" uid="uid://bnijek0oplny5" path="res://assets/models/drone_agricola.glb" id="2_d"]
+[ext_resource type="PackedScene" uid="uid://dkg2gvfqdcqme" path="res://assets/models/elice_drone.glb" id="3_d"]
 
 [sub_resource type="BoxShape3D" id="Box_d1"]
-size = Vector3(2.8, 3.5, 2.8)
+size = Vector3(1.26, 1.575, 1.26)
 
 [sub_resource type="ParticleProcessMaterial" id="PM_spray"]
+emission_shape = 3
+emission_box_extents = Vector3(1.4, 0.05, 0.95)
 direction = Vector3(0, -1, 0)
 spread = 18.0
 initial_velocity_min = 1.5
@@ -18,8 +20,6 @@ damping_max = 1.5
 scale_min = 0.6
 scale_max = 1.4
 color = Color(0.85, 0.95, 0.8, 0.45)
-emission_shape = 3
-emission_box_extents = Vector3(1.4, 0.05, 0.95)
 
 [sub_resource type="StandardMaterial3D" id="Mat_spray"]
 transparency = 1
@@ -35,10 +35,11 @@ height = 0.14
 script = ExtResource("1_d")
 
 [node name="Colisao" type="CollisionShape3D" parent="." unique_id=881234502]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.79, 0)
 shape = SubResource("Box_d1")
 
 [node name="Modelo" type="Node3D" parent="." unique_id=881234503]
+transform = Transform3D(0.45, 0, 0, 0, 0.45, 0, 0, 0, 0.45, 0, 0, 0)
 
 [node name="Corpo" parent="Modelo" unique_id=881234504 instance=ExtResource("2_d")]
 
@@ -54,17 +55,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.803, 2.85, 1.803)
 [node name="Helice04" parent="Modelo" unique_id=881234508 instance=ExtResource("3_d")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.803, 2.85, -1.803)
 
-[node name="CameraRig" type="Node3D" parent="." unique_id=881234509]
-
 [node name="Pulverizador" type="GPUParticles3D" parent="Modelo" unique_id=881234511]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
 emitting = false
 amount = 48
 lifetime = 1.4
-local_coords = false
 visibility_aabb = AABB(-5, -5, -5, 10, 10, 10)
 process_material = SubResource("PM_spray")
 draw_pass_1 = SubResource("Mesh_spray")
+
+[node name="CameraRig" type="Node3D" parent="." unique_id=881234509]
 
 [node name="Camera3D" type="Camera3D" parent="CameraRig" unique_id=881234510]
 current = true

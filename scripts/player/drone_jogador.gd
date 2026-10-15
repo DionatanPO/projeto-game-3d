@@ -44,7 +44,7 @@ func _ready() -> void:
 	add_to_group("drone_jogador")
 	for i in range(1, 5):
 		_helices.append(modelo.get_node("Helice%02d" % i) as Node3D)
-	cam.position = Vector3(0.0, 4.2, 8.5)
+	cam.position = Vector3(0.0, 1.9, 3.85)
 	cam.rotation = Vector3(_angulo_vertical, 0.0, 0.0)
 	var pos: Variant = SaveSystem.dados.get("posicao_drone", [0.0, 3.0, 12.0])
 	if pos is Array and (pos as Array).size() == 3:
@@ -53,10 +53,14 @@ func _ready() -> void:
 	_som = AudioStreamPlayer3D.new()
 	_som.name = "SomMotor"
 	_som.stream = _gerar_zumbido()
-	_som.volume_db = -12.0
+	_som.volume_db = -30.0
 	_som.max_distance = 80.0
 	add_child(_som)
-	_som.play()
+	# Comeca desligado (a estacao liga ao embarcar); antes tocava ~2 frames ate a troca desligar.
+	ligado = str(SaveSystem.dados.get("veiculo", "jogador")) == "drone"
+	_spool = 1.0 if ligado else 0.0
+	if ligado:
+		_som.play()
 
 
 func _unhandled_input(evento: InputEvent) -> void:

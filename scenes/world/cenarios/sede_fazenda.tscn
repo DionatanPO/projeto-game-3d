@@ -6,6 +6,12 @@
 [ext_resource type="PackedScene" uid="uid://dmqimn1r3kkhh" path="res://assets/models/carrinho_mao.glb" id="4_k13i3"]
 [ext_resource type="PackedScene" uid="uid://8765swe114wv" path="res://assets/models/vaso_decoracao.glb" id="5_k13i3"]
 [ext_resource type="PackedScene" path="res://scenes/world/interactables/cerca.tscn" id="7_8q5ub"]
+[ext_resource type="PackedScene" uid="uid://bar2gyfhscq54" path="res://assets/models/Plant_1.fbx" id="7_m603d"]
+[ext_resource type="PackedScene" uid="uid://c6nvaj7eytnlc" path="res://assets/models/Plant_2.fbx" id="8_1f3ff"]
+[ext_resource type="PackedScene" uid="uid://5fxr5r15m55p" path="res://assets/models/Plant_3.fbx" id="9_xiqcx"]
+[ext_resource type="PackedScene" uid="uid://bw6hrplsmph4" path="res://assets/models/Plant_4.fbx" id="10_7dg1v"]
+[ext_resource type="PackedScene" uid="uid://dp5ntul8i6nhy" path="res://assets/models/Plant_5.fbx" id="11_0vq04"]
+[ext_resource type="PackedScene" uid="uid://cajyg0brnlul7" path="res://assets/models/arvore_tripo.glb" id="12_1f3ff"]
 
 [sub_resource type="StandardMaterial3D" id="PorteiraMad"]
 albedo_color = Color(0.42, 0.27, 0.14, 1)
@@ -29,7 +35,7 @@ transform = Transform3D(-2.7527528, 0, -2.9450635e-07, 0, 2.240028, 0, 2.406533e
 transform = Transform3D(1.6278276, 0, 0, 0, 1.5810635, 0, 0, 0, 1.8073813, -15.213236, 0, -17.34436)
 
 [node name="carrinho_mao" parent="." unique_id=1892461759 instance=ExtResource("4_k13i3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.8268433, 0, -13.005615)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0156937, 0.27280807, -16.828579)
 
 [node name="vaso_decoracao" parent="." unique_id=978205854 instance=ExtResource("5_k13i3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.4801254, 0, -9.857006)
@@ -107,3 +113,21 @@ mesh = SubResource("PorteiraPoste")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.65, 1, 5.15)
 material_override = SubResource("PorteiraMad")
 mesh = SubResource("PorteiraPoste")
+
+[node name="Plant_1" parent="." unique_id=2076565417 instance=ExtResource("7_m603d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8910275, 0, -12.847745)
+
+[node name="Plant_2" parent="." unique_id=2021911383 instance=ExtResource("8_1f3ff")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.8638477, 0, -12.330166)
+
+[node name="Plant_3" parent="." unique_id=1708700177 instance=ExtResource("9_xiqcx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.406006, 0, -12.427839)
+
+[node name="Plant_4" parent="." unique_id=1883161688 instance=ExtResource("10_7dg1v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.924458, 0, -10.79071)
+
+[node name="Plant_5" parent="." unique_id=648136870 instance=ExtResource("11_0vq04")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.203875, 0, -12.859404)
+
+[node name="arvore_tripo" parent="." unique_id=1848774593 instance=ExtResource("12_1f3ff")]
+transform = Transform3D(11.316645, 0, 0, 0, 9.349401, 0, 0, 0, 9.009692, 4.040209, 4.5627093, -12.26379)

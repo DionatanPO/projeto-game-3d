@@ -38,6 +38,11 @@ func _ready() -> void:
   var v: String = str(SaveSystem.dados.get("veiculo", "jogador"))
   if v == "drone" and _jogador != null and _drone != null:
     _ativar_drone(false)
+  elif v == "trator":
+    # Trator ativo: a estacao dele (embutida na cena) assume; aqui so
+    # garantimos que jogador e drone fiquem desligados.
+    _set_ativo(_jogador, false)
+    _set_ativo(_drone, false)
   else:
     _ativar_jogador(false)
 
@@ -67,7 +72,12 @@ func _unhandled_input(evento: InputEvent) -> void:
 func _set_ativo(corpo: CharacterBody3D, ativo: bool) -> void:
   if corpo == null:
     return
-  corpo.set_physics_process(ativo)
+  if corpo.is_in_group("drone_jogador") and not ativo:
+    # Estacionado: mantem a fisica para ele pousar sozinho em vez de
+    # ficar congelado flutuando (ligado=false desce por gravidade).
+    corpo.set_physics_process(true)
+  else:
+    corpo.set_physics_process(ativo)
   corpo.set_process_unhandled_input(ativo)
   var cam := corpo.get_node_or_null("CameraRig/BracosCamera/Camera3D") as Camera3D
   if cam == null:

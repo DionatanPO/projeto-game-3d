@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dcucsh6m5gurg"]
 
 [ext_resource type="Script" uid="uid://brqiey4r4t5fi" path="res://scripts/player/jogador.gd" id="1_jlq0g"]
+[ext_resource type="PackedScene" uid="uid://crni0f4ky400l" path="res://assets/models/personagem/idle.fbx" id="2_wj2yf"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jlq0g"]
 radius = 0.4
@@ -14,18 +15,8 @@ shape = SubResource("CapsuleShape3D_jlq0g")
 
 [node name="Modelo" type="Node3D" parent="." unique_id=153947277]
 
-[node name="Tronco" type="CSGCylinder3D" parent="Modelo" unique_id=187600289]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-radius = 0.35
-height = 1.1
-
-[node name="Cabeca" type="CSGSphere3D" parent="Modelo" unique_id=1443285495]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
-radius = 0.28
-
-[node name="Visor" type="CSGBox3D" parent="Modelo" unique_id=710260120]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, -0.22)
-size = Vector3(0.3, 0.12, 0.1)
+[node name="Personagem" parent="Modelo" unique_id=1192868106 instance=ExtResource("2_wj2yf")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, -0.02, 0)
 
 [node name="CameraRig" type="Node3D" parent="." unique_id=192820235]
 

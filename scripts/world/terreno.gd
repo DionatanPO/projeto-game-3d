@@ -6,7 +6,7 @@ extends StaticBody3D
 ## A mesma funcao gera a malha visual e a colisao (HeightMapShape3D),
 ## entao o jogador pisa exatamente onde o chao aparece.
 
-@export var tamanho := 500.0
+@export var tamanho := 300.0
 @export var celulas := 100
 @export var altura_max := 10.0
 @export var seed := 20240

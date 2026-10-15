@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://dp8sh3tajvvg1"]
+
+[ext_resource type="PackedScene" uid="uid://br4ljesnrpw12" path="res://scenes/world/trator_jogador.tscn" id="1_t"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat_t1"]
+sky_top_color = Color(0.2, 0.45, 0.8, 1)
+sky_horizon_color = Color(0.55, 0.72, 0.88, 1)
+ground_bottom_color = Color(0.2, 0.28, 0.2, 1)
+ground_horizon_color = Color(0.65, 0.75, 0.8, 1)
+
+[sub_resource type="Sky" id="Sky_t1"]
+sky_material = SubResource("SkyMat_t1")
+
+[sub_resource type="Environment" id="Env_t1"]
+background_mode = 2
+sky = SubResource("Sky_t1")
+ambient_light_source = 3
+ambient_light_energy = 0.7
+tonemap_mode = 3
+
+[sub_resource type="StandardMaterial3D" id="MatChao_t1"]
+albedo_color = Color(0.35, 0.6, 0.3, 1)
+roughness = 0.95
+
+[sub_resource type="PlaneMesh" id="Plane_t1"]
+size = Vector2(120, 120)
+
+[sub_resource type="WorldBoundaryShape3D" id="ShapeChao_t1"]
+
+[node name="TesteTrator" type="Node3D" unique_id=13660376]
+
+[node name="Mundo" type="WorldEnvironment" parent="." unique_id=404533077]
+environment = SubResource("Env_t1")
+
+[node name="Sol" type="DirectionalLight3D" parent="." unique_id=533952962]
+transform = Transform3D(0.87758255, -0.37554693, 0.2980157, 0, 0.62161, 0.7833269, -0.47942555, -0.687434, 0.54551405, 0, 30, 0)
+light_color = Color(1, 0.96, 0.88, 1)
+light_energy = 1.2
+shadow_enabled = true
+
+[node name="Solo" type="StaticBody3D" parent="." unique_id=1632905668]
+
+[node name="Chao" type="MeshInstance3D" parent="Solo" unique_id=494378458]
+material_override = SubResource("MatChao_t1")
+mesh = SubResource("Plane_t1")
+
+[node name="Colisao" type="CollisionShape3D" parent="Solo" unique_id=1135944012]
+shape = SubResource("ShapeChao_t1")
+
+[node name="TratorJogador" parent="." unique_id=782783249 instance=ExtResource("1_t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0.5, -49.6)
+
+[node name="CameraLateral" type="Camera3D" parent="." unique_id=1904052889]
+transform = Transform3D(0.7071, -0.157, 0.689, 0, 0.975, 0.222, -0.7071, -0.157, 0.689, 14.5, 3, -43.6)
+current = true
+fov = 60.0

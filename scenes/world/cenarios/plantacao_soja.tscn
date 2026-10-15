@@ -1,10 +1,1996 @@
 [gd_scene format=3 uid="uid://c4f0hcxriit3c"]
 
-[ext_resource type="PackedScene" uid="uid://dflmtmeymob0y" path="res://assets/models/torre.glb" id="1_hjaf4"]
+[ext_resource type="PackedScene" uid="uid://dia5g4xm1qne6" path="res://assets/models/WaterTower.fbx" id="1_hjaf4"]
+[ext_resource type="PackedScene" uid="uid://t4f5e0itvaus" path="res://assets/models/solo.glb" id="2_hhhm3"]
+[ext_resource type="PackedScene" uid="uid://bar2gyfhscq54" path="res://assets/models/Plant_1.fbx" id="3_qbsri"]
+[ext_resource type="PackedScene" path="res://scenes/world/interactables/cerca.tscn" id="4_cerca"]
 
 [node name="PlantacaoSoja" type="Node3D" unique_id=883103101]
 
-[node name="Referencia" type="Marker3D" parent="." unique_id=883103102]
+[node name="Referencia" type="Marker3D" parent="." unique_id=628082633]
 
-[node name="torre" parent="." unique_id=855163279 instance=ExtResource("1_hjaf4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.894064, 0, -4.291437)
+[node name="WaterTower" parent="." unique_id=1855116524 instance=ExtResource("1_hjaf4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 12)
+
+[node name="Solo" parent="." unique_id=1365855917 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, -12.6, 0, -20.6)
+
+[node name="Solo_2" parent="." unique_id=1152792806 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, -12.6, 0, -12.2)
+
+[node name="Solo_3" parent="." unique_id=1716439489 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, -12.6, 0, -3.8)
+
+[node name="Solo_4" parent="." unique_id=1931310959 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, -12.6, 0, 4.6)
+
+[node name="Solo_5" parent="." unique_id=1853266015 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, -4.2, 0, -20.6)
+
+[node name="Solo_6" parent="." unique_id=1743139735 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, -4.2, 0, -12.2)
+
+[node name="Solo_7" parent="." unique_id=2110016198 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, -4.2, 0, -3.8)
+
+[node name="Solo_8" parent="." unique_id=1418512836 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, -4.2, 0, 4.6)
+
+[node name="Solo_9" parent="." unique_id=83609522 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 4.2, 0, -20.6)
+
+[node name="Solo_10" parent="." unique_id=1452894594 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 4.2, 0, -12.2)
+
+[node name="Solo_11" parent="." unique_id=2036252238 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 4.2, 0, -3.8)
+
+[node name="Solo_12" parent="." unique_id=1249716368 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 4.2, 0, 4.6)
+
+[node name="Solo_13" parent="." unique_id=209863747 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 12.6, 0, -20.6)
+
+[node name="Solo_14" parent="." unique_id=1889503910 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 12.6, 0, -12.2)
+
+[node name="Solo_15" parent="." unique_id=912732964 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 12.6, 0, -3.8)
+
+[node name="Solo_16" parent="." unique_id=1446872280 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 12.6, 0, 4.6)
+
+[node name="Solo_17" parent="." unique_id=1235399098 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 21, 0, -20.6)
+
+[node name="Solo_18" parent="." unique_id=1771421763 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 21, 0, -12.2)
+
+[node name="Solo_19" parent="." unique_id=299493552 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 21, 0, -3.8)
+
+[node name="Solo_20" parent="." unique_id=93754904 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 21, 0, 4.6)
+
+[node name="Solo_21" parent="." unique_id=444285436 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 29.4, 0, -20.6)
+
+[node name="Solo_22" parent="." unique_id=1948837442 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 29.4, 0, -12.2)
+
+[node name="Solo_23" parent="." unique_id=775180205 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 29.4, 0, -3.8)
+
+[node name="Solo_24" parent="." unique_id=1009809347 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 29.4, 0, 4.6)
+
+[node name="Solo_25" parent="." unique_id=1720909047 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 37.8, 0, -20.6)
+
+[node name="Solo_26" parent="." unique_id=1462142737 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 37.8, 0, -12.2)
+
+[node name="Solo_27" parent="." unique_id=1935494865 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 37.8, 0, -3.8)
+
+[node name="Solo_28" parent="." unique_id=471826339 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 37.8, 0, 4.6)
+
+[node name="Solo_29" parent="." unique_id=746229306 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 46.2, 0, -20.6)
+
+[node name="Solo_30" parent="." unique_id=895915395 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 46.2, 0, -12.2)
+
+[node name="Solo_31" parent="." unique_id=854020422 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 46.2, 0, -3.8)
+
+[node name="Solo_32" parent="." unique_id=1632987075 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 46.2, 0, 4.6)
+
+[node name="Solo_33" parent="." unique_id=1710677272 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 54.6, 0, -20.6)
+
+[node name="Solo_34" parent="." unique_id=4580992 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 54.6, 0, -12.2)
+
+[node name="Solo_35" parent="." unique_id=1591390815 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 54.6, 0, -3.8)
+
+[node name="Solo_36" parent="." unique_id=693702442 instance=ExtResource("2_hhhm3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 54.6, 0, 4.6)
+
+[node name="PlantaSoja_1" parent="." unique_id=154497067 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.6, 0.38, -23.6)
+
+[node name="PlantaSoja_2" parent="." unique_id=1569254636 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.6, 0.38, -21.6)
+
+[node name="PlantaSoja_3" parent="." unique_id=1119903511 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.6, 0.38, -19.6)
+
+[node name="PlantaSoja_4" parent="." unique_id=241566723 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.6, 0.38, -17.6)
+
+[node name="PlantaSoja_5" parent="." unique_id=1850745127 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6, 0.38, -23.6)
+
+[node name="PlantaSoja_6" parent="." unique_id=112848896 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6, 0.38, -21.6)
+
+[node name="PlantaSoja_7" parent="." unique_id=729017517 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6, 0.38, -19.6)
+
+[node name="PlantaSoja_8" parent="." unique_id=991093267 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6, 0.38, -17.6)
+
+[node name="PlantaSoja_9" parent="." unique_id=1302113097 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6, 0.38, -23.6)
+
+[node name="PlantaSoja_10" parent="." unique_id=2011443991 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6, 0.38, -21.6)
+
+[node name="PlantaSoja_11" parent="." unique_id=1701669881 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6, 0.38, -19.6)
+
+[node name="PlantaSoja_12" parent="." unique_id=2081364437 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6, 0.38, -17.6)
+
+[node name="PlantaSoja_13" parent="." unique_id=1148173860 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.6, 0.38, -23.6)
+
+[node name="PlantaSoja_14" parent="." unique_id=1039344270 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.6, 0.38, -21.6)
+
+[node name="PlantaSoja_15" parent="." unique_id=1842303530 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.6, 0.38, -19.6)
+
+[node name="PlantaSoja_16" parent="." unique_id=1051349802 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.6, 0.38, -17.6)
+
+[node name="PlantaSoja_17" parent="." unique_id=768857084 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.6, 0.38, -15.2)
+
+[node name="PlantaSoja_18" parent="." unique_id=2069679544 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.6, 0.38, -13.2)
+
+[node name="PlantaSoja_19" parent="." unique_id=37146879 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.6, 0.38, -11.2)
+
+[node name="PlantaSoja_20" parent="." unique_id=322025530 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.6, 0.38, -9.2)
+
+[node name="PlantaSoja_21" parent="." unique_id=2040824938 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6, 0.38, -15.2)
+
+[node name="PlantaSoja_22" parent="." unique_id=1617982761 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6, 0.38, -13.2)
+
+[node name="PlantaSoja_23" parent="." unique_id=496171014 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6, 0.38, -11.2)
+
+[node name="PlantaSoja_24" parent="." unique_id=31587398 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6, 0.38, -9.2)
+
+[node name="PlantaSoja_25" parent="." unique_id=2078712925 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6, 0.38, -15.2)
+
+[node name="PlantaSoja_26" parent="." unique_id=19124702 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6, 0.38, -13.2)
+
+[node name="PlantaSoja_27" parent="." unique_id=713459515 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6, 0.38, -11.2)
+
+[node name="PlantaSoja_28" parent="." unique_id=1780003059 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6, 0.38, -9.2)
+
+[node name="PlantaSoja_29" parent="." unique_id=1951253175 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.6, 0.38, -15.2)
+
+[node name="PlantaSoja_30" parent="." unique_id=1484961081 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.6, 0.38, -13.2)
+
+[node name="PlantaSoja_31" parent="." unique_id=753875591 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.6, 0.38, -11.2)
+
+[node name="PlantaSoja_32" parent="." unique_id=1833903541 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.6, 0.38, -9.2)
+
+[node name="PlantaSoja_33" parent="." unique_id=843867281 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.6, 0.38, -6.8)
+
+[node name="PlantaSoja_34" parent="." unique_id=2128942607 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.6, 0.38, -4.8)
+
+[node name="PlantaSoja_35" parent="." unique_id=1029837747 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.6, 0.38, -2.8)
+
+[node name="PlantaSoja_36" parent="." unique_id=803379741 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.6, 0.38, -0.8)
+
+[node name="PlantaSoja_37" parent="." unique_id=948320682 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6, 0.38, -6.8)
+
+[node name="PlantaSoja_38" parent="." unique_id=1037806065 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6, 0.38, -4.8)
+
+[node name="PlantaSoja_39" parent="." unique_id=1875139685 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6, 0.38, -2.8)
+
+[node name="PlantaSoja_40" parent="." unique_id=224152146 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6, 0.38, -0.8)
+
+[node name="PlantaSoja_41" parent="." unique_id=734287344 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6, 0.38, -6.8)
+
+[node name="PlantaSoja_42" parent="." unique_id=1051290432 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6, 0.38, -4.8)
+
+[node name="PlantaSoja_43" parent="." unique_id=1897058189 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6, 0.38, -2.8)
+
+[node name="PlantaSoja_44" parent="." unique_id=624773310 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6, 0.38, -0.8)
+
+[node name="PlantaSoja_45" parent="." unique_id=641015253 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.6, 0.38, -6.8)
+
+[node name="PlantaSoja_46" parent="." unique_id=977378333 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.6, 0.38, -4.8)
+
+[node name="PlantaSoja_47" parent="." unique_id=974538573 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.6, 0.38, -2.8)
+
+[node name="PlantaSoja_48" parent="." unique_id=1783084266 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.6, 0.38, -0.8)
+
+[node name="PlantaSoja_49" parent="." unique_id=928636508 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.6, 0.38, 1.6)
+
+[node name="PlantaSoja_50" parent="." unique_id=759194443 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.6, 0.38, 3.6)
+
+[node name="PlantaSoja_51" parent="." unique_id=1493322967 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.6, 0.38, 5.6)
+
+[node name="PlantaSoja_52" parent="." unique_id=1312502617 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.6, 0.38, 7.6)
+
+[node name="PlantaSoja_53" parent="." unique_id=52673428 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6, 0.38, 1.6)
+
+[node name="PlantaSoja_54" parent="." unique_id=517436258 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6, 0.38, 3.6)
+
+[node name="PlantaSoja_55" parent="." unique_id=592256169 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6, 0.38, 5.6)
+
+[node name="PlantaSoja_56" parent="." unique_id=609438045 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6, 0.38, 7.6)
+
+[node name="PlantaSoja_57" parent="." unique_id=1038880197 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6, 0.38, 1.6)
+
+[node name="PlantaSoja_58" parent="." unique_id=848085110 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6, 0.38, 3.6)
+
+[node name="PlantaSoja_59" parent="." unique_id=841305007 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6, 0.38, 5.6)
+
+[node name="PlantaSoja_60" parent="." unique_id=797413726 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6, 0.38, 7.6)
+
+[node name="PlantaSoja_61" parent="." unique_id=904677130 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.6, 0.38, 1.6)
+
+[node name="PlantaSoja_62" parent="." unique_id=1422420108 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.6, 0.38, 3.6)
+
+[node name="PlantaSoja_63" parent="." unique_id=1359819352 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.6, 0.38, 5.6)
+
+[node name="PlantaSoja_64" parent="." unique_id=556160297 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.6, 0.38, 7.6)
+
+[node name="PlantaSoja_65" parent="." unique_id=1545573187 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2, 0.38, -23.6)
+
+[node name="PlantaSoja_66" parent="." unique_id=322947703 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2, 0.38, -21.6)
+
+[node name="PlantaSoja_67" parent="." unique_id=1645651922 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2, 0.38, -19.6)
+
+[node name="PlantaSoja_68" parent="." unique_id=1355042205 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2, 0.38, -17.6)
+
+[node name="PlantaSoja_69" parent="." unique_id=1273249548 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.38, -23.6)
+
+[node name="PlantaSoja_70" parent="." unique_id=1107907233 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.38, -21.6)
+
+[node name="PlantaSoja_71" parent="." unique_id=566223701 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.38, -19.6)
+
+[node name="PlantaSoja_72" parent="." unique_id=1341129146 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.38, -17.6)
+
+[node name="PlantaSoja_73" parent="." unique_id=1585379562 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.38, -23.6)
+
+[node name="PlantaSoja_74" parent="." unique_id=1106712782 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.38, -21.6)
+
+[node name="PlantaSoja_75" parent="." unique_id=476439458 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.38, -19.6)
+
+[node name="PlantaSoja_76" parent="." unique_id=1519438480 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.38, -17.6)
+
+[node name="PlantaSoja_77" parent="." unique_id=1630731520 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.38, -23.6)
+
+[node name="PlantaSoja_78" parent="." unique_id=1319426754 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.38, -21.6)
+
+[node name="PlantaSoja_79" parent="." unique_id=1505256653 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.38, -19.6)
+
+[node name="PlantaSoja_80" parent="." unique_id=423042452 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.38, -17.6)
+
+[node name="PlantaSoja_81" parent="." unique_id=1360531126 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2, 0.38, -15.2)
+
+[node name="PlantaSoja_82" parent="." unique_id=844684301 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2, 0.38, -13.2)
+
+[node name="PlantaSoja_83" parent="." unique_id=1030521932 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2, 0.38, -11.2)
+
+[node name="PlantaSoja_84" parent="." unique_id=1728921643 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2, 0.38, -9.2)
+
+[node name="PlantaSoja_85" parent="." unique_id=1586700698 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.38, -15.2)
+
+[node name="PlantaSoja_86" parent="." unique_id=1898066859 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.38, -13.2)
+
+[node name="PlantaSoja_87" parent="." unique_id=905655774 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.38, -11.2)
+
+[node name="PlantaSoja_88" parent="." unique_id=179798879 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.38, -9.2)
+
+[node name="PlantaSoja_89" parent="." unique_id=452119114 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.38, -15.2)
+
+[node name="PlantaSoja_90" parent="." unique_id=1548844893 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.38, -13.2)
+
+[node name="PlantaSoja_91" parent="." unique_id=1529189929 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.38, -11.2)
+
+[node name="PlantaSoja_92" parent="." unique_id=722440761 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.38, -9.2)
+
+[node name="PlantaSoja_93" parent="." unique_id=1663908532 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.38, -15.2)
+
+[node name="PlantaSoja_94" parent="." unique_id=1293815427 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.38, -13.2)
+
+[node name="PlantaSoja_95" parent="." unique_id=913635268 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.38, -11.2)
+
+[node name="PlantaSoja_96" parent="." unique_id=1863196624 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.38, -9.2)
+
+[node name="PlantaSoja_97" parent="." unique_id=1262080495 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2, 0.38, -6.8)
+
+[node name="PlantaSoja_98" parent="." unique_id=48570904 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2, 0.38, -4.8)
+
+[node name="PlantaSoja_99" parent="." unique_id=1456213008 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2, 0.38, -2.8)
+
+[node name="PlantaSoja_100" parent="." unique_id=832541620 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2, 0.38, -0.8)
+
+[node name="PlantaSoja_101" parent="." unique_id=1687811796 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.38, -6.8)
+
+[node name="PlantaSoja_102" parent="." unique_id=14427088 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.38, -4.8)
+
+[node name="PlantaSoja_103" parent="." unique_id=470262797 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.38, -2.8)
+
+[node name="PlantaSoja_104" parent="." unique_id=409570668 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.38, -0.8)
+
+[node name="PlantaSoja_105" parent="." unique_id=635613765 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.38, -6.8)
+
+[node name="PlantaSoja_106" parent="." unique_id=1413306828 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.38, -4.8)
+
+[node name="PlantaSoja_107" parent="." unique_id=1671617319 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.38, -2.8)
+
+[node name="PlantaSoja_108" parent="." unique_id=607376393 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.38, -0.8)
+
+[node name="PlantaSoja_109" parent="." unique_id=780987846 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.38, -6.8)
+
+[node name="PlantaSoja_110" parent="." unique_id=1800587816 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.38, -4.8)
+
+[node name="PlantaSoja_111" parent="." unique_id=818676964 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.38, -2.8)
+
+[node name="PlantaSoja_112" parent="." unique_id=481995733 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.38, -0.8)
+
+[node name="PlantaSoja_113" parent="." unique_id=1055017870 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2, 0.38, 1.6)
+
+[node name="PlantaSoja_114" parent="." unique_id=686870019 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2, 0.38, 3.6)
+
+[node name="PlantaSoja_115" parent="." unique_id=551710523 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2, 0.38, 5.6)
+
+[node name="PlantaSoja_116" parent="." unique_id=1978076601 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2, 0.38, 7.6)
+
+[node name="PlantaSoja_117" parent="." unique_id=1506331585 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.38, 1.6)
+
+[node name="PlantaSoja_118" parent="." unique_id=1980328188 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.38, 3.6)
+
+[node name="PlantaSoja_119" parent="." unique_id=888521843 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.38, 5.6)
+
+[node name="PlantaSoja_120" parent="." unique_id=476895678 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.38, 7.6)
+
+[node name="PlantaSoja_121" parent="." unique_id=21769726 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.38, 1.6)
+
+[node name="PlantaSoja_122" parent="." unique_id=910976727 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.38, 3.6)
+
+[node name="PlantaSoja_123" parent="." unique_id=1140444135 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.38, 5.6)
+
+[node name="PlantaSoja_124" parent="." unique_id=492636987 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.38, 7.6)
+
+[node name="PlantaSoja_125" parent="." unique_id=743023595 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.38, 1.6)
+
+[node name="PlantaSoja_126" parent="." unique_id=803489039 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.38, 3.6)
+
+[node name="PlantaSoja_127" parent="." unique_id=1674277672 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.38, 5.6)
+
+[node name="PlantaSoja_128" parent="." unique_id=257232067 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.38, 7.6)
+
+[node name="PlantaSoja_129" parent="." unique_id=1750725409 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.38, -23.6)
+
+[node name="PlantaSoja_130" parent="." unique_id=73487469 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.38, -21.6)
+
+[node name="PlantaSoja_131" parent="." unique_id=2102107025 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.38, -19.6)
+
+[node name="PlantaSoja_132" parent="." unique_id=1789433015 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.38, -17.6)
+
+[node name="PlantaSoja_133" parent="." unique_id=559972933 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.38, -23.6)
+
+[node name="PlantaSoja_134" parent="." unique_id=1233561146 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.38, -21.6)
+
+[node name="PlantaSoja_135" parent="." unique_id=267994222 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.38, -19.6)
+
+[node name="PlantaSoja_136" parent="." unique_id=1287650516 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.38, -17.6)
+
+[node name="PlantaSoja_137" parent="." unique_id=1743009015 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.38, -23.6)
+
+[node name="PlantaSoja_138" parent="." unique_id=1531475892 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.38, -21.6)
+
+[node name="PlantaSoja_139" parent="." unique_id=1761859668 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.38, -19.6)
+
+[node name="PlantaSoja_140" parent="." unique_id=602768304 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.38, -17.6)
+
+[node name="PlantaSoja_141" parent="." unique_id=1783217260 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 0.38, -23.6)
+
+[node name="PlantaSoja_142" parent="." unique_id=1063853487 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 0.38, -21.6)
+
+[node name="PlantaSoja_143" parent="." unique_id=949042161 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 0.38, -19.6)
+
+[node name="PlantaSoja_144" parent="." unique_id=376114059 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 0.38, -17.6)
+
+[node name="PlantaSoja_145" parent="." unique_id=739396539 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.38, -15.2)
+
+[node name="PlantaSoja_146" parent="." unique_id=22289699 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.38, -13.2)
+
+[node name="PlantaSoja_147" parent="." unique_id=845692103 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.38, -11.2)
+
+[node name="PlantaSoja_148" parent="." unique_id=1479250086 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.38, -9.2)
+
+[node name="PlantaSoja_149" parent="." unique_id=881779112 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.38, -15.2)
+
+[node name="PlantaSoja_150" parent="." unique_id=2053816008 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.38, -13.2)
+
+[node name="PlantaSoja_151" parent="." unique_id=709993771 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.38, -11.2)
+
+[node name="PlantaSoja_152" parent="." unique_id=239683205 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.38, -9.2)
+
+[node name="PlantaSoja_153" parent="." unique_id=161872580 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.38, -15.2)
+
+[node name="PlantaSoja_154" parent="." unique_id=143520852 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.38, -13.2)
+
+[node name="PlantaSoja_155" parent="." unique_id=1142696654 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.38, -11.2)
+
+[node name="PlantaSoja_156" parent="." unique_id=2018960368 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.38, -9.2)
+
+[node name="PlantaSoja_157" parent="." unique_id=1322656967 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 0.38, -15.2)
+
+[node name="PlantaSoja_158" parent="." unique_id=1082908881 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 0.38, -13.2)
+
+[node name="PlantaSoja_159" parent="." unique_id=124660200 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 0.38, -11.2)
+
+[node name="PlantaSoja_160" parent="." unique_id=1703953961 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 0.38, -9.2)
+
+[node name="PlantaSoja_161" parent="." unique_id=1151322883 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.38, -6.8)
+
+[node name="PlantaSoja_162" parent="." unique_id=681213888 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.38, -4.8)
+
+[node name="PlantaSoja_163" parent="." unique_id=1286720409 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.38, -2.8)
+
+[node name="PlantaSoja_164" parent="." unique_id=404593331 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.38, -0.8)
+
+[node name="PlantaSoja_165" parent="." unique_id=1757376752 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.38, -6.8)
+
+[node name="PlantaSoja_166" parent="." unique_id=382518465 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.38, -4.8)
+
+[node name="PlantaSoja_167" parent="." unique_id=2034727831 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.38, -2.8)
+
+[node name="PlantaSoja_168" parent="." unique_id=930751528 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.38, -0.8)
+
+[node name="PlantaSoja_169" parent="." unique_id=1562331142 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.38, -6.8)
+
+[node name="PlantaSoja_170" parent="." unique_id=988716108 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.38, -4.8)
+
+[node name="PlantaSoja_171" parent="." unique_id=566129538 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.38, -2.8)
+
+[node name="PlantaSoja_172" parent="." unique_id=962742769 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.38, -0.8)
+
+[node name="PlantaSoja_173" parent="." unique_id=1053685402 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 0.38, -6.8)
+
+[node name="PlantaSoja_174" parent="." unique_id=1318625354 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 0.38, -4.8)
+
+[node name="PlantaSoja_175" parent="." unique_id=355414686 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 0.38, -2.8)
+
+[node name="PlantaSoja_176" parent="." unique_id=2095489322 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 0.38, -0.8)
+
+[node name="PlantaSoja_177" parent="." unique_id=1503476258 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.38, 1.6)
+
+[node name="PlantaSoja_178" parent="." unique_id=14298071 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.38, 3.6)
+
+[node name="PlantaSoja_179" parent="." unique_id=2069261891 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.38, 5.6)
+
+[node name="PlantaSoja_180" parent="." unique_id=1426309312 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.38, 7.6)
+
+[node name="PlantaSoja_181" parent="." unique_id=1636225418 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.38, 1.6)
+
+[node name="PlantaSoja_182" parent="." unique_id=1809543008 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.38, 3.6)
+
+[node name="PlantaSoja_183" parent="." unique_id=120172376 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.38, 5.6)
+
+[node name="PlantaSoja_184" parent="." unique_id=257357620 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.38, 7.6)
+
+[node name="PlantaSoja_185" parent="." unique_id=1135789004 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.38, 1.6)
+
+[node name="PlantaSoja_186" parent="." unique_id=787288691 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.38, 3.6)
+
+[node name="PlantaSoja_187" parent="." unique_id=175349654 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.38, 5.6)
+
+[node name="PlantaSoja_188" parent="." unique_id=307726689 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.38, 7.6)
+
+[node name="PlantaSoja_189" parent="." unique_id=921251826 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 0.38, 1.6)
+
+[node name="PlantaSoja_190" parent="." unique_id=361336370 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 0.38, 3.6)
+
+[node name="PlantaSoja_191" parent="." unique_id=901679599 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 0.38, 5.6)
+
+[node name="PlantaSoja_192" parent="." unique_id=279321037 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 0.38, 7.6)
+
+[node name="PlantaSoja_193" parent="." unique_id=2073256703 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.6, 0.38, -23.6)
+
+[node name="PlantaSoja_194" parent="." unique_id=1586885449 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.6, 0.38, -21.6)
+
+[node name="PlantaSoja_195" parent="." unique_id=935250557 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.6, 0.38, -19.6)
+
+[node name="PlantaSoja_196" parent="." unique_id=438388199 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.6, 0.38, -17.6)
+
+[node name="PlantaSoja_197" parent="." unique_id=428926272 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6, 0.38, -23.6)
+
+[node name="PlantaSoja_198" parent="." unique_id=984201755 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6, 0.38, -21.6)
+
+[node name="PlantaSoja_199" parent="." unique_id=609109987 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6, 0.38, -19.6)
+
+[node name="PlantaSoja_200" parent="." unique_id=1674669566 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6, 0.38, -17.6)
+
+[node name="PlantaSoja_201" parent="." unique_id=1717941156 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6, 0.38, -23.6)
+
+[node name="PlantaSoja_202" parent="." unique_id=580399886 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6, 0.38, -21.6)
+
+[node name="PlantaSoja_203" parent="." unique_id=2021656000 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6, 0.38, -19.6)
+
+[node name="PlantaSoja_204" parent="." unique_id=1066275016 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6, 0.38, -17.6)
+
+[node name="PlantaSoja_205" parent="." unique_id=397946230 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6, 0.38, -23.6)
+
+[node name="PlantaSoja_206" parent="." unique_id=1762444215 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6, 0.38, -21.6)
+
+[node name="PlantaSoja_207" parent="." unique_id=1757086152 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6, 0.38, -19.6)
+
+[node name="PlantaSoja_208" parent="." unique_id=1197333908 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6, 0.38, -17.6)
+
+[node name="PlantaSoja_209" parent="." unique_id=835149922 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.6, 0.38, -15.2)
+
+[node name="PlantaSoja_210" parent="." unique_id=734649386 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.6, 0.38, -13.2)
+
+[node name="PlantaSoja_211" parent="." unique_id=1968603687 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.6, 0.38, -11.2)
+
+[node name="PlantaSoja_212" parent="." unique_id=2058067944 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.6, 0.38, -9.2)
+
+[node name="PlantaSoja_213" parent="." unique_id=1353059069 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6, 0.38, -15.2)
+
+[node name="PlantaSoja_214" parent="." unique_id=221299963 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6, 0.38, -13.2)
+
+[node name="PlantaSoja_215" parent="." unique_id=838814681 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6, 0.38, -11.2)
+
+[node name="PlantaSoja_216" parent="." unique_id=219945110 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6, 0.38, -9.2)
+
+[node name="PlantaSoja_217" parent="." unique_id=148097732 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6, 0.38, -15.2)
+
+[node name="PlantaSoja_218" parent="." unique_id=287811087 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6, 0.38, -13.2)
+
+[node name="PlantaSoja_219" parent="." unique_id=460894982 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6, 0.38, -11.2)
+
+[node name="PlantaSoja_220" parent="." unique_id=377967924 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6, 0.38, -9.2)
+
+[node name="PlantaSoja_221" parent="." unique_id=23324941 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6, 0.38, -15.2)
+
+[node name="PlantaSoja_222" parent="." unique_id=1885859750 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6, 0.38, -13.2)
+
+[node name="PlantaSoja_223" parent="." unique_id=1342203624 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6, 0.38, -11.2)
+
+[node name="PlantaSoja_224" parent="." unique_id=831909568 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6, 0.38, -9.2)
+
+[node name="PlantaSoja_225" parent="." unique_id=91340540 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.6, 0.38, -6.8)
+
+[node name="PlantaSoja_226" parent="." unique_id=793265285 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.6, 0.38, -4.8)
+
+[node name="PlantaSoja_227" parent="." unique_id=415855725 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.6, 0.38, -2.8)
+
+[node name="PlantaSoja_228" parent="." unique_id=300775907 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.6, 0.38, -0.8)
+
+[node name="PlantaSoja_229" parent="." unique_id=595395874 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6, 0.38, -6.8)
+
+[node name="PlantaSoja_230" parent="." unique_id=1223239993 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6, 0.38, -4.8)
+
+[node name="PlantaSoja_231" parent="." unique_id=2053087614 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6, 0.38, -2.8)
+
+[node name="PlantaSoja_232" parent="." unique_id=940016312 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6, 0.38, -0.8)
+
+[node name="PlantaSoja_233" parent="." unique_id=606269330 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6, 0.38, -6.8)
+
+[node name="PlantaSoja_234" parent="." unique_id=785911896 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6, 0.38, -4.8)
+
+[node name="PlantaSoja_235" parent="." unique_id=1149442202 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6, 0.38, -2.8)
+
+[node name="PlantaSoja_236" parent="." unique_id=2104115903 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6, 0.38, -0.8)
+
+[node name="PlantaSoja_237" parent="." unique_id=1771789248 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6, 0.38, -6.8)
+
+[node name="PlantaSoja_238" parent="." unique_id=1959930113 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6, 0.38, -4.8)
+
+[node name="PlantaSoja_239" parent="." unique_id=1103241526 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6, 0.38, -2.8)
+
+[node name="PlantaSoja_240" parent="." unique_id=1479388138 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6, 0.38, -0.8)
+
+[node name="PlantaSoja_241" parent="." unique_id=1673529252 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.6, 0.38, 1.6)
+
+[node name="PlantaSoja_242" parent="." unique_id=751307921 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.6, 0.38, 3.6)
+
+[node name="PlantaSoja_243" parent="." unique_id=177339527 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.6, 0.38, 5.6)
+
+[node name="PlantaSoja_244" parent="." unique_id=1336576178 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.6, 0.38, 7.6)
+
+[node name="PlantaSoja_245" parent="." unique_id=122727526 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6, 0.38, 1.6)
+
+[node name="PlantaSoja_246" parent="." unique_id=1006352021 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6, 0.38, 3.6)
+
+[node name="PlantaSoja_247" parent="." unique_id=1976276266 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6, 0.38, 5.6)
+
+[node name="PlantaSoja_248" parent="." unique_id=1984577325 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6, 0.38, 7.6)
+
+[node name="PlantaSoja_249" parent="." unique_id=188902025 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6, 0.38, 1.6)
+
+[node name="PlantaSoja_250" parent="." unique_id=1616742852 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6, 0.38, 3.6)
+
+[node name="PlantaSoja_251" parent="." unique_id=467218083 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6, 0.38, 5.6)
+
+[node name="PlantaSoja_252" parent="." unique_id=1551819290 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6, 0.38, 7.6)
+
+[node name="PlantaSoja_253" parent="." unique_id=1966219678 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6, 0.38, 1.6)
+
+[node name="PlantaSoja_254" parent="." unique_id=1698856872 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6, 0.38, 3.6)
+
+[node name="PlantaSoja_255" parent="." unique_id=618505256 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6, 0.38, 5.6)
+
+[node name="PlantaSoja_256" parent="." unique_id=181359702 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6, 0.38, 7.6)
+
+[node name="PlantaSoja_257" parent="." unique_id=65380299 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.38, -23.6)
+
+[node name="PlantaSoja_258" parent="." unique_id=264619843 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.38, -21.6)
+
+[node name="PlantaSoja_259" parent="." unique_id=256191277 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.38, -19.6)
+
+[node name="PlantaSoja_260" parent="." unique_id=820659980 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.38, -17.6)
+
+[node name="PlantaSoja_261" parent="." unique_id=1239581076 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.38, -23.6)
+
+[node name="PlantaSoja_262" parent="." unique_id=360765244 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.38, -21.6)
+
+[node name="PlantaSoja_263" parent="." unique_id=2097485695 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.38, -19.6)
+
+[node name="PlantaSoja_264" parent="." unique_id=1404034525 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.38, -17.6)
+
+[node name="PlantaSoja_265" parent="." unique_id=52277825 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0.38, -23.6)
+
+[node name="PlantaSoja_266" parent="." unique_id=1923478342 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0.38, -21.6)
+
+[node name="PlantaSoja_267" parent="." unique_id=1902655682 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0.38, -19.6)
+
+[node name="PlantaSoja_268" parent="." unique_id=1186204442 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0.38, -17.6)
+
+[node name="PlantaSoja_269" parent="." unique_id=1904317615 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.38, -23.6)
+
+[node name="PlantaSoja_270" parent="." unique_id=736493201 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.38, -21.6)
+
+[node name="PlantaSoja_271" parent="." unique_id=427965127 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.38, -19.6)
+
+[node name="PlantaSoja_272" parent="." unique_id=423490534 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.38, -17.6)
+
+[node name="PlantaSoja_273" parent="." unique_id=1252766741 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.38, -15.2)
+
+[node name="PlantaSoja_274" parent="." unique_id=1288670946 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.38, -13.2)
+
+[node name="PlantaSoja_275" parent="." unique_id=236437916 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.38, -11.2)
+
+[node name="PlantaSoja_276" parent="." unique_id=1992711057 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.38, -9.2)
+
+[node name="PlantaSoja_277" parent="." unique_id=1773089503 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.38, -15.2)
+
+[node name="PlantaSoja_278" parent="." unique_id=294144656 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.38, -13.2)
+
+[node name="PlantaSoja_279" parent="." unique_id=1835754404 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.38, -11.2)
+
+[node name="PlantaSoja_280" parent="." unique_id=1895238322 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.38, -9.2)
+
+[node name="PlantaSoja_281" parent="." unique_id=1381709749 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0.38, -15.2)
+
+[node name="PlantaSoja_282" parent="." unique_id=1790866289 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0.38, -13.2)
+
+[node name="PlantaSoja_283" parent="." unique_id=1832147346 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0.38, -11.2)
+
+[node name="PlantaSoja_284" parent="." unique_id=788871984 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0.38, -9.2)
+
+[node name="PlantaSoja_285" parent="." unique_id=169517138 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.38, -15.2)
+
+[node name="PlantaSoja_286" parent="." unique_id=1949404426 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.38, -13.2)
+
+[node name="PlantaSoja_287" parent="." unique_id=1080993059 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.38, -11.2)
+
+[node name="PlantaSoja_288" parent="." unique_id=741285070 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.38, -9.2)
+
+[node name="PlantaSoja_289" parent="." unique_id=896901703 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.38, -6.8)
+
+[node name="PlantaSoja_290" parent="." unique_id=386476878 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.38, -4.8)
+
+[node name="PlantaSoja_291" parent="." unique_id=126179461 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.38, -2.8)
+
+[node name="PlantaSoja_292" parent="." unique_id=1104283367 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.38, -0.8)
+
+[node name="PlantaSoja_293" parent="." unique_id=271963492 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.38, -6.8)
+
+[node name="PlantaSoja_294" parent="." unique_id=2115729381 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.38, -4.8)
+
+[node name="PlantaSoja_295" parent="." unique_id=1946388925 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.38, -2.8)
+
+[node name="PlantaSoja_296" parent="." unique_id=1558684292 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.38, -0.8)
+
+[node name="PlantaSoja_297" parent="." unique_id=1250604534 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0.38, -6.8)
+
+[node name="PlantaSoja_298" parent="." unique_id=2066987577 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0.38, -4.8)
+
+[node name="PlantaSoja_299" parent="." unique_id=1948995173 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0.38, -2.8)
+
+[node name="PlantaSoja_300" parent="." unique_id=2022328469 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0.38, -0.8)
+
+[node name="PlantaSoja_301" parent="." unique_id=1019053139 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.38, -6.8)
+
+[node name="PlantaSoja_302" parent="." unique_id=1153418540 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.38, -4.8)
+
+[node name="PlantaSoja_303" parent="." unique_id=402505734 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.38, -2.8)
+
+[node name="PlantaSoja_304" parent="." unique_id=1558091839 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.38, -0.8)
+
+[node name="PlantaSoja_305" parent="." unique_id=1148468585 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.38, 1.6)
+
+[node name="PlantaSoja_306" parent="." unique_id=1557284480 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.38, 3.6)
+
+[node name="PlantaSoja_307" parent="." unique_id=1180515077 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.38, 5.6)
+
+[node name="PlantaSoja_308" parent="." unique_id=2129455454 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.38, 7.6)
+
+[node name="PlantaSoja_309" parent="." unique_id=1382310918 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.38, 1.6)
+
+[node name="PlantaSoja_310" parent="." unique_id=1134259583 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.38, 3.6)
+
+[node name="PlantaSoja_311" parent="." unique_id=1230146598 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.38, 5.6)
+
+[node name="PlantaSoja_312" parent="." unique_id=1871805765 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.38, 7.6)
+
+[node name="PlantaSoja_313" parent="." unique_id=907984277 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0.38, 1.6)
+
+[node name="PlantaSoja_314" parent="." unique_id=1400720293 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0.38, 3.6)
+
+[node name="PlantaSoja_315" parent="." unique_id=1551931952 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0.38, 5.6)
+
+[node name="PlantaSoja_316" parent="." unique_id=576321383 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0.38, 7.6)
+
+[node name="PlantaSoja_317" parent="." unique_id=1274891121 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.38, 1.6)
+
+[node name="PlantaSoja_318" parent="." unique_id=257122907 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.38, 3.6)
+
+[node name="PlantaSoja_319" parent="." unique_id=2050440732 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.38, 5.6)
+
+[node name="PlantaSoja_320" parent="." unique_id=1817891831 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.38, 7.6)
+
+[node name="PlantaSoja_321" parent="." unique_id=103481283 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.4, 0.38, -23.6)
+
+[node name="PlantaSoja_322" parent="." unique_id=583232479 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.4, 0.38, -21.6)
+
+[node name="PlantaSoja_323" parent="." unique_id=1766952168 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.4, 0.38, -19.6)
+
+[node name="PlantaSoja_324" parent="." unique_id=465316636 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.4, 0.38, -17.6)
+
+[node name="PlantaSoja_325" parent="." unique_id=99289305 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.4, 0.38, -23.6)
+
+[node name="PlantaSoja_326" parent="." unique_id=1089917197 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.4, 0.38, -21.6)
+
+[node name="PlantaSoja_327" parent="." unique_id=162475228 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.4, 0.38, -19.6)
+
+[node name="PlantaSoja_328" parent="." unique_id=1085277272 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.4, 0.38, -17.6)
+
+[node name="PlantaSoja_329" parent="." unique_id=1982428361 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.4, 0.38, -23.6)
+
+[node name="PlantaSoja_330" parent="." unique_id=494762713 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.4, 0.38, -21.6)
+
+[node name="PlantaSoja_331" parent="." unique_id=1829482762 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.4, 0.38, -19.6)
+
+[node name="PlantaSoja_332" parent="." unique_id=1781825674 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.4, 0.38, -17.6)
+
+[node name="PlantaSoja_333" parent="." unique_id=1620737537 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.4, 0.38, -23.6)
+
+[node name="PlantaSoja_334" parent="." unique_id=700529852 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.4, 0.38, -21.6)
+
+[node name="PlantaSoja_335" parent="." unique_id=882491919 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.4, 0.38, -19.6)
+
+[node name="PlantaSoja_336" parent="." unique_id=1587485157 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.4, 0.38, -17.6)
+
+[node name="PlantaSoja_337" parent="." unique_id=35206595 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.4, 0.38, -15.2)
+
+[node name="PlantaSoja_338" parent="." unique_id=4626110 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.4, 0.38, -13.2)
+
+[node name="PlantaSoja_339" parent="." unique_id=339967339 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.4, 0.38, -11.2)
+
+[node name="PlantaSoja_340" parent="." unique_id=616147870 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.4, 0.38, -9.2)
+
+[node name="PlantaSoja_341" parent="." unique_id=658886508 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.4, 0.38, -15.2)
+
+[node name="PlantaSoja_342" parent="." unique_id=2051965448 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.4, 0.38, -13.2)
+
+[node name="PlantaSoja_343" parent="." unique_id=233806371 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.4, 0.38, -11.2)
+
+[node name="PlantaSoja_344" parent="." unique_id=941447134 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.4, 0.38, -9.2)
+
+[node name="PlantaSoja_345" parent="." unique_id=93208946 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.4, 0.38, -15.2)
+
+[node name="PlantaSoja_346" parent="." unique_id=1259567169 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.4, 0.38, -13.2)
+
+[node name="PlantaSoja_347" parent="." unique_id=14929236 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.4, 0.38, -11.2)
+
+[node name="PlantaSoja_348" parent="." unique_id=1411487078 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.4, 0.38, -9.2)
+
+[node name="PlantaSoja_349" parent="." unique_id=1625852771 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.4, 0.38, -15.2)
+
+[node name="PlantaSoja_350" parent="." unique_id=1541808131 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.4, 0.38, -13.2)
+
+[node name="PlantaSoja_351" parent="." unique_id=1851240922 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.4, 0.38, -11.2)
+
+[node name="PlantaSoja_352" parent="." unique_id=1813931580 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.4, 0.38, -9.2)
+
+[node name="PlantaSoja_353" parent="." unique_id=712437997 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.4, 0.38, -6.8)
+
+[node name="PlantaSoja_354" parent="." unique_id=829517089 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.4, 0.38, -4.8)
+
+[node name="PlantaSoja_355" parent="." unique_id=128400483 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.4, 0.38, -2.8)
+
+[node name="PlantaSoja_356" parent="." unique_id=222908384 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.4, 0.38, -0.8)
+
+[node name="PlantaSoja_357" parent="." unique_id=1660697718 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.4, 0.38, -6.8)
+
+[node name="PlantaSoja_358" parent="." unique_id=86850009 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.4, 0.38, -4.8)
+
+[node name="PlantaSoja_359" parent="." unique_id=752002473 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.4, 0.38, -2.8)
+
+[node name="PlantaSoja_360" parent="." unique_id=29071375 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.4, 0.38, -0.8)
+
+[node name="PlantaSoja_361" parent="." unique_id=1715989618 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.4, 0.38, -6.8)
+
+[node name="PlantaSoja_362" parent="." unique_id=1921105202 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.4, 0.38, -4.8)
+
+[node name="PlantaSoja_363" parent="." unique_id=937271764 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.4, 0.38, -2.8)
+
+[node name="PlantaSoja_364" parent="." unique_id=198153853 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.4, 0.38, -0.8)
+
+[node name="PlantaSoja_365" parent="." unique_id=1884863390 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.4, 0.38, -6.8)
+
+[node name="PlantaSoja_366" parent="." unique_id=650135295 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.4, 0.38, -4.8)
+
+[node name="PlantaSoja_367" parent="." unique_id=2023764752 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.4, 0.38, -2.8)
+
+[node name="PlantaSoja_368" parent="." unique_id=568896112 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.4, 0.38, -0.8)
+
+[node name="PlantaSoja_369" parent="." unique_id=1986664581 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.4, 0.38, 1.6)
+
+[node name="PlantaSoja_370" parent="." unique_id=255148361 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.4, 0.38, 3.6)
+
+[node name="PlantaSoja_371" parent="." unique_id=73052048 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.4, 0.38, 5.6)
+
+[node name="PlantaSoja_372" parent="." unique_id=1248965112 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.4, 0.38, 7.6)
+
+[node name="PlantaSoja_373" parent="." unique_id=1119509709 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.4, 0.38, 1.6)
+
+[node name="PlantaSoja_374" parent="." unique_id=1343691692 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.4, 0.38, 3.6)
+
+[node name="PlantaSoja_375" parent="." unique_id=1637951023 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.4, 0.38, 5.6)
+
+[node name="PlantaSoja_376" parent="." unique_id=1992848987 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.4, 0.38, 7.6)
+
+[node name="PlantaSoja_377" parent="." unique_id=451178272 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.4, 0.38, 1.6)
+
+[node name="PlantaSoja_378" parent="." unique_id=491873837 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.4, 0.38, 3.6)
+
+[node name="PlantaSoja_379" parent="." unique_id=786468426 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.4, 0.38, 5.6)
+
+[node name="PlantaSoja_380" parent="." unique_id=1464293019 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.4, 0.38, 7.6)
+
+[node name="PlantaSoja_381" parent="." unique_id=1224352936 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.4, 0.38, 1.6)
+
+[node name="PlantaSoja_382" parent="." unique_id=537754946 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.4, 0.38, 3.6)
+
+[node name="PlantaSoja_383" parent="." unique_id=761777271 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.4, 0.38, 5.6)
+
+[node name="PlantaSoja_384" parent="." unique_id=1792566825 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.4, 0.38, 7.6)
+
+[node name="PlantaSoja_385" parent="." unique_id=152652395 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.8, 0.38, -23.6)
+
+[node name="PlantaSoja_386" parent="." unique_id=1564267906 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.8, 0.38, -21.6)
+
+[node name="PlantaSoja_387" parent="." unique_id=1574702029 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.8, 0.38, -19.6)
+
+[node name="PlantaSoja_388" parent="." unique_id=1606412081 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.8, 0.38, -17.6)
+
+[node name="PlantaSoja_389" parent="." unique_id=2017600779 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.8, 0.38, -23.6)
+
+[node name="PlantaSoja_390" parent="." unique_id=1392014894 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.8, 0.38, -21.6)
+
+[node name="PlantaSoja_391" parent="." unique_id=70555033 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.8, 0.38, -19.6)
+
+[node name="PlantaSoja_392" parent="." unique_id=1874830295 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.8, 0.38, -17.6)
+
+[node name="PlantaSoja_393" parent="." unique_id=768968246 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.8, 0.38, -23.6)
+
+[node name="PlantaSoja_394" parent="." unique_id=798706066 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.8, 0.38, -21.6)
+
+[node name="PlantaSoja_395" parent="." unique_id=616901662 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.8, 0.38, -19.6)
+
+[node name="PlantaSoja_396" parent="." unique_id=252345015 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.8, 0.38, -17.6)
+
+[node name="PlantaSoja_397" parent="." unique_id=2040380720 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.8, 0.38, -23.6)
+
+[node name="PlantaSoja_398" parent="." unique_id=1799249508 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.8, 0.38, -21.6)
+
+[node name="PlantaSoja_399" parent="." unique_id=2004720338 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.8, 0.38, -19.6)
+
+[node name="PlantaSoja_400" parent="." unique_id=89930809 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.8, 0.38, -17.6)
+
+[node name="PlantaSoja_401" parent="." unique_id=859910161 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.8, 0.38, -15.2)
+
+[node name="PlantaSoja_402" parent="." unique_id=1143646104 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.8, 0.38, -13.2)
+
+[node name="PlantaSoja_403" parent="." unique_id=989219442 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.8, 0.38, -11.2)
+
+[node name="PlantaSoja_404" parent="." unique_id=524461850 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.8, 0.38, -9.2)
+
+[node name="PlantaSoja_405" parent="." unique_id=844574238 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.8, 0.38, -15.2)
+
+[node name="PlantaSoja_406" parent="." unique_id=2120499921 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.8, 0.38, -13.2)
+
+[node name="PlantaSoja_407" parent="." unique_id=2017757209 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.8, 0.38, -11.2)
+
+[node name="PlantaSoja_408" parent="." unique_id=1137638775 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.8, 0.38, -9.2)
+
+[node name="PlantaSoja_409" parent="." unique_id=1108707904 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.8, 0.38, -15.2)
+
+[node name="PlantaSoja_410" parent="." unique_id=1111465596 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.8, 0.38, -13.2)
+
+[node name="PlantaSoja_411" parent="." unique_id=2128924971 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.8, 0.38, -11.2)
+
+[node name="PlantaSoja_412" parent="." unique_id=1189682825 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.8, 0.38, -9.2)
+
+[node name="PlantaSoja_413" parent="." unique_id=952653298 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.8, 0.38, -15.2)
+
+[node name="PlantaSoja_414" parent="." unique_id=1583452603 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.8, 0.38, -13.2)
+
+[node name="PlantaSoja_415" parent="." unique_id=1428585370 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.8, 0.38, -11.2)
+
+[node name="PlantaSoja_416" parent="." unique_id=520561987 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.8, 0.38, -9.2)
+
+[node name="PlantaSoja_417" parent="." unique_id=904806094 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.8, 0.38, -6.8)
+
+[node name="PlantaSoja_418" parent="." unique_id=1026028375 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.8, 0.38, -4.8)
+
+[node name="PlantaSoja_419" parent="." unique_id=1296435656 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.8, 0.38, -2.8)
+
+[node name="PlantaSoja_420" parent="." unique_id=462865192 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.8, 0.38, -0.8)
+
+[node name="PlantaSoja_421" parent="." unique_id=930860959 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.8, 0.38, -6.8)
+
+[node name="PlantaSoja_422" parent="." unique_id=1651138017 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.8, 0.38, -4.8)
+
+[node name="PlantaSoja_423" parent="." unique_id=1881242842 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.8, 0.38, -2.8)
+
+[node name="PlantaSoja_424" parent="." unique_id=1405789293 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.8, 0.38, -0.8)
+
+[node name="PlantaSoja_425" parent="." unique_id=1137969834 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.8, 0.38, -6.8)
+
+[node name="PlantaSoja_426" parent="." unique_id=1845781631 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.8, 0.38, -4.8)
+
+[node name="PlantaSoja_427" parent="." unique_id=1594727104 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.8, 0.38, -2.8)
+
+[node name="PlantaSoja_428" parent="." unique_id=914291372 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.8, 0.38, -0.8)
+
+[node name="PlantaSoja_429" parent="." unique_id=1581388949 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.8, 0.38, -6.8)
+
+[node name="PlantaSoja_430" parent="." unique_id=1545817734 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.8, 0.38, -4.8)
+
+[node name="PlantaSoja_431" parent="." unique_id=1289109423 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.8, 0.38, -2.8)
+
+[node name="PlantaSoja_432" parent="." unique_id=1693659265 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.8, 0.38, -0.8)
+
+[node name="PlantaSoja_433" parent="." unique_id=1967751108 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.8, 0.38, 1.6)
+
+[node name="PlantaSoja_434" parent="." unique_id=1358640585 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.8, 0.38, 3.6)
+
+[node name="PlantaSoja_435" parent="." unique_id=416964191 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.8, 0.38, 5.6)
+
+[node name="PlantaSoja_436" parent="." unique_id=246528187 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.8, 0.38, 7.6)
+
+[node name="PlantaSoja_437" parent="." unique_id=1008196766 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.8, 0.38, 1.6)
+
+[node name="PlantaSoja_438" parent="." unique_id=1790099470 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.8, 0.38, 3.6)
+
+[node name="PlantaSoja_439" parent="." unique_id=2099748614 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.8, 0.38, 5.6)
+
+[node name="PlantaSoja_440" parent="." unique_id=1065732306 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.8, 0.38, 7.6)
+
+[node name="PlantaSoja_441" parent="." unique_id=2067473556 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.8, 0.38, 1.6)
+
+[node name="PlantaSoja_442" parent="." unique_id=1401693557 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.8, 0.38, 3.6)
+
+[node name="PlantaSoja_443" parent="." unique_id=1298888427 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.8, 0.38, 5.6)
+
+[node name="PlantaSoja_444" parent="." unique_id=808738516 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.8, 0.38, 7.6)
+
+[node name="PlantaSoja_445" parent="." unique_id=717336687 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.8, 0.38, 1.6)
+
+[node name="PlantaSoja_446" parent="." unique_id=56615031 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.8, 0.38, 3.6)
+
+[node name="PlantaSoja_447" parent="." unique_id=767411557 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.8, 0.38, 5.6)
+
+[node name="PlantaSoja_448" parent="." unique_id=2079219465 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.8, 0.38, 7.6)
+
+[node name="PlantaSoja_449" parent="." unique_id=143905705 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.2, 0.38, -23.6)
+
+[node name="PlantaSoja_450" parent="." unique_id=1860345229 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.2, 0.38, -21.6)
+
+[node name="PlantaSoja_451" parent="." unique_id=680798014 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.2, 0.38, -19.6)
+
+[node name="PlantaSoja_452" parent="." unique_id=770166979 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.2, 0.38, -17.6)
+
+[node name="PlantaSoja_453" parent="." unique_id=1070756499 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.2, 0.38, -23.6)
+
+[node name="PlantaSoja_454" parent="." unique_id=1805403083 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.2, 0.38, -21.6)
+
+[node name="PlantaSoja_455" parent="." unique_id=949806425 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.2, 0.38, -19.6)
+
+[node name="PlantaSoja_456" parent="." unique_id=1230576342 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.2, 0.38, -17.6)
+
+[node name="PlantaSoja_457" parent="." unique_id=1975388449 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.2, 0.38, -23.6)
+
+[node name="PlantaSoja_458" parent="." unique_id=1750979787 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.2, 0.38, -21.6)
+
+[node name="PlantaSoja_459" parent="." unique_id=81292069 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.2, 0.38, -19.6)
+
+[node name="PlantaSoja_460" parent="." unique_id=744538794 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.2, 0.38, -17.6)
+
+[node name="PlantaSoja_461" parent="." unique_id=977476896 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2, 0.38, -23.6)
+
+[node name="PlantaSoja_462" parent="." unique_id=873238011 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2, 0.38, -21.6)
+
+[node name="PlantaSoja_463" parent="." unique_id=732221231 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2, 0.38, -19.6)
+
+[node name="PlantaSoja_464" parent="." unique_id=1087670066 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2, 0.38, -17.6)
+
+[node name="PlantaSoja_465" parent="." unique_id=1758293556 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.2, 0.38, -15.2)
+
+[node name="PlantaSoja_466" parent="." unique_id=686414283 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.2, 0.38, -13.2)
+
+[node name="PlantaSoja_467" parent="." unique_id=1970883544 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.2, 0.38, -11.2)
+
+[node name="PlantaSoja_468" parent="." unique_id=1853047453 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.2, 0.38, -9.2)
+
+[node name="PlantaSoja_469" parent="." unique_id=2082644953 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.2, 0.38, -15.2)
+
+[node name="PlantaSoja_470" parent="." unique_id=1887564013 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.2, 0.38, -13.2)
+
+[node name="PlantaSoja_471" parent="." unique_id=1719863685 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.2, 0.38, -11.2)
+
+[node name="PlantaSoja_472" parent="." unique_id=1064412736 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.2, 0.38, -9.2)
+
+[node name="PlantaSoja_473" parent="." unique_id=1488792471 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.2, 0.38, -15.2)
+
+[node name="PlantaSoja_474" parent="." unique_id=150094145 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.2, 0.38, -13.2)
+
+[node name="PlantaSoja_475" parent="." unique_id=2023384341 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.2, 0.38, -11.2)
+
+[node name="PlantaSoja_476" parent="." unique_id=1951195510 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.2, 0.38, -9.2)
+
+[node name="PlantaSoja_477" parent="." unique_id=1932628730 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2, 0.38, -15.2)
+
+[node name="PlantaSoja_478" parent="." unique_id=1116179699 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2, 0.38, -13.2)
+
+[node name="PlantaSoja_479" parent="." unique_id=1958685641 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2, 0.38, -11.2)
+
+[node name="PlantaSoja_480" parent="." unique_id=122018703 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2, 0.38, -9.2)
+
+[node name="PlantaSoja_481" parent="." unique_id=580305570 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.2, 0.38, -6.8)
+
+[node name="PlantaSoja_482" parent="." unique_id=1950553833 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.2, 0.38, -4.8)
+
+[node name="PlantaSoja_483" parent="." unique_id=1903282574 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.2, 0.38, -2.8)
+
+[node name="PlantaSoja_484" parent="." unique_id=765819934 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.2, 0.38, -0.8)
+
+[node name="PlantaSoja_485" parent="." unique_id=470981815 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.2, 0.38, -6.8)
+
+[node name="PlantaSoja_486" parent="." unique_id=104243568 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.2, 0.38, -4.8)
+
+[node name="PlantaSoja_487" parent="." unique_id=686939832 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.2, 0.38, -2.8)
+
+[node name="PlantaSoja_488" parent="." unique_id=670929784 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.2, 0.38, -0.8)
+
+[node name="PlantaSoja_489" parent="." unique_id=1723917190 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.2, 0.38, -6.8)
+
+[node name="PlantaSoja_490" parent="." unique_id=1654761176 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.2, 0.38, -4.8)
+
+[node name="PlantaSoja_491" parent="." unique_id=1692749373 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.2, 0.38, -2.8)
+
+[node name="PlantaSoja_492" parent="." unique_id=1865081672 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.2, 0.38, -0.8)
+
+[node name="PlantaSoja_493" parent="." unique_id=1940242651 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2, 0.38, -6.8)
+
+[node name="PlantaSoja_494" parent="." unique_id=277523768 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2, 0.38, -4.8)
+
+[node name="PlantaSoja_495" parent="." unique_id=1046338541 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2, 0.38, -2.8)
+
+[node name="PlantaSoja_496" parent="." unique_id=1679028757 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2, 0.38, -0.8)
+
+[node name="PlantaSoja_497" parent="." unique_id=2147120809 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.2, 0.38, 1.6)
+
+[node name="PlantaSoja_498" parent="." unique_id=509442310 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.2, 0.38, 3.6)
+
+[node name="PlantaSoja_499" parent="." unique_id=211780928 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.2, 0.38, 5.6)
+
+[node name="PlantaSoja_500" parent="." unique_id=2000368338 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.2, 0.38, 7.6)
+
+[node name="PlantaSoja_501" parent="." unique_id=946518427 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.2, 0.38, 1.6)
+
+[node name="PlantaSoja_502" parent="." unique_id=568934581 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.2, 0.38, 3.6)
+
+[node name="PlantaSoja_503" parent="." unique_id=2074737455 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.2, 0.38, 5.6)
+
+[node name="PlantaSoja_504" parent="." unique_id=1998150539 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.2, 0.38, 7.6)
+
+[node name="PlantaSoja_505" parent="." unique_id=2066656161 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.2, 0.38, 1.6)
+
+[node name="PlantaSoja_506" parent="." unique_id=1694619547 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.2, 0.38, 3.6)
+
+[node name="PlantaSoja_507" parent="." unique_id=107508714 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.2, 0.38, 5.6)
+
+[node name="PlantaSoja_508" parent="." unique_id=1375184895 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.2, 0.38, 7.6)
+
+[node name="PlantaSoja_509" parent="." unique_id=1970267794 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2, 0.38, 1.6)
+
+[node name="PlantaSoja_510" parent="." unique_id=701024792 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2, 0.38, 3.6)
+
+[node name="PlantaSoja_511" parent="." unique_id=1114791424 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2, 0.38, 5.6)
+
+[node name="PlantaSoja_512" parent="." unique_id=245876778 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2, 0.38, 7.6)
+
+[node name="PlantaSoja_513" parent="." unique_id=1721152683 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6, 0.38, -23.6)
+
+[node name="PlantaSoja_514" parent="." unique_id=1468563234 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6, 0.38, -21.6)
+
+[node name="PlantaSoja_515" parent="." unique_id=543915150 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6, 0.38, -19.6)
+
+[node name="PlantaSoja_516" parent="." unique_id=1936145560 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6, 0.38, -17.6)
+
+[node name="PlantaSoja_517" parent="." unique_id=1160841325 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.6, 0.38, -23.6)
+
+[node name="PlantaSoja_518" parent="." unique_id=1641505787 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.6, 0.38, -21.6)
+
+[node name="PlantaSoja_519" parent="." unique_id=2096351618 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.6, 0.38, -19.6)
+
+[node name="PlantaSoja_520" parent="." unique_id=289939244 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.6, 0.38, -17.6)
+
+[node name="PlantaSoja_521" parent="." unique_id=1227156686 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.6, 0.38, -23.6)
+
+[node name="PlantaSoja_522" parent="." unique_id=1212735048 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.6, 0.38, -21.6)
+
+[node name="PlantaSoja_523" parent="." unique_id=1182731241 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.6, 0.38, -19.6)
+
+[node name="PlantaSoja_524" parent="." unique_id=1683030621 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.6, 0.38, -17.6)
+
+[node name="PlantaSoja_525" parent="." unique_id=1981954619 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.6, 0.38, -23.6)
+
+[node name="PlantaSoja_526" parent="." unique_id=1460711498 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.6, 0.38, -21.6)
+
+[node name="PlantaSoja_527" parent="." unique_id=596995497 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.6, 0.38, -19.6)
+
+[node name="PlantaSoja_528" parent="." unique_id=2104479399 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.6, 0.38, -17.6)
+
+[node name="PlantaSoja_529" parent="." unique_id=688063268 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6, 0.38, -15.2)
+
+[node name="PlantaSoja_530" parent="." unique_id=1762168792 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6, 0.38, -13.2)
+
+[node name="PlantaSoja_531" parent="." unique_id=685687236 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6, 0.38, -11.2)
+
+[node name="PlantaSoja_532" parent="." unique_id=2062585628 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6, 0.38, -9.2)
+
+[node name="PlantaSoja_533" parent="." unique_id=11406767 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.6, 0.38, -15.2)
+
+[node name="PlantaSoja_534" parent="." unique_id=612629108 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.6, 0.38, -13.2)
+
+[node name="PlantaSoja_535" parent="." unique_id=1792022567 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.6, 0.38, -11.2)
+
+[node name="PlantaSoja_536" parent="." unique_id=1913990878 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.6, 0.38, -9.2)
+
+[node name="PlantaSoja_537" parent="." unique_id=369731202 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.6, 0.38, -15.2)
+
+[node name="PlantaSoja_538" parent="." unique_id=471785078 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.6, 0.38, -13.2)
+
+[node name="PlantaSoja_539" parent="." unique_id=1477275752 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.6, 0.38, -11.2)
+
+[node name="PlantaSoja_540" parent="." unique_id=1507772890 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.6, 0.38, -9.2)
+
+[node name="PlantaSoja_541" parent="." unique_id=489435021 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.6, 0.38, -15.2)
+
+[node name="PlantaSoja_542" parent="." unique_id=1536039951 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.6, 0.38, -13.2)
+
+[node name="PlantaSoja_543" parent="." unique_id=1607907608 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.6, 0.38, -11.2)
+
+[node name="PlantaSoja_544" parent="." unique_id=796017064 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.6, 0.38, -9.2)
+
+[node name="PlantaSoja_545" parent="." unique_id=246451876 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6, 0.38, -6.8)
+
+[node name="PlantaSoja_546" parent="." unique_id=341421888 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6, 0.38, -4.8)
+
+[node name="PlantaSoja_547" parent="." unique_id=956701835 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6, 0.38, -2.8)
+
+[node name="PlantaSoja_548" parent="." unique_id=1046781122 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6, 0.38, -0.8)
+
+[node name="PlantaSoja_549" parent="." unique_id=68210596 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.6, 0.38, -6.8)
+
+[node name="PlantaSoja_550" parent="." unique_id=1731286256 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.6, 0.38, -4.8)
+
+[node name="PlantaSoja_551" parent="." unique_id=2082622453 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.6, 0.38, -2.8)
+
+[node name="PlantaSoja_552" parent="." unique_id=897035685 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.6, 0.38, -0.8)
+
+[node name="PlantaSoja_553" parent="." unique_id=1474677138 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.6, 0.38, -6.8)
+
+[node name="PlantaSoja_554" parent="." unique_id=839514113 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.6, 0.38, -4.8)
+
+[node name="PlantaSoja_555" parent="." unique_id=946873445 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.6, 0.38, -2.8)
+
+[node name="PlantaSoja_556" parent="." unique_id=954639512 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.6, 0.38, -0.8)
+
+[node name="PlantaSoja_557" parent="." unique_id=1372549126 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.6, 0.38, -6.8)
+
+[node name="PlantaSoja_558" parent="." unique_id=1538202825 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.6, 0.38, -4.8)
+
+[node name="PlantaSoja_559" parent="." unique_id=1207015632 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.6, 0.38, -2.8)
+
+[node name="PlantaSoja_560" parent="." unique_id=1122479037 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.6, 0.38, -0.8)
+
+[node name="PlantaSoja_561" parent="." unique_id=162091344 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6, 0.38, 1.6)
+
+[node name="PlantaSoja_562" parent="." unique_id=53991683 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6, 0.38, 3.6)
+
+[node name="PlantaSoja_563" parent="." unique_id=2103463829 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6, 0.38, 5.6)
+
+[node name="PlantaSoja_564" parent="." unique_id=1234691216 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6, 0.38, 7.6)
+
+[node name="PlantaSoja_565" parent="." unique_id=356884420 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.6, 0.38, 1.6)
+
+[node name="PlantaSoja_566" parent="." unique_id=1888787894 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.6, 0.38, 3.6)
+
+[node name="PlantaSoja_567" parent="." unique_id=1854497070 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.6, 0.38, 5.6)
+
+[node name="PlantaSoja_568" parent="." unique_id=1695287696 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.6, 0.38, 7.6)
+
+[node name="PlantaSoja_569" parent="." unique_id=1271145569 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.6, 0.38, 1.6)
+
+[node name="PlantaSoja_570" parent="." unique_id=685188213 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.6, 0.38, 3.6)
+
+[node name="PlantaSoja_571" parent="." unique_id=244967170 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.6, 0.38, 5.6)
+
+[node name="PlantaSoja_572" parent="." unique_id=961695083 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.6, 0.38, 7.6)
+
+[node name="PlantaSoja_573" parent="." unique_id=909371972 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.6, 0.38, 1.6)
+
+[node name="PlantaSoja_574" parent="." unique_id=245367053 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.6, 0.38, 3.6)
+
+[node name="PlantaSoja_575" parent="." unique_id=277709814 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.6, 0.38, 5.6)
+
+[node name="PlantaSoja_576" parent="." unique_id=1772142989 instance=ExtResource("3_qbsri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.6, 0.38, 7.6)
+
+[node name="Cerca_N_1" parent="." unique_id=1523405362 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.9474, 0, -26)
+
+[node name="Cerca_S_1" parent="." unique_id=439817382 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.9474, 0, 10)
+
+[node name="Cerca_N_2" parent="." unique_id=1990551533 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.8421, 0, -26)
+
+[node name="Cerca_S_2" parent="." unique_id=730875288 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.8421, 0, 10)
+
+[node name="Cerca_N_3" parent="." unique_id=1277019768 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.7368, 0, -26)
+
+[node name="Cerca_S_4" parent="." unique_id=521913815 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6316, 0, 10)
+
+[node name="Cerca_N_5" parent="." unique_id=1785359931 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4737, 0, -26)
+
+[node name="Cerca_S_5" parent="." unique_id=639148610 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4737, 0, 10)
+
+[node name="Cerca_N_6" parent="." unique_id=320068347 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5789, 0, -26)
+
+[node name="Cerca_S_6" parent="." unique_id=1276959660 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5789, 0, 10)
+
+[node name="Cerca_N_7" parent="." unique_id=799334313 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.6842, 0, -26)
+
+[node name="Cerca_S_7" parent="." unique_id=233081590 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.6842, 0, 10)
+
+[node name="Cerca_N_8" parent="." unique_id=52031063 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.7895, 0, -26)
+
+[node name="Cerca_S_8" parent="." unique_id=102633517 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.7895, 0, 10)
+
+[node name="Cerca_N_9" parent="." unique_id=320821564 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.8947, 0, -26)
+
+[node name="Cerca_S_9" parent="." unique_id=1798176173 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.8947, 0, 10)
+
+[node name="Cerca_N_10" parent="." unique_id=1769506471 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 0, -26)
+
+[node name="Cerca_N_11" parent="." unique_id=1812714800 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.1053, 0, -26)
+
+[node name="Cerca_S_12" parent="." unique_id=1432637075 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.2105, 0, 10)
+
+[node name="Cerca_N_13" parent="." unique_id=1495769320 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.3158, 0, -26)
+
+[node name="Cerca_S_13" parent="." unique_id=1909598306 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.3158, 0, 10)
+
+[node name="Cerca_N_14" parent="." unique_id=1722618098 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.4211, 0, -26)
+
+[node name="Cerca_S_14" parent="." unique_id=1518126633 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.4211, 0, 10)
+
+[node name="Cerca_N_15" parent="." unique_id=709934413 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.5263, 0, -26)
+
+[node name="Cerca_S_15" parent="." unique_id=1081008330 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.5263, 0, 10)
+
+[node name="Cerca_N_16" parent="." unique_id=1311484303 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.6316, 0, -26)
+
+[node name="Cerca_S_16" parent="." unique_id=2048557959 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.6316, 0, 10)
+
+[node name="Cerca_N_17" parent="." unique_id=366222657 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.7368, 0, -26)
+
+[node name="Cerca_S_17" parent="." unique_id=854880957 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.7368, 0, 10)
+
+[node name="Cerca_N_18" parent="." unique_id=786030046 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.8421, 0, -26)
+
+[node name="Cerca_S_18" parent="." unique_id=662979813 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.8421, 0, 10)
+
+[node name="Cerca_N_19" parent="." unique_id=868794224 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.9474, 0, -26)
+
+[node name="Cerca_S_19" parent="." unique_id=1546397911 instance=ExtResource("4_cerca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.9474, 0, 10)
+
+[node name="Cerca_W_1" parent="." unique_id=129399949 instance=ExtResource("4_cerca")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -18, 0, -24)
+
+[node name="Cerca_E_1" parent="." unique_id=1121413000 instance=ExtResource("4_cerca")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 60, 0, -24)
+
+[node name="Cerca_W_2" parent="." unique_id=291532148 instance=ExtResource("4_cerca")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -18, 0, -20)
+
+[node name="Cerca_E_2" parent="." unique_id=116229207 instance=ExtResource("4_cerca")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 60, 0, -20)
+
+[node name="Cerca_W_3" parent="." unique_id=128709711 instance=ExtResource("4_cerca")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -18, 0, -16)
+
+[node name="Cerca_E_3" parent="." unique_id=1831304404 instance=ExtResource("4_cerca")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 60, 0, -16)
+
+[node name="Cerca_E_4" parent="." unique_id=394850082 instance=ExtResource("4_cerca")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 60, 0, -12)
+
+[node name="Cerca_W_5" parent="." unique_id=688812589 instance=ExtResource("4_cerca")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -18, 0, -8)
+
+[node name="Cerca_E_5" parent="." unique_id=386189888 instance=ExtResource("4_cerca")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 60, 0, -8)
+
+[node name="Cerca_W_6" parent="." unique_id=1054228260 instance=ExtResource("4_cerca")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -18, 0, -4)
+
+[node name="Cerca_W_7" parent="." unique_id=1105668560 instance=ExtResource("4_cerca")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -18, 0, 0)
+
+[node name="Cerca_E_7" parent="." unique_id=1542138037 instance=ExtResource("4_cerca")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 60, 0, 0)
+
+[node name="Cerca_W_8" parent="." unique_id=741024402 instance=ExtResource("4_cerca")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -18, 0, 4)
+
+[node name="Cerca_E_8" parent="." unique_id=952772081 instance=ExtResource("4_cerca")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 60, 0, 4)
+
+[node name="Cerca_W_9" parent="." unique_id=1066058341 instance=ExtResource("4_cerca")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -18, 0, 8)
+
+[node name="Cerca_E_9" parent="." unique_id=624092199 instance=ExtResource("4_cerca")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 60, 0, 8)
