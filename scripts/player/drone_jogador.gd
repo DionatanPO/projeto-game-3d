@@ -10,7 +10,13 @@ extends CharacterBody3D
 @export var velocidade_vertical := 6.0
 @export var aceleracao := 6.0
 @export var altura_min := 0.0
-@export var altura_max := 45.0
+@export var altura_max := 12.0
+const FOG_ALTURA_INICIO := 6.0
+const FOG_INICIO_MIN := 8.0
+const FOG_FIM_MIN := 70.0
+var _env: Environment
+var _fog_ini_base := 20.0
+var _fog_fim_base := 150.0
 @export var helice_base := 20.0
 @export var helice_cheia := 55.0
 @export var sensibilidade_mouse := 0.003
@@ -60,7 +66,7 @@ func _ready() -> void:
 	cam.rotation = Vector3(_angulo_vertical, 0.0, 0.0)
 	var pos: Variant = SaveSystem.dados.get("posicao_drone", [SPAWN_GALPAO.x, SPAWN_GALPAO.y, SPAWN_GALPAO.z])
 	if pos is Array and (pos as Array).size() == 3:
-		position = Vector3(float(pos[0]), clampf(float(pos[1]), 1.0, 15.0), float(pos[2]))
+		position = Vector3(float(pos[0]), clampf(float(pos[1]), 1.0, 12.0), float(pos[2]))
 		# Migra o antigo ponto padrão do drone para a frente do galpão.
 		if position.distance_to(HOME_DRONE_ANTIGO) < 0.5:
 			position = SPAWN_GALPAO
@@ -153,6 +159,7 @@ func _process(delta: float) -> void:
 	_olhar_stick(delta)
 	spray.emitting = ligado and Input.is_action_pressed("pulverizar")
 	_efeitos_velocidade(delta)
+	_neblina_altura()
 	var acelerador := clampf(0.35 + 0.65 * clampf(Vector2(velocity.x, velocity.z).length() / velocidade_turbo + velocity.y / velocidade_vertical, -1.0, 1.0), 0.0, 1.0)
 	_acelerador = acelerador
 	# Spool do motor: sobe/desce suave ao ligar/desligar.
@@ -315,3 +322,37 @@ func _gerar_vento() -> AudioStreamWAV:
 	wav.loop_begin = 0
 	wav.loop_end = n
 	return wav
+
+
+## Neblina de altitude: so com a camera do drone ativa, o solo esmaece
+## perto da altura maxima (rampa suave a partir de FOG_ALTURA_INICIO).
+## Ao sair do drone, restaura a base. Custo: 2 uniforms por frame.
+func _neblina_altura() -> void:
+	if cam == null or not cam.current:
+		_restaurar_neblina()
+		return
+	if not _neblina_ref():
+		return
+	var f := clampf((position.y - FOG_ALTURA_INICIO) / maxf(altura_max - FOG_ALTURA_INICIO, 0.01), 0.0, 1.0)
+	f = f * f
+	_env.fog_depth_begin = lerpf(_fog_ini_base, FOG_INICIO_MIN, f)
+	_env.fog_depth_end = lerpf(_fog_fim_base, FOG_FIM_MIN, f)
+
+
+func _neblina_ref() -> bool:
+	if _env != null and is_instance_valid(_env):
+		return true
+	var ceu := get_tree().current_scene.get_node_or_null("MundoCeu") as WorldEnvironment
+	if ceu == null or ceu.environment == null:
+		return false
+	_env = ceu.environment
+	_fog_ini_base = _env.fog_depth_begin
+	_fog_fim_base = _env.fog_depth_end
+	return true
+
+
+func _restaurar_neblina() -> void:
+	if _env == null or not is_instance_valid(_env):
+		return
+	_env.fog_depth_begin = _fog_ini_base
+	_env.fog_depth_end = _fog_fim_base

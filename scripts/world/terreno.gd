@@ -328,7 +328,7 @@ func _espalhar_pack(rng: RandomNumberGenerator, nome: String, partes: Array, qtd
 			mmi.multimesh = mm
 			mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			mmi.visibility_range_end = alcance
-			mmi.visibility_range_end_margin = 10.0
+			mmi.visibility_range_end_margin = 30.0
 			mmi.visibility_range_fade_mode = GeometryInstance3D.VISIBILITY_RANGE_FADE_SELF
 			var metade := tam_lote * 0.5
 			var ccx := -200.0 + (float((cel as Vector2i).x) + 0.5) * tam_lote

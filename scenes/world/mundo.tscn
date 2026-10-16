@@ -19,10 +19,8 @@ fog_enabled = true
 fog_mode = 1
 fog_light_color = Color(0.75, 0.86, 0.94, 1)
 fog_density = 1.0
-fog_depth_begin = 80.0
-fog_depth_end = 230.0
-adjustment_enabled = true
-adjustment_saturation = 0.85
+fog_depth_begin = 20.0
+fog_depth_end = 150.0
 
 [node name="Mundo" type="Node3D" unique_id=883100101]
 script = ExtResource("1_m")
