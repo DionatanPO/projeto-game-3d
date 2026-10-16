@@ -8,7 +8,7 @@ extends CharacterBody3D
 ## traseiras maiores, todas giram conforme a velocidade).
 ## Sons sintetizados em codigo como o drone (motor diesel + buzina + re).
 
-const HOME_TRATOR := Vector3(-108.0, 0.5, 0.73)
+const HOME_TRATOR := Vector3(13.0, 0.7, -7.0)
 const RAIO_ESTACAO := 4.5
 
 @export var velocidade_max := 9.0
@@ -150,7 +150,7 @@ func _unhandled_input(evento: InputEvent) -> void:
 		if ativo:
 			_sair()
 			get_viewport().set_input_as_handled()
-		elif _jogador_perto:
+		elif _jogador != null and _jogador.visible and global_position.distance_to(_jogador.global_position) < RAIO_ESTACAO + 2.0:
 			_entrar(false)
 			get_viewport().set_input_as_handled()
 	if ativo and evento.is_action_pressed("buzinar"):
@@ -187,12 +187,37 @@ func _physics_process(delta: float) -> void:
 		_esterco = lerpf(_esterco, 0.0, 1.0 - exp(-6.0 * delta))
 		velocity.x = move_toward(velocity.x, 0.0, freio * delta)
 		velocity.z = move_toward(velocity.z, 0.0, freio * delta)
+		_sincronizar_proximidade()
 	move_and_slide()
+
+
+## Redundancia por distancia: mostra o prompt mesmo se o sinal da Area falhar.
+func _sincronizar_proximidade() -> void:
+	if ativo:
+		return
+	if _jogador == null or not is_instance_valid(_jogador):
+		_jogador = get_tree().get_first_node_in_group("jogador") as CharacterBody3D
+	if _jogador == null or not _jogador.visible:
+		_prompt.visible = false
+		return
+	if _jogador_perto:
+		return
+	if global_position.distance_to(_jogador.global_position) < RAIO_ESTACAO + 2.0:
+		_on_corpo_entrou(_jogador)
 
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_cancel") and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if not ativo and _jogador != null and is_instance_valid(_jogador):
+		_prompt.text = "Pressione E para usar o trator (%.1f m)" % global_position.distance_to(_jogador.global_position)
+		if _jogador.visible:
+			var perto := global_position.distance_to(_jogador.global_position) < RAIO_ESTACAO + 2.0
+			if perto and not _jogador_perto:
+				_on_corpo_entrou(_jogador)
+			elif not perto and _jogador_perto and estacao.get_overlapping_bodies().is_empty():
+				_jogador_perto = false
+				_prompt.visible = false
 	if not ativo:
 		return
 	_olhar_stick(delta)

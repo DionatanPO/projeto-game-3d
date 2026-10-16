@@ -4,7 +4,8 @@ extends Area3D
 ## Drone fica com colisao e visual fundidos (prefab), some junto se excluir.
 
 const RAIO := 6.0
-const HOME_DRONE := Vector3(15.5, 1.0, 3.4)
+const RAIO_PERTO := 9.0
+const HOME_DRONE := Vector3(7.2, 1.0, 1.0)
 
 var _prompt: Label3D
 var _jogador: CharacterBody3D
@@ -79,25 +80,63 @@ func _on_saiu(corpo: Node3D) -> void:
   _perto = false
   _prompt.visible = false
 
+
+## Redundancia por distancia: garante o embarque mesmo se o sinal
+## da Area falhar (ex.: teleportes, mudanca de pai/rotacao da estacao).
+func _physics_process(_delta: float) -> void:
+  if _jogador == null or not is_instance_valid(_jogador):
+    _jogador = get_tree().get_first_node_in_group("jogador") as CharacterBody3D
+  if _drone == null or not is_instance_valid(_drone):
+    _drone = get_tree().get_first_node_in_group("drone_jogador") as CharacterBody3D
+  if _a_pe and is_instance_valid(_jogador) and is_instance_valid(_drone) and _jogador.visible:
+    var perto := (_drone as Node3D).global_position.distance_to(_jogador.global_position) < RAIO_PERTO
+    if perto and not _perto:
+      _on_entrou(_jogador)
+    elif not perto and _perto and get_overlapping_bodies().is_empty():
+      _on_saiu(_jogador)
+
+
+## O aviso fica grudado no drone (que se move); nao na estacao fixa.
+## Voando: E sempre desce; texto so aparece parado (sem texto em voo).
+func _process(_delta: float) -> void:
+  if _prompt == null or not is_instance_valid(_drone):
+    return
+  _prompt.global_position = _drone.global_position + Vector3(0, 3.2, 0)
+  if not _a_pe:
+    _perto = true
+    _prompt.visible = (_drone as CharacterBody3D).velocity.length() < 1.5
+
+
+func _trator_mais_perto() -> bool:
+  if _jogador == null or not is_instance_valid(_jogador) or _drone == null:
+    return false
+  var t := get_tree().get_first_node_in_group("trator_jogador") as Node3D
+  if t == null:
+    return false
+  var d_drone := (_drone as Node3D).global_position.distance_to(_jogador.global_position)
+  var d_trator := t.global_position.distance_to(_jogador.global_position)
+  return d_trator < 6.5 and d_trator < d_drone
+
+
 func _unhandled_input(evento: InputEvent) -> void:
   if not _perto:
     return
-
   var abrir_tutorial := _a_pe and evento.is_action_pressed("tutorial_drone")
   var interagir_drone := evento.is_action_pressed("interagir")
   if not abrir_tutorial and not interagir_drone:
     return
 
-  var viewport := get_viewport()
-  if viewport != null:
-    viewport.set_input_as_handled()
-
   if abrir_tutorial:
     _ir_tutorial()
   elif _a_pe:
+    if _jogador == null or not _jogador.visible:
+      return
+    if _trator_mais_perto():
+      return
     _ativar_drone(true)
   else:
     _ativar_jogador(true)
+  get_viewport().set_input_as_handled()
 
 ## Abre o treino. A conclusao e registrada somente ao vencer.
 func _ir_tutorial() -> void:
@@ -114,6 +153,8 @@ func _set_ativo(corpo: CharacterBody3D, ativo: bool) -> void:
     corpo.set_physics_process(true)
   else:
     corpo.set_physics_process(ativo)
+    if not corpo.is_in_group("drone_jogador"):
+      corpo.visible = ativo
   corpo.set_process_unhandled_input(ativo)
   var cam := corpo.get_node_or_null("CameraRig/BracosCamera/Camera3D") as Camera3D
   if cam == null:

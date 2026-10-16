@@ -41,7 +41,7 @@ var _vinheta: TextureRect
 var _vento: AudioStreamPlayer3D
 var _tremor_suave := 0.0
 
-const SPAWN_GALPAO := Vector3(15.5, 1.0, 3.4)
+const SPAWN_GALPAO := Vector3(7.2, 1.2, 1.0)
 const HOME_DRONE_ANTIGO := Vector3(-2.0, 1.0, -50.0)
 
 const POSICOES := [

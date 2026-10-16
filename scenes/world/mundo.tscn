@@ -4,6 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://dcucsh6m5gurg" path="res://scenes/world/jogador.tscn" id="2_m"]
 [ext_resource type="PackedScene" uid="uid://deh4olcgnovb1" path="res://scenes/world/cenarios/sede_fazenda.tscn" id="5_8cwwk"]
 [ext_resource type="Script" uid="uid://c0vgwqb2qdbtn" path="res://scripts/world/terreno.gd" id="11_m"]
+[ext_resource type="PackedScene" uid="uid://bpc1popflov1v" path="res://scenes/world/drone_jogador.tscn" id="15_52jc1"]
+[ext_resource type="Script" uid="uid://c5yp5xutt33sj" path="res://scripts/world/troca_drone.gd" id="16_k5g47"]
+[ext_resource type="PackedScene" uid="uid://br4ljesnrpw12" path="res://scenes/world/trator_jogador.tscn" id="19_uth38"]
 [ext_resource type="PackedScene" uid="uid://crbgbbqyqkl40" path="res://scenes/ui/hud.tscn" id="23_4xrqu"]
 
 [sub_resource type="Environment" id="Env_m1"]
@@ -38,9 +41,19 @@ directional_shadow_max_distance = 75.0
 script = ExtResource("11_m")
 
 [node name="Jogador" parent="." unique_id=1161009451 instance=ExtResource("2_m")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -11.913631)
 
 [node name="HUD" parent="." unique_id=657714139 instance=ExtResource("23_4xrqu")]
 
 [node name="SedeFazenda" parent="." unique_id=883101101 instance=ExtResource("5_8cwwk")]
 transform = Transform3D(-0.9998739, 0, -0.015880069, 0, 1, 0, 0.015880069, 0, -0.9998739, 1.1823407, 0.16898783, 3.1295366)
+
+[node name="DroneJogador" parent="." unique_id=881234501 instance=ExtResource("15_52jc1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 1.2, 1)
+
+[node name="TratorJogador" parent="." unique_id=287191294 instance=ExtResource("19_uth38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0.7, -7)
+
+[node name="TrocaDrone" type="Area3D" parent="." unique_id=1117733838]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 1, 1)
+script = ExtResource("16_k5g47")

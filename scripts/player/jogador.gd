@@ -61,7 +61,7 @@ const PASSO_REF_ANDAR := 4.5
 
 func _ready() -> void:
 	add_to_group("jogador")
-	var pos: Variant = SaveSystem.dados.get("posicao_jogador", [-96.79012, 1.5, 0.73486805])
+	var pos: Variant = SaveSystem.dados.get("posicao_jogador", [0.0, 1.5, -11.91])
 	if pos is Array and (pos as Array).size() == 3:
 		position = Vector3(float(pos[0]), float(pos[1]), float(pos[2]))
 	animador = modelo.find_child("AnimationPlayer", true, false) as AnimationPlayer
