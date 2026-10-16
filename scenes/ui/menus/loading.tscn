@@ -1,0 +1,52 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/loading.gd" id="1_l"]
+[ext_resource type="Script" path="res://scripts/ui/anel_loading.gd" id="2_a"]
+
+[node name="Loading" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_l")
+
+[node name="Fundo" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1, 0.19, 0.14, 1)
+
+[node name="Centro" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Coluna" type="VBoxContainer" parent="Centro"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Anel" type="Control" parent="Centro/Coluna"]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_horizontal = 4
+script = ExtResource("2_a")
+
+[node name="Rotulo" type="Label" parent="Centro/Coluna"]
+layout_mode = 2
+text = "Carregando..."
+horizontal_alignment = 1
+
+[node name="Porcentagem" type="Label" parent="Centro/Coluna"]
+layout_mode = 2
+text = "0%"
+horizontal_alignment = 1

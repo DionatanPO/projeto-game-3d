@@ -22,9 +22,9 @@ func _ready() -> void:
 
 func _on_novo_jogo() -> void:
 	SaveSystem.apagar()
-	var erro := get_tree().change_scene_to_file(CENA_MUNDO)
-	if erro != OK:
-		push_error("MenuPrincipal: falha ao abrir a cena do mundo (%s)." % error_string(erro))
+	Loading.proxima_cena = CENA_MUNDO
+	Loading.titulo_carga = "Carregando a fazenda..."
+	get_tree().change_scene_to_file("res://scenes/ui/menus/loading.tscn")
 
 
 func _on_sair() -> void:

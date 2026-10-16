@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://b8ij0ywklk5jl"
+path="res://.godot/imported/Orange_1.obj-c85cc3e69afe9b88acc6ae21087f151a.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Orange_1.obj-c85cc3e69afe9b88acc6ae21087f151a.mesh"]
+
+source_file="res://assets/Nature Crops Pack - Jan 2020/OBJ/Orange_1.obj"
+dest_files=["res://.godot/imported/Orange_1.obj-c85cc3e69afe9b88acc6ae21087f151a.mesh", "res://.godot/imported/Orange_1.obj-c85cc3e69afe9b88acc6ae21087f151a.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

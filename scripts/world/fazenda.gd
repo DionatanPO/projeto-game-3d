@@ -152,7 +152,7 @@ func _vestir_arvores_especiais() -> void:
 	mat_folhagem.albedo_color = Color(0.24, 0.38, 0.20)
 	mat_folhagem.roughness = 0.95
 	var mat_casca := StandardMaterial3D.new()
-	mat_casca.albedo_texture = load("res://assets/models/textured/Tree_Bark.jpg") as Texture2D
+	mat_casca.albedo_texture = load("res://assets/Textured Stylized Trees - May 2020/Textures/Tree_Bark.jpg") as Texture2D
 	mat_casca.roughness = 0.9
 	for filho in get_children():
 		if not (filho is Node3D and ("Pine" in str(filho.name) or "Tree1" in str(filho.name))):

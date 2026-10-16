@@ -21,8 +21,8 @@ transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, -0.02, 0)
 [node name="CameraRig" type="Node3D" parent="." unique_id=192820235]
 
 [node name="BracosCamera" type="SpringArm3D" parent="CameraRig" unique_id=318744246]
-transform = Transform3D(1, 0, 0, 0, 0.9393727, 0.3428978, 0, -0.3428978, 0.9393727, 0, 1.6, 0)
-spring_length = 4.5
+transform = Transform3D(1, 0, 0, 0, 0.9848077, 0.1736482, 0, -0.1736482, 0.9848077, 0, 1.35, 0)
+spring_length = 3.0
 
 [node name="Camera3D" type="Camera3D" parent="CameraRig/BracosCamera" unique_id=41529196]
 current = true

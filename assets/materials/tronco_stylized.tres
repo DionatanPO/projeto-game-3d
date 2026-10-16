@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/Textured Stylized Trees - May 2020/Textures/Tree_Bark.jpg" id="1_bark"]
+
+[resource]
+albedo_texture = ExtResource("1_bark")
+roughness = 0.9
+texture_filter = 5

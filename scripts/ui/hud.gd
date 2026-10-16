@@ -234,9 +234,14 @@ func _aplicar_grafico(nivel: String) -> void:
 			env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 			env.ambient_light_color = Color(0.7, 0.75, 0.8)
 			env.ambient_light_energy = 0.6
-			env.fog_enabled = false
+			env.fog_enabled = true
+			env.fog_mode = Environment.FOG_MODE_DEPTH
+			env.fog_light_color = Color(0.75, 0.86, 0.94)
+			env.fog_depth_begin = 80.0
+			env.fog_depth_end = 230.0
 			env.tonemap_mode = Environment.TONE_MAPPER_LINEAR
-			env.adjustment_enabled = false
+			env.adjustment_enabled = true
+			env.adjustment_saturation = 0.85
 		"medio":
 			sol.shadow_enabled = true
 			sol.light_energy = 0.6
@@ -246,9 +251,14 @@ func _aplicar_grafico(nivel: String) -> void:
 			env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 			env.ambient_light_color = Color(0.75, 0.82, 0.9)
 			env.ambient_light_energy = 0.5
-			env.fog_enabled = false
+			env.fog_enabled = true
+			env.fog_mode = Environment.FOG_MODE_DEPTH
+			env.fog_light_color = Color(0.75, 0.86, 0.94)
+			env.fog_depth_begin = 80.0
+			env.fog_depth_end = 230.0
 			env.tonemap_mode = Environment.TONE_MAPPER_LINEAR
-			env.adjustment_enabled = false
+			env.adjustment_enabled = true
+			env.adjustment_saturation = 0.85
 		_:
 			sol.shadow_enabled = true
 			sol.light_energy = 0.72
@@ -265,9 +275,14 @@ func _aplicar_grafico(nivel: String) -> void:
 			env.background_mode = Environment.BG_SKY
 			env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
 			env.ambient_light_energy = 0.38
-			env.fog_enabled = false
+			env.fog_enabled = true
+			env.fog_mode = Environment.FOG_MODE_DEPTH
+			env.fog_light_color = Color(0.75, 0.86, 0.94)
+			env.fog_depth_begin = 80.0
+			env.fog_depth_end = 230.0
 			env.tonemap_mode = Environment.TONE_MAPPER_LINEAR
-			env.adjustment_enabled = false
+			env.adjustment_enabled = true
+			env.adjustment_saturation = 0.85
 
 
 func _on_upscaling(modo: String) -> void:
@@ -391,7 +406,9 @@ func _on_aba(indice: int) -> void:
 func _on_ir_nova_fase() -> void:
 	get_tree().paused = false
 	SaveSystem.salvar()
-	get_tree().change_scene_to_file(CENA_FASE_TESTE)
+	Loading.proxima_cena = CENA_FASE_TESTE
+	Loading.titulo_carga = "Carregando a próxima fase..."
+	get_tree().change_scene_to_file("res://scenes/ui/menus/loading.tscn")
 
 func _on_continuar_explorando() -> void:
 	popup_missao.hide()

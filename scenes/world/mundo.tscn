@@ -2,10 +2,24 @@
 
 [ext_resource type="Script" uid="uid://ds2ax8sge3r3l" path="res://scripts/world/mundo.gd" id="1_m"]
 [ext_resource type="PackedScene" uid="uid://dcucsh6m5gurg" path="res://scenes/world/jogador.tscn" id="2_m"]
+[ext_resource type="PackedScene" uid="uid://deh4olcgnovb1" path="res://scenes/world/cenarios/sede_fazenda.tscn" id="5_8cwwk"]
 [ext_resource type="Script" uid="uid://c0vgwqb2qdbtn" path="res://scripts/world/terreno.gd" id="11_m"]
 [ext_resource type="PackedScene" uid="uid://crbgbbqyqkl40" path="res://scenes/ui/hud.tscn" id="23_4xrqu"]
 
 [sub_resource type="Environment" id="Env_m1"]
+background_mode = 1
+background_color = Color(0.53, 0.75, 0.92, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.7, 0.75, 0.8, 1)
+ambient_light_energy = 0.6
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.75, 0.86, 0.94, 1)
+fog_density = 1.0
+fog_depth_begin = 80.0
+fog_depth_end = 230.0
+adjustment_enabled = true
+adjustment_saturation = 0.85
 
 [node name="Mundo" type="Node3D" unique_id=883100101]
 script = ExtResource("1_m")
@@ -24,6 +38,9 @@ directional_shadow_max_distance = 75.0
 script = ExtResource("11_m")
 
 [node name="Jogador" parent="." unique_id=1161009451 instance=ExtResource("2_m")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -87.1111, 1.5, 0.661381)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 10)
 
 [node name="HUD" parent="." unique_id=657714139 instance=ExtResource("23_4xrqu")]
+
+[node name="SedeFazenda" parent="." unique_id=883101101 instance=ExtResource("5_8cwwk")]
+transform = Transform3D(-0.9998739, 0, -0.015880069, 0, 1, 0, 0.015880069, 0, -0.9998739, 1.1823407, 0.16898783, 3.1295366)

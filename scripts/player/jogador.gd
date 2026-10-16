@@ -23,7 +23,7 @@ extends CharacterBody3D
 @onready var modelo: Node3D = $Modelo
 
 var gravidade: float = ProjectSettings.get_setting("physics/3d/default_gravity", 9.8)
-var _angulo_vertical := -0.35
+var _angulo_vertical := -0.18
 var animador: AnimationPlayer
 var _animacao_atual := ""
 var _tempo_parado := 0.0

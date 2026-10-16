@@ -57,7 +57,7 @@ func _dados_padrao() -> Dictionary:
 		"versao": 1,
 		"descobertas": [],
 		"missoes_concluidas": [],
-		"posicao_jogador": [-96.79012, 1.5, 0.73486805],
+		"posicao_jogador": [0.0, 1.5, 10.0],
 		"posicao_drone": [15.5, 1.0, 3.4],
 		"posicao_trator": [-108.0, 0.5, 0.73],
 		"veiculo": "jogador",

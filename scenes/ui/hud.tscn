@@ -119,7 +119,7 @@ size_flags_horizontal = 3
 toggle_mode = true
 text = "Tela"
 
-[node name="BtnGraficos" type="Button" parent="Diario/Inset/Conteudo/SeletorAbas"]
+[node name="BtnGraficos" type="Button" parent="Diario/Inset/Conteudo/SeletorAbas" unique_id=716086128]
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
@@ -133,7 +133,6 @@ current_tab = 0
 tabs_visible = false
 
 [node name="Missão" type="VBoxContainer" parent="Diario/Inset/Conteudo/Abas" unique_id=221399166]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -207,19 +206,19 @@ theme_override_constants/margin_bottom = 10
 [node name="Coluna" type="VBoxContainer" parent="Diario/Inset/Conteudo/Abas/Áudio/Margem" unique_id=1925506302]
 layout_mode = 2
 
-[node name="RotuloEfeitos" type="Label" parent="Diario/Inset/Conteudo/Abas/Áudio/Margem/Coluna"]
+[node name="RotuloEfeitos" type="Label" parent="Diario/Inset/Conteudo/Abas/Áudio/Margem/Coluna" unique_id=693714567]
 layout_mode = 2
 text = "Efeitos sonoros"
 
-[node name="VolumeEfeitos" type="HSlider" parent="Diario/Inset/Conteudo/Abas/Áudio/Margem/Coluna"]
+[node name="VolumeEfeitos" type="HSlider" parent="Diario/Inset/Conteudo/Abas/Áudio/Margem/Coluna" unique_id=1356067555]
 layout_mode = 2
 value = 80.0
 
-[node name="RotuloMusica" type="Label" parent="Diario/Inset/Conteudo/Abas/Áudio/Margem/Coluna"]
+[node name="RotuloMusica" type="Label" parent="Diario/Inset/Conteudo/Abas/Áudio/Margem/Coluna" unique_id=497726644]
 layout_mode = 2
 text = "Música"
 
-[node name="VolumeMusica" type="HSlider" parent="Diario/Inset/Conteudo/Abas/Áudio/Margem/Coluna"]
+[node name="VolumeMusica" type="HSlider" parent="Diario/Inset/Conteudo/Abas/Áudio/Margem/Coluna" unique_id=157276212]
 layout_mode = 2
 value = 80.0
 
@@ -251,117 +250,114 @@ layout_mode = 2
 text = "Alterna entre janela e tela cheia."
 autowrap_mode = 3
 
-[node name="SepTela" type="HSeparator" parent="Diario/Inset/Conteudo/Abas/Tela/Margem/Coluna"]
+[node name="SepTela" type="HSeparator" parent="Diario/Inset/Conteudo/Abas/Tela/Margem/Coluna" unique_id=989290785]
 layout_mode = 2
 
-[node name="RotuloVSync" type="Label" parent="Diario/Inset/Conteudo/Abas/Tela/Margem/Coluna"]
+[node name="RotuloVSync" type="Label" parent="Diario/Inset/Conteudo/Abas/Tela/Margem/Coluna" unique_id=1066427193]
 layout_mode = 2
 text = "SINCRONIA VERTICAL"
 autowrap_mode = 3
 
-[node name="BtnVSync" type="CheckButton" parent="Diario/Inset/Conteudo/Abas/Tela/Margem/Coluna"]
+[node name="BtnVSync" type="CheckButton" parent="Diario/Inset/Conteudo/Abas/Tela/Margem/Coluna" unique_id=638837003]
 layout_mode = 2
 text = "V-Sync ligado"
 
-[node name="DicaVSync" type="Label" parent="Diario/Inset/Conteudo/Abas/Tela/Margem/Coluna"]
+[node name="DicaVSync" type="Label" parent="Diario/Inset/Conteudo/Abas/Tela/Margem/Coluna" unique_id=351950276]
 layout_mode = 2
 text = "Ligado = sem rasgo, FPS travado no Hz do monitor. Desligado = FPS livre."
 autowrap_mode = 3
 
-[node name="Graficos" type="VBoxContainer" parent="Diario/Inset/Conteudo/Abas"]
+[node name="Graficos" type="VBoxContainer" parent="Diario/Inset/Conteudo/Abas" unique_id=1493511664]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 4
 
-[node name="Margem" type="MarginContainer" parent="Diario/Inset/Conteudo/Abas/Graficos"]
+[node name="Margem" type="MarginContainer" parent="Diario/Inset/Conteudo/Abas/Graficos" unique_id=945668176]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 10
 
-[node name="Coluna" type="VBoxContainer" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem"]
+[node name="Coluna" type="VBoxContainer" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem" unique_id=579214075]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="RotuloGrafico" type="Label" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna"]
+[node name="RotuloGrafico" type="Label" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna" unique_id=1932728136]
 layout_mode = 2
 text = "PREDEFINIÇÃO • SOMBRAS DO SOL"
 autowrap_mode = 3
 
-[node name="Botoes" type="HBoxContainer" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna"]
+[node name="Botoes" type="HBoxContainer" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna" unique_id=1368858956]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="BtnBaixo" type="Button" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/Botoes"]
+[node name="BtnBaixo" type="Button" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/Botoes" unique_id=1333866657]
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
 text = "Baixo"
 
-[node name="BtnMedio" type="Button" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/Botoes"]
+[node name="BtnMedio" type="Button" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/Botoes" unique_id=1890689524]
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
 text = "Médio"
 
-[node name="BtnAlto" type="Button" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/Botoes"]
+[node name="BtnAlto" type="Button" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/Botoes" unique_id=1153889403]
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
 text = "Alto"
 
-[node name="DicaGrafico" type="Label" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna"]
+[node name="DicaGrafico" type="Label" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna" unique_id=199009709]
 layout_mode = 2
 text = "Alto = sombras realistas (custa FPS). Médio = equilibrado. Baixo = sem sombras."
 autowrap_mode = 3
 
-[node name="SepGrafico1" type="HSeparator" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna"]
+[node name="SepGrafico1" type="HSeparator" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna" unique_id=575195042]
 layout_mode = 2
 
-[node name="RotuloUpscaling" type="Label" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna"]
+[node name="RotuloUpscaling" type="Label" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna" unique_id=1451434131]
 layout_mode = 2
 text = "UPSCALING • AMD FSR"
 autowrap_mode = 3
 
-[node name="BotoesUpscaling" type="HBoxContainer" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna"]
+[node name="BotoesUpscaling" type="HBoxContainer" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna" unique_id=1717543799]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="BtnFSR_Off" type="Button" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/BotoesUpscaling"]
+[node name="BtnFSR_Off" type="Button" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/BotoesUpscaling" unique_id=1654919362]
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
 text = "Off"
 
-[node name="BtnFSR1" type="Button" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/BotoesUpscaling"]
+[node name="BtnFSR1" type="Button" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/BotoesUpscaling" unique_id=867666005]
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
 text = "FSR 1.0"
 
-[node name="BtnFSR2" type="Button" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/BotoesUpscaling"]
+[node name="BtnFSR2" type="Button" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/BotoesUpscaling" unique_id=2139989594]
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
 text = "FSR 2.2"
 
-[node name="EscalaUpscaling" type="HSlider" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna"]
+[node name="EscalaUpscaling" type="HSlider" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna" unique_id=943561748]
 layout_mode = 2
-min_value = 0.0
 max_value = 2.0
-step = 1.0
 value = 1.0
-ticks_displayed = 3
 ticks_on_borders = true
 
-[node name="ValorEscala" type="Label" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna"]
+[node name="ValorEscala" type="Label" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna" unique_id=1838720167]
 layout_mode = 2
 text = "Equilibrado"
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="DicaUpscaling" type="Label" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna"]
+[node name="DicaUpscaling" type="Label" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna" unique_id=473479336]
 layout_mode = 2
 text = "Arraste para Performance (mais FPS) ou Qualidade (mais nítido). FSR 2.2 só no Forward+."
 autowrap_mode = 3
@@ -382,7 +378,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Menu principal"
 
-[node name="MissaoCompleta" type="PanelContainer" parent="." unique_id=1540448631]visible = false
+[node name="MissaoCompleta" type="PanelContainer" parent="." unique_id=1540448631]
+visible = false
 custom_minimum_size = Vector2(380, 220)
 anchors_preset = 8
 anchor_left = 0.5
@@ -423,14 +420,13 @@ text = "Continuar explorando"
 
 [node name="FPS" type="Label" parent="." unique_id=900100200]
 z_index = 5
-anchors_preset = 0
 offset_left = 12.0
 offset_top = 10.0
 offset_right = 212.0
 offset_bottom = 36.0
-text = "60 FPS"
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 18
+text = "60 FPS"

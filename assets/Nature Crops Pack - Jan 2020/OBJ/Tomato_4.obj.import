@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://br43msedg43fo"
+path="res://.godot/imported/Tomato_4.obj-e8132b5b21cd7465c5506e44df730de8.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Tomato_4.obj-e8132b5b21cd7465c5506e44df730de8.mesh"]
+
+source_file="res://assets/Nature Crops Pack - Jan 2020/OBJ/Tomato_4.obj"
+dest_files=["res://.godot/imported/Tomato_4.obj-e8132b5b21cd7465c5506e44df730de8.mesh", "res://.godot/imported/Tomato_4.obj-e8132b5b21cd7465c5506e44df730de8.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

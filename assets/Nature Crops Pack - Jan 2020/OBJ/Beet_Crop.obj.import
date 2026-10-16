@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://68dd3euttd4r"
+path="res://.godot/imported/Beet_Crop.obj-c51e3d7749d106e5313d92402b3e9257.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Beet_Crop.obj-c51e3d7749d106e5313d92402b3e9257.mesh"]
+
+source_file="res://assets/Nature Crops Pack - Jan 2020/OBJ/Beet_Crop.obj"
+dest_files=["res://.godot/imported/Beet_Crop.obj-c51e3d7749d106e5313d92402b3e9257.mesh", "res://.godot/imported/Beet_Crop.obj-c51e3d7749d106e5313d92402b3e9257.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false
