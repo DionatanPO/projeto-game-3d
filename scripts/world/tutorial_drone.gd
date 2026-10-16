@@ -11,6 +11,9 @@ const TEMPO_LIMITE := 90.0
 const QTD_ARGOLAS := 10
 const Z_ARGOLA_INI := -18.0
 const Z_ARGOLA_FIM := -170.0
+# Distancia extra entre o arco de chegada e a planta de pulverizacao,
+# para nao ficarem coladas no final do percurso.
+const DIST_PLANTA_APOS_CHEGADA := 45.0
 const ALTURAS := [5.0, 10.5, 5.5, 12.0, 4.5, 9.0, 6.0, 11.0, 5.0, 8.0]
 const POS_X := [0.0, -6.0, 6.0, -9.0, 9.0, -6.0, 6.0, -9.0, 9.0, 0.0]
 const SPAWN := Vector3(0.0, 1.0, 8.0)
@@ -40,6 +43,15 @@ var _jan_pausa: CenterContainer
 var _jan_fim: CenterContainer
 var _fim_titulo: Label
 var _fim_texto: Label
+
+var _planta: MeshInstance3D
+var _area_planta: Area3D
+var _planta_pulverizada := false
+var _progresso_pulverizacao := 0.0
+var _lbl_pulverizar: Label
+var _barra_pulverizar: ProgressBar
+var _chegada_area: Area3D
+var _chegada_liberada := false
 
 
 func _ready() -> void:
@@ -87,6 +99,81 @@ func _process(delta: float) -> void:
 		var centro: Vector3 = _aneis[_indice]["centro"]
 		_marcador.position = centro + Vector3(0.0, 5.6 + 0.4 * sin(t * 3.0), 0.0)
 
+	# Ultima etapa: aguarda pulverizacao da planta apos todas as argolas.
+	if _indice >= QTD_ARGOLAS and not _planta_pulverizada:
+		if _drone != null and _area_planta != null:
+			var distancia := _drone.position.distance_to(_area_planta.global_position)
+			if distancia < 8.0:
+				# Mostra instrucao de proximidade
+				if _lbl_pulverizar != null:
+					_lbl_pulverizar.visible = true
+					if Input.is_action_pressed("pulverizar"):
+						_lbl_pulverizar.text = "Pulverizando... %d%%" % int(_progresso_pulverizacao * 100)
+						_lbl_pulverizar.add_theme_color_override("font_color", Color(0, 1, 0))
+						# Efeito visual gradual: planta vai clareando enquanto e pulverizada
+						_progresso_pulverizacao = minf(_progresso_pulverizacao + delta * 0.5, 1.0)
+						if _planta != null:
+							var mat := _planta.material_override
+							if mat != null:
+								# Interpola cor do verde escuro para verde claro
+								var c := Color(0.2, 0.6, 0.2).lerp(Color(0.6, 1.0, 0.6), _progresso_pulverizacao)
+								mat.albedo_color = c
+								mat.emission = c
+								mat.emission_energy_multiplier = 0.6 + 0.9 * _progresso_pulverizacao
+						if _progresso_pulverizacao >= 1.0:
+							_planta_pulverizada = true
+							_chegada_liberada = true
+							if _lbl_pulverizar != null:
+								_lbl_pulverizar.text = "Planta pulverizada! Voe ate a linha de chegada."
+								_lbl_pulverizar.add_theme_color_override("font_color", Color(0, 1, 0))
+							if _barra_pulverizar != null:
+								_barra_pulverizar.visible = false
+							_som_vitoria.play()
+							# Nao finaliza ainda: so apos atravessar a linha de chegada.
+					else:
+						_lbl_pulverizar.text = "Aproxime e aperte E para pulverizar"
+						_lbl_pulverizar.add_theme_color_override("font_color", Color(1, 1, 0))
+				if _barra_pulverizar != null:
+					_barra_pulverizar.value = _progresso_pulverizacao
+			elif Input.is_action_pressed("pulverizar"):
+				# Sem label, ainda assim pulveriza
+				_progresso_pulverizacao = minf(_progresso_pulverizacao + delta * 0.5, 1.0)
+				if _planta != null:
+					var mat := _planta.material_override
+					if mat != null:
+						var c := Color(0.2, 0.6, 0.2).lerp(Color(0.6, 1.0, 0.6), _progresso_pulverizacao)
+						mat.albedo_color = c
+						mat.emission = c
+						mat.emission_energy_multiplier = 0.6 + 0.9 * _progresso_pulverizacao
+				if _progresso_pulverizacao >= 1.0:
+					_planta_pulverizada = true
+					_chegada_liberada = true
+					if _barra_pulverizar != null:
+						_barra_pulverizar.visible = false
+					_som_vitoria.play()
+					# Nao finaliza ainda: so apos atravessar a linha de chegada.
+				if _barra_pulverizar != null:
+					_barra_pulverizar.value = _progresso_pulverizacao
+			else:
+				# Longe da planta, esconde instrucao
+				if _lbl_pulverizar != null:
+					_lbl_pulverizar.visible = false
+
+	# apos pulverizar a planta, o drone deve voar ate a linha de chegada
+	elif _planta_pulverizada and _chegada_liberada:
+		if _drone != null and _chegada_area != null:
+			var distancia_chegada := _drone.position.distance_to(_chegada_area.global_position)
+			if distancia_chegada < 12.0:
+				if _lbl_pulverizar != null:
+					_lbl_pulverizar.visible = true
+					_lbl_pulverizar.text = "Atravesse a linha de chegada para finalizar!"
+					_lbl_pulverizar.add_theme_color_override("font_color", Color(0, 1, 0))
+			else:
+				if _lbl_pulverizar != null:
+					_lbl_pulverizar.visible = true
+					_lbl_pulverizar.text = "Voe ate a linha de chegada (CHEGADA)"
+					_lbl_pulverizar.add_theme_color_override("font_color", Color(1, 1, 0))
+
 
 # ------------------------------------------------------------------
 # Fluxo (metodos publicos para botoes e teste).
@@ -126,6 +213,21 @@ func tentar_de_novo() -> void:
 	_scrim.visible = false
 	_tempo = 0.0
 	_indice = 0
+	_planta_pulverizada = false
+	_chegada_liberada = false
+	_chegada_area = null
+	_progresso_pulverizacao = 0.0
+	if _planta != null:
+		var mat := _planta.material_override
+		if mat != null:
+			mat.albedo_color = Color(0.2, 0.6, 0.2)
+			mat.emission = Color(0.2, 0.6, 0.2)
+			mat.emission_energy_multiplier = 0.6
+	if _lbl_pulverizar != null:
+		_lbl_pulverizar.visible = false
+	if _barra_pulverizar != null:
+		_barra_pulverizar.visible = false
+		_barra_pulverizar.value = 0.0
 	for i in _aneis.size():
 		var malha: MeshInstance3D = _aneis[i]["no"]
 		malha.material_override = _mat_atual if i == 0 else _mat_futura
@@ -164,12 +266,23 @@ func _ao_atravessar(corpo: Node3D, i: int) -> void:
 	if _indice >= QTD_ARGOLAS:
 		if _som_vitoria != null:
 			_som_vitoria.play()
-		_vencer()
+		_exigir_pulverizacao()
 	else:
 		if _som_argola != null:
 			_som_argola.play()
 		var prox: MeshInstance3D = _aneis[_indice]["no"]
 		prox.material_override = _mat_atual
+
+
+func _ao_atravessar_chegada(corpo: Node3D) -> void:
+	if _estado != Estado.VOANDO:
+		return
+	if not _chegada_liberada:
+		return
+	if not corpo.is_in_group("drone_jogador"):
+		return
+	# So finaliza apos pulverizar a planta e atravessar a linha de chegada.
+	_vencer()
 
 
 func _vencer() -> void:
@@ -222,6 +335,7 @@ func _montar_mundo() -> void:
 		var z := lerpf(Z_ARGOLA_INI, Z_ARGOLA_FIM, float(i) / float(QTD_ARGOLAS - 1))
 		_argola(i, Vector3(POS_X[i % POS_X.size()], ALTURAS[i % ALTURAS.size()], z))
 	_arco_chegada()
+	_montar_planta()
 	_marcador = MeshInstance3D.new()
 	var es := SphereMesh.new()
 	es.radius = 0.5
@@ -378,9 +492,9 @@ func _pista() -> void:
 	var raiz := Node3D.new()
 	raiz.name = "Pista"
 	add_child(raiz)
-	# Pista acompanha o tamanho do percurso (argolas + espaco da chegada).
+	# Pista acompanha o tamanho do percurso (argolas + espaco da chegada + planta).
 	var z_ini := 12.0
-	var z_fim := Z_ARGOLA_FIM - 20.0
+	var z_fim := Z_ARGOLA_FIM - DIST_PLANTA_APOS_CHEGADA - 20.0
 	var comp := z_ini - z_fim
 	var z_centro := (z_ini + z_fim) * 0.5
 	var asfalto := StandardMaterial3D.new()
@@ -468,7 +582,9 @@ func _argola(i: int, centro: Vector3) -> void:
 func _arco_chegada() -> void:
 	var raiz := Node3D.new()
 	raiz.name = "Chegada"
-	raiz.position = Vector3(0, 0, Z_ARGOLA_FIM - 12.0)
+	# A linha de chegada fica APOS a planta de pulverizacao.
+	# O so pode finalizar apos pulverizar a planta e atravessar esse arco.
+	raiz.position = Vector3(0, 0, Z_ARGOLA_FIM - DIST_PLANTA_APOS_CHEGADA - 25.0)
 	add_child(raiz)
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = Color(0.92, 0.92, 0.92)
@@ -485,9 +601,107 @@ func _arco_chegada() -> void:
 	rotulo.position = Vector3(0, 11.0, 0)
 	raiz.add_child(rotulo)
 
+	# Pista xadrez estilo Mario Kart no chao da linha de chegada
+	var quad_sz := 1.2
+	var col_preto := StandardMaterial3D.new()
+	col_preto.albedo_color = Color(0.15, 0.15, 0.15)
+	var col_branco := StandardMaterial3D.new()
+	col_branco.albedo_color = Color(0.95, 0.95, 0.95)
+	var grid := 6  # quantidade de quadradinhos de cada lado
+	var inicio := -grid * quad_sz * 0.5
+	for x in range(grid):
+		for z in range(grid):
+			var eh_preto := (x + z) % 2 == 0
+			var quad_mat := col_preto if eh_preto else col_branco
+			var q := _caixa(raiz, "Quad%d_%d" % [x, z], Vector3(quad_sz, 0.1, quad_sz), Vector3(inicio + x * quad_sz + quad_sz * 0.5, 0.05, z * quad_sz + quad_sz * 0.5 - grid * quad_sz * 0.5 + quad_sz * 0.5), quad_mat)
 
-# ------------------------------------------------------------------
-# Interface.
+	# Area de deteccao da linha de chegada (so funciona apos pulverizar a planta)
+	var area := Area3D.new()
+	area.name = "AlvoChegada"
+	var col := CollisionShape3D.new()
+	var esf := SphereShape3D.new()
+	esf.radius = 12.0
+	col.shape = esf
+	area.add_child(col)
+	raiz.add_child(area)
+	area.body_entered.connect(_ao_atravessar_chegada)
+	_chegada_area = area
+
+
+func _montar_planta() -> void:
+	# Planta no ponto de chegada, apos a ultima argola. O drone deve
+	# pulverizar para concluir o tutorial.
+	var raiz := Node3D.new()
+	raiz.name = "Planta"
+	raiz.position = Vector3(0, 0, Z_ARGOLA_FIM - DIST_PLANTA_APOS_CHEGADA)
+	add_child(raiz)
+
+	# Tronco
+	var mat_tronco := StandardMaterial3D.new()
+	mat_tronco.albedo_color = Color(0.45, 0.3, 0.2)
+	_caixa(raiz, "Tronco", Vector3(0.6, 2.2, 0.6), Vector3(0, 1.1, 0), mat_tronco)
+
+	# Folhagem
+	var mat_folhas := StandardMaterial3D.new()
+	mat_folhas.albedo_color = Color(0.2, 0.6, 0.2)
+	mat_folhas.emission_enabled = true
+	mat_folhas.emission = Color(0.2, 0.6, 0.2)
+	mat_folhas.emission_energy_multiplier = 0.6
+	_planta = MeshInstance3D.new()
+	_planta.name = "Folhagem"
+	_planta.mesh = SphereMesh.new()
+	(_planta.mesh as SphereMesh).radius = 1.8
+	_planta.material_override = mat_folhas
+	_planta.position = Vector3(0, 3.2, 0)
+	raiz.add_child(_planta)
+
+	# Area de deteccao de pulverizacao
+	_area_planta = Area3D.new()
+	_area_planta.name = "AreaPulverizacao"
+	var col := CollisionShape3D.new()
+	var esf := SphereShape3D.new()
+	esf.radius = 6.0
+	col.shape = esf
+	_area_planta.add_child(col)
+	raiz.add_child(_area_planta)
+
+	# Milho decorativo em cima da area de pulverizacao (no chao)
+	var cena_milho := load("res://assets/models/Corn_2.fbx")
+	if cena_milho != null:
+		var milho: Node = cena_milho.instantiate()
+		milho.name = "Milho"
+		milho.position = Vector3(0, 0.0, 0)
+		raiz.add_child(milho)
+
+
+func _exigir_pulverizacao() -> void:
+	# Mostra instrucao na tela para pulverizar a planta.
+	if _lbl_pulverizar == null:
+		_lbl_pulverizar = Label.new()
+		_lbl_pulverizar.name = "InstrucaoPulverizar"
+		_lbl_pulverizar.text = "Pulverize a planta! (E)"
+		_lbl_pulverizar.add_theme_font_size_override("font_size", 18)
+		_lbl_pulverizar.add_theme_color_override("font_color", Color(1, 1, 0))
+		_lbl_pulverizar.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_lbl_pulverizar.vertical_alignment = VERTICAL_ALIGNMENT_TOP
+		_lbl_pulverizar.set_anchors_preset(Control.PRESET_CENTER_TOP)
+		_lbl_pulverizar.position = Vector2(0, 100)
+		_ui.add_child(_lbl_pulverizar)
+	_lbl_pulverizar.visible = true
+
+	# Barrinha de progresso da pulverizacao
+	if _barra_pulverizar == null:
+		_barra_pulverizar = ProgressBar.new()
+		_barra_pulverizar.name = "BarraPulverizacao"
+		_barra_pulverizar.min_value = 0.0
+		_barra_pulverizar.max_value = 1.0
+		_barra_pulverizar.value = 0.0
+		_barra_pulverizar.custom_minimum_size = Vector2(300, 24)
+		_barra_pulverizar.set_anchors_preset(Control.PRESET_CENTER_TOP)
+		_barra_pulverizar.position = Vector2(0, 140)
+		_ui.add_child(_barra_pulverizar)
+	_barra_pulverizar.visible = true
+	_barra_pulverizar.value = _progresso_pulverizacao
 
 func _montar_ui() -> void:
 	_ui = CanvasLayer.new()
