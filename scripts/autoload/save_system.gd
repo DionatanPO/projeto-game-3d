@@ -61,8 +61,8 @@ func _dados_padrao() -> Dictionary:
 		"posicao_drone": [15.5, 1.0, 3.4],
 		"posicao_trator": [-108.0, 0.5, 0.73],
 		"veiculo": "jogador",
-		"volume_efeitos": 80.0,
-		"volume_musica": 80.0,
+		"volume_efeitos": 30.0,
+		"volume_musica": 50.0,
 		"tutorial_drone_concluido": false,
 		"tempo_jogado_seg": 0.0,
 	}

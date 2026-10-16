@@ -4,14 +4,14 @@ extends Node3D
 ## Todas as copias compartilham a malha e textura da arvore do mapa via MultiMesh.
 
 const SEED := 42731
-const TREE_SCENE := "res://assets/models/arvore_tripo.glb"
+const TREE_SCENE := "res://assets/models/floresta.glb"
 
-@export_range(140.0, 240.0, 1.0) var limite_mapa := 150.0
-@export_range(3, 12, 1) var fileiras := 9
-@export_range(6.0, 18.0, 0.5) var espacamento_fileiras := 8.0
-@export_range(5.0, 20.0, 0.5) var espacamento_arvores := 7.5
-@export_range(2.0, 6.0, 0.1) var escala_minima := 3.7
-@export_range(2.0, 10.0, 0.1) var escala_maxima := 9.0
+@export_range(120.0, 220.0, 1.0) var limite_mapa := 132.0
+@export_range(2, 8, 1) var fileiras := 3
+@export_range(12.0, 40.0, 0.5) var espacamento_fileiras := 30.0
+@export_range(12.0, 40.0, 0.5) var espacamento_arvores := 30.0
+@export_range(0.6, 1.6, 0.05) var escala_minima := 0.7
+@export_range(0.8, 1.8, 0.05) var escala_maxima := 1.0
 
 
 func _ready() -> void:
@@ -53,7 +53,7 @@ func _construir_floresta() -> void:
 	var transforms_por_lado: Array = [[], [], [], []]
 	var gramas_por_lado: Array = [[], [], [], []]
 	var posicoes_usadas: Array[Vector3] = []
-	var raio_maximo_arvores := 258.0
+	var raio_maximo_arvores := 232.0
 
 	for fileira in range(fileiras):
 		var meio_lado := limite_mapa + float(fileira) * espacamento_fileiras
@@ -91,10 +91,10 @@ func _construir_floresta() -> void:
 				var escala := rng.randf_range(escala_minima, escala_maxima)
 				# Algumas arvores se destacam como exemplares bem maiores.
 				if rng.randf() < 0.09:
-					escala = rng.randf_range(7.0, escala_maxima)
+					escala = rng.randf_range(1.1, 1.3)
 				var rotacao := rng.randf_range(0.0, TAU)
 				var base := Basis(Vector3.UP, rotacao).scaled(Vector3.ONE * escala)
-				posicao.y = escala * 0.5006
+				posicao.y = 0.0
 				transforms_por_lado[lado].append({
 					"transform": Transform3D(base, posicao),
 					"cor": _cor_variacao_arvore(rng)
@@ -264,9 +264,9 @@ void fragment() {
 	instancia.material_overlay = sobreposicao_nevoa
 	var raio_interno := limite_mapa
 	var raio_externo := limite_mapa + float(fileiras - 1) * espacamento_fileiras
-	var margem := escala_maxima + 2.0
+	var margem := 15.0
 	var largura_lateral := raio_externo - raio_interno + margem * 2.0
-	var altura_limite := escala_maxima + 4.0
+	var altura_limite := 20.0
 	match indice:
 		0:
 			instancia.custom_aabb = AABB(Vector3(-raio_externo - margem, -2.0, -raio_externo - margem), Vector3((raio_externo + margem) * 2.0, altura_limite, largura_lateral))

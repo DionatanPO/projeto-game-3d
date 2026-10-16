@@ -4,187 +4,43 @@
 
 [node name="MenuInicial" type="Control" unique_id=155984901]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_rnqe2")
 
 [node name="Backdrop" type="ColorRect" parent="." unique_id=2036926878]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 color = Color(0.1, 0.19, 0.14, 1)
 
-[node name="SafeArea" type="MarginContainer" parent="." unique_id=1366462422]
-layout_mode = 0
+[node name="Centro" type="CenterContainer" parent="." unique_id=1366462422]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Columns" type="HBoxContainer" parent="SafeArea" unique_id=153200228]
+[node name="Botoes" type="VBoxContainer" parent="Centro" unique_id=15987491]
+custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+theme_override_constants/separation = 16
 
-[node name="IntroPanel" type="PanelContainer" parent="SafeArea/Columns" unique_id=1563156489]
-custom_minimum_size = Vector2(610, 560)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Inset" type="MarginContainer" parent="SafeArea/Columns/IntroPanel" unique_id=381197443]
-layout_mode = 2
-
-[node name="Content" type="VBoxContainer" parent="SafeArea/Columns/IntroPanel/Inset" unique_id=1227389167]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="BrandRow" type="HBoxContainer" parent="SafeArea/Columns/IntroPanel/Inset/Content" unique_id=168777454]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="BrandMark" type="TextureRect" parent="SafeArea/Columns/IntroPanel/Inset/Content/BrandRow" unique_id=407701123]
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 2
-mouse_filter = 2
-expand_mode = 1
-stretch_mode = 5
-
-[node name="BrandName" type="Label" parent="SafeArea/Columns/IntroPanel/Inset/Content/BrandRow" unique_id=2114929779]
-layout_mode = 2
-text = "AGROBRASIL 3D"
-
-[node name="Eyebrow" type="Label" parent="SafeArea/Columns/IntroPanel/Inset/Content" unique_id=228018983]
-layout_mode = 2
-text = "JOGO EDUCATIVO  •  EDIÇÃO DE CAMPO"
-
-[node name="Titulo" type="Label" parent="SafeArea/Columns/IntroPanel/Inset/Content" unique_id=756693054]
-layout_mode = 2
-text = "O campo está
-cheio de histórias."
-autowrap_mode = 3
-
-[node name="Descricao" type="Label" parent="SafeArea/Columns/IntroPanel/Inset/Content" unique_id=1432168140]
-layout_mode = 2
-text = "Explore uma fazenda brasileira, descubra como os alimentos são produzidos e veja a tecnologia transformar o dia a dia no campo."
-autowrap_mode = 3
-
-[node name="Spacer" type="Control" parent="SafeArea/Columns/IntroPanel/Inset/Content" unique_id=1056236270]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Linha" type="HSeparator" parent="SafeArea/Columns/IntroPanel/Inset/Content" unique_id=454492681]
-layout_mode = 2
-
-[node name="Destaques" type="HBoxContainer" parent="SafeArea/Columns/IntroPanel/Inset/Content" unique_id=2019545840]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Solo" type="VBoxContainer" parent="SafeArea/Columns/IntroPanel/Inset/Content/Destaques" unique_id=1089126011]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="SoloNumero" type="Label" parent="SafeArea/Columns/IntroPanel/Inset/Content/Destaques/Solo" unique_id=416080051]
-layout_mode = 2
-text = "01"
-
-[node name="SoloTexto" type="Label" parent="SafeArea/Columns/IntroPanel/Inset/Content/Destaques/Solo" unique_id=1920775959]
-layout_mode = 2
-text = "SOLO VIVO"
-
-[node name="Culturas" type="VBoxContainer" parent="SafeArea/Columns/IntroPanel/Inset/Content/Destaques" unique_id=1059195707]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="CulturasNumero" type="Label" parent="SafeArea/Columns/IntroPanel/Inset/Content/Destaques/Culturas" unique_id=1481077495]
-layout_mode = 2
-text = "02"
-
-[node name="CulturasTexto" type="Label" parent="SafeArea/Columns/IntroPanel/Inset/Content/Destaques/Culturas" unique_id=981678256]
-layout_mode = 2
-text = "CULTURAS"
-
-[node name="Tecnologia" type="VBoxContainer" parent="SafeArea/Columns/IntroPanel/Inset/Content/Destaques" unique_id=1639481381]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="TecnologiaNumero" type="Label" parent="SafeArea/Columns/IntroPanel/Inset/Content/Destaques/Tecnologia" unique_id=1925722924]
-layout_mode = 2
-text = "03"
-
-[node name="TecnologiaTexto" type="Label" parent="SafeArea/Columns/IntroPanel/Inset/Content/Destaques/Tecnologia" unique_id=330940462]
-layout_mode = 2
-text = "TECNOLOGIA"
-
-[node name="RodapeEditorial" type="Label" parent="SafeArea/Columns/IntroPanel/Inset/Content" unique_id=454636488]
-layout_mode = 2
-text = "CONHECIMENTO QUE CRESCE COM A TERRA"
-autowrap_mode = 3
-
-[node name="ActionPanel" type="PanelContainer" parent="SafeArea/Columns" unique_id=1481338382]
-custom_minimum_size = Vector2(430, 560)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Inset" type="MarginContainer" parent="SafeArea/Columns/ActionPanel" unique_id=1793230337]
-layout_mode = 2
-
-[node name="Content" type="VBoxContainer" parent="SafeArea/Columns/ActionPanel/Inset" unique_id=15987491]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Selo" type="Label" parent="SafeArea/Columns/ActionPanel/Inset/Content" unique_id=1394118459]
-layout_mode = 2
-text = "SUA JORNADA"
-
-[node name="TituloAcoes" type="Label" parent="SafeArea/Columns/ActionPanel/Inset/Content" unique_id=1897759126]
-layout_mode = 2
-text = "Por onde
-quer começar?"
-autowrap_mode = 3
-
-[node name="DescricaoAcoes" type="Label" parent="SafeArea/Columns/ActionPanel/Inset/Content" unique_id=2012056456]
-layout_mode = 2
-text = "Escolha uma opção para continuar explorando o universo AgroBrasil."
-autowrap_mode = 3
-
-[node name="Gap" type="Control" parent="SafeArea/Columns/ActionPanel/Inset/Content" unique_id=200185284]
-custom_minimum_size = Vector2(0, 10)
-layout_mode = 2
-
-[node name="BotaoNovo" type="Button" parent="SafeArea/Columns/ActionPanel/Inset/Content" unique_id=975530425]
-custom_minimum_size = Vector2(0, 58)
+[node name="BotaoNovo" type="Button" parent="Centro/Botoes" unique_id=975530425]
+custom_minimum_size = Vector2(320, 58)
 layout_mode = 2
 tooltip_text = "Iniciar uma nova jornada educativa."
 text = "Começar jornada"
 
-[node name="BotaoContinuar" type="Button" parent="SafeArea/Columns/ActionPanel/Inset/Content" unique_id=1110966547]
-custom_minimum_size = Vector2(0, 54)
-layout_mode = 2
-text = "Continuar jornada"
-
-[node name="Status" type="Label" parent="SafeArea/Columns/ActionPanel/Inset/Content" unique_id=857550749]
-layout_mode = 2
-text = "Escolha uma opção para começar."
-autowrap_mode = 3
-
-[node name="Spacer" type="Control" parent="SafeArea/Columns/ActionPanel/Inset/Content" unique_id=467576109]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Progresso" type="Label" parent="SafeArea/Columns/ActionPanel/Inset/Content" unique_id=2028824139]
-layout_mode = 2
-text = "PROGRESSO LOCAL
-0 descobertas  •  0/0 missões"
-autowrap_mode = 3
-
-[node name="BotaoSair" type="Button" parent="SafeArea/Columns/ActionPanel/Inset/Content" unique_id=1332270132]
-custom_minimum_size = Vector2(0, 48)
+[node name="BotaoSair" type="Button" parent="Centro/Botoes" unique_id=1332270132]
+custom_minimum_size = Vector2(320, 48)
 layout_mode = 2
 text = "Sair do jogo"
-
-[node name="Rodape" type="Label" parent="SafeArea/Columns/ActionPanel/Inset/Content" unique_id=284273008]
-layout_mode = 2
-text = "AGROBRASIL 3D  •  APRENDER EXPLORANDO"
-autowrap_mode = 3

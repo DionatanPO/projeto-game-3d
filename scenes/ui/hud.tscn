@@ -63,16 +63,16 @@ text = "Entendi, continuar"
 [node name="Diario" type="PanelContainer" parent="." unique_id=582061874]
 visible = false
 z_index = 4
-custom_minimum_size = Vector2(413, 301)
+custom_minimum_size = Vector2(520, 420)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -207.0
-offset_top = -151.0
-offset_right = 207.0
-offset_bottom = 151.0
+offset_left = -260.0
+offset_top = -210.0
+offset_right = 260.0
+offset_bottom = 210.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -119,8 +119,14 @@ size_flags_horizontal = 3
 toggle_mode = true
 text = "Tela"
 
+[node name="BtnGraficos" type="Button" parent="Diario/Inset/Conteudo/SeletorAbas"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "Gráficos"
+
 [node name="Abas" type="TabContainer" parent="Diario/Inset/Conteudo" unique_id=734239642]
-custom_minimum_size = Vector2(0, 215)
+custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
 tab_alignment = 1
 current_tab = 0
@@ -245,6 +251,121 @@ layout_mode = 2
 text = "Alterna entre janela e tela cheia."
 autowrap_mode = 3
 
+[node name="SepTela" type="HSeparator" parent="Diario/Inset/Conteudo/Abas/Tela/Margem/Coluna"]
+layout_mode = 2
+
+[node name="RotuloVSync" type="Label" parent="Diario/Inset/Conteudo/Abas/Tela/Margem/Coluna"]
+layout_mode = 2
+text = "SINCRONIA VERTICAL"
+autowrap_mode = 3
+
+[node name="BtnVSync" type="CheckButton" parent="Diario/Inset/Conteudo/Abas/Tela/Margem/Coluna"]
+layout_mode = 2
+text = "V-Sync ligado"
+
+[node name="DicaVSync" type="Label" parent="Diario/Inset/Conteudo/Abas/Tela/Margem/Coluna"]
+layout_mode = 2
+text = "Ligado = sem rasgo, FPS travado no Hz do monitor. Desligado = FPS livre."
+autowrap_mode = 3
+
+[node name="Graficos" type="VBoxContainer" parent="Diario/Inset/Conteudo/Abas"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 4
+
+[node name="Margem" type="MarginContainer" parent="Diario/Inset/Conteudo/Abas/Graficos"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="Coluna" type="VBoxContainer" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="RotuloGrafico" type="Label" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna"]
+layout_mode = 2
+text = "PREDEFINIÇÃO • SOMBRAS DO SOL"
+autowrap_mode = 3
+
+[node name="Botoes" type="HBoxContainer" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BtnBaixo" type="Button" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/Botoes"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "Baixo"
+
+[node name="BtnMedio" type="Button" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/Botoes"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "Médio"
+
+[node name="BtnAlto" type="Button" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/Botoes"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "Alto"
+
+[node name="DicaGrafico" type="Label" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna"]
+layout_mode = 2
+text = "Alto = sombras realistas (custa FPS). Médio = equilibrado. Baixo = sem sombras."
+autowrap_mode = 3
+
+[node name="SepGrafico1" type="HSeparator" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna"]
+layout_mode = 2
+
+[node name="RotuloUpscaling" type="Label" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna"]
+layout_mode = 2
+text = "UPSCALING • AMD FSR"
+autowrap_mode = 3
+
+[node name="BotoesUpscaling" type="HBoxContainer" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BtnFSR_Off" type="Button" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/BotoesUpscaling"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "Off"
+
+[node name="BtnFSR1" type="Button" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/BotoesUpscaling"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "FSR 1.0"
+
+[node name="BtnFSR2" type="Button" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/BotoesUpscaling"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "FSR 2.2"
+
+[node name="EscalaUpscaling" type="HSlider" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna"]
+layout_mode = 2
+min_value = 0.0
+max_value = 2.0
+step = 1.0
+value = 1.0
+ticks_displayed = 3
+ticks_on_borders = true
+
+[node name="ValorEscala" type="Label" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna"]
+layout_mode = 2
+text = "Equilibrado"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="DicaUpscaling" type="Label" parent="Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna"]
+layout_mode = 2
+text = "Arraste para Performance (mais FPS) ou Qualidade (mais nítido). FSR 2.2 só no Forward+."
+autowrap_mode = 3
+
 [node name="Acoes" type="HBoxContainer" parent="Diario/Inset/Conteudo" unique_id=1884515582]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -261,8 +382,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Menu principal"
 
-[node name="MissaoCompleta" type="PanelContainer" parent="." unique_id=1540448631]
-visible = false
+[node name="MissaoCompleta" type="PanelContainer" parent="." unique_id=1540448631]visible = false
 custom_minimum_size = Vector2(380, 220)
 anchors_preset = 8
 anchor_left = 0.5
@@ -300,3 +420,17 @@ text = "Ir para nova fase"
 [node name="BotaoContinuar" type="Button" parent="MissaoCompleta/Inset/Conteudo" unique_id=788560201]
 layout_mode = 2
 text = "Continuar explorando"
+
+[node name="FPS" type="Label" parent="." unique_id=900100200]
+z_index = 5
+anchors_preset = 0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = 212.0
+offset_bottom = 36.0
+text = "60 FPS"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 18

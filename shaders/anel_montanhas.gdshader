@@ -54,6 +54,11 @@ void fragment() {
 	// without changing when the camera or player approaches.
 	float base_haze = 1.0 - smoothstep(0.0, haze_base_height, max(world_position.y, 0.0));
 	float haze = mix(haze_strength, haze_base_strength, base_haze);
+	// Distancia da camera: perspectiva aerea falsa para as montanhas
+	// parecerem longe mesmo coladas no anel das arvores.
+	float dist_cam = length(world_position - CAMERA_POSITION_WORLD);
+	float haze_dist = smoothstep(180.0, 520.0, dist_cam) * 0.55;
+	haze = max(haze, haze_dist);
 	ALBEDO = mix(terrain_color, haze_color, haze);
 	float rough_grass = triplanar_roughness(grass_roughness, world_position, n);
 	float rough_soil = triplanar_roughness(soil_roughness, world_position, n);

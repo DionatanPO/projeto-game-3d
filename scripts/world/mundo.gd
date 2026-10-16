@@ -27,6 +27,11 @@ const NO_CENARIO := {
 
 
 func _ready() -> void:
+	if bool(SaveSystem.dados.get("vsync", false)):
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
+	else:
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+	Engine.max_fps = 0
 	_configurar_musica()
 
 
@@ -37,8 +42,8 @@ func _configurar_musica() -> void:
 	_som_musica.finished.connect(_reiniciar_musica)
 	if AudioServer.get_bus_index("Musica") >= 0:
 		_som_musica.bus = "Musica"
-	var vol := float(SaveSystem.dados.get("volume_musica", 80.0))
-	_som_musica.volume_db = linear_to_db(maxf(vol / 100.0, 0.0001))
+	# Volume control now handled by AudioConfig bus volume
+	_som_musica.volume_db = 0.0  # No additional attenuation from player
 	add_child(_som_musica)
 	_som_musica.play()
 

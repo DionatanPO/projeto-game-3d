@@ -6,16 +6,17 @@ extends Node3D
 ## 3) Anel de montanhas PBR ao horizonte + chao distante.
 ## Segue o relevo do Terreno via altura().
 
-const LIMITE := 142.0
+const LIMITE := 206.0
 const SEED := 9917
 const ANEL_MONTANHAS_SHADER := "res://shaders/anel_montanhas.gdshader"
+const ANEL_NOVO := "res://assets/models/anel_montanhas_novo.glb"
 
 
 func _ready() -> void:
 	_limpar()
 	_ajustar_nevoa()
 	_paredes()
-	_anel_montanhas()
+	_anel_novo()
 	_chao_distante()
 
 
@@ -31,9 +32,9 @@ func _ajustar_nevoa() -> void:
 		return
 	var env := ceu.environment
 	env.fog_enabled = true
-	env.fog_depth_begin = 240.0
-	env.fog_depth_end = 760.0
-	env.fog_density = 0.30
+	env.fog_depth_begin = 0.0
+	env.fog_depth_end = 400.0
+	env.fog_density = 0.5
 
 
 func _paredes() -> void:
@@ -41,10 +42,10 @@ func _paredes() -> void:
 	corpo.name = "ParedesMundo"
 	add_child(corpo)
 	var defs := [
-		[Vector3(0, 12, LIMITE), Vector3(340, 30, 4)],
-		[Vector3(0, 12, -LIMITE), Vector3(340, 30, 4)],
-		[Vector3(LIMITE, 12, 0), Vector3(4, 30, 340)],
-		[Vector3(-LIMITE, 12, 0), Vector3(4, 30, 340)],
+		[Vector3(0, 12, LIMITE), Vector3(480, 30, 4)],
+		[Vector3(0, 12, -LIMITE), Vector3(480, 30, 4)],
+		[Vector3(LIMITE, 12, 0), Vector3(4, 30, 480)],
+		[Vector3(-LIMITE, 12, 0), Vector3(4, 30, 480)],
 	]
 	for d in defs:
 		var col := CollisionShape3D.new()
@@ -53,6 +54,42 @@ func _paredes() -> void:
 		col.shape = caixa
 		col.position = d[0]
 		corpo.add_child(col)
+
+
+func _anel_novo() -> void:
+	## Anel modelado no Blender: fino (205-300m), ondulacao de montanha
+	## por dentro sob o anel das arvores e plano por fora. Mesma textura
+	## do chao do mapa + nevoa da cena (material padrao recebe fog).
+	var pacote := load(ANEL_NOVO) as PackedScene
+	if pacote == null:
+		push_error("BordasMundo: nao foi possivel carregar " + ANEL_NOVO)
+		return
+	var no := pacote.instantiate() as Node3D
+	no.name = "AnelMontanhasNovo"
+	var mat := ShaderMaterial.new()
+	var shader_nevoa := Shader.new()
+	shader_nevoa.code = """
+shader_type spatial;
+uniform sampler2D chao_albedo : source_color, repeat_enable, filter_linear_mipmap_anisotropic;
+uniform vec3 cor_nevoa : source_color = vec3(0.75, 0.86, 0.94);
+varying vec3 pos_mundo;
+void vertex() {
+	pos_mundo = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+}
+void fragment() {
+	vec3 base = texture(chao_albedo, UV * 40.0).rgb;
+	ROUGHNESS = 0.95;
+	float dist_cam = length(pos_mundo - CAMERA_POSITION_WORLD);
+	float nevoa = 0.30 + smoothstep(180.0, 520.0, dist_cam) * 0.55;
+	ALBEDO = mix(base, cor_nevoa, clamp(nevoa, 0.0, 0.9));
+}
+"""
+	mat.shader = shader_nevoa
+	mat.set_shader_parameter("chao_albedo", load("res://assets/textures/grass_ground_diff_1k.jpg"))
+	for mi in no.find_children("*", "MeshInstance3D", true, false):
+		(mi as MeshInstance3D).material_override = mat
+		(mi as MeshInstance3D).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(no)
 
 
 func _anel_montanhas() -> void:
@@ -89,12 +126,12 @@ func _anel_montanhas() -> void:
 			var influencia := exp(-0.5 * pow(diferenca / picos_larguras[p], 2.0))
 			volume_pico = maxf(volume_pico, picos_alturas[p] * influencia)
 
-		var altura_crista := clampf(105.0 + ruido_amplo * 32.0 + ruido_medio * 10.0 + ruido_fino * 2.5 + volume_pico, 65.0, 235.0)
-		var linha_raio := 590.0 + ruido_amplo * 28.0 + ruido_medio * 12.0
+		var altura_crista := clampf(85.0 + ruido_amplo * 26.0 + ruido_medio * 8.0 + ruido_fino * 2.0 + volume_pico, 50.0, 190.0)
+		var linha_raio := 260.0 + ruido_amplo * 12.0 + ruido_medio * 6.0
 		var anel: PackedVector3Array = []
 		for row in frac_raio.size():
 			var fracao: float = frac_raio[row]
-			var raio_base := lerpf(230.0, 1030.0, fracao)
+			var raio_base := lerpf(210.0, 600.0, fracao)
 			var variacao_raio := ruido_amplo * 19.0 + ruido_medio * 8.0
 			var raio := lerpf(raio_base, linha_raio, 0.20) + variacao_raio
 			# Os ombros abrem para fora da crista e descem gradualmente, sem formar uma muralha.
@@ -177,8 +214,8 @@ func _transicao_mapa_montanhas(borda_externa: PackedVector3Array) -> void:
 		var angulo_seguinte := TAU * float(seguinte) / float(total)
 		var direcao := Vector2(cos(angulo), sin(angulo))
 		var direcao_seguinte := Vector2(cos(angulo_seguinte), sin(angulo_seguinte))
-		var raio_quadrado := 150.0 / maxf(absf(direcao.x), absf(direcao.y))
-		var raio_quadrado_seguinte := 150.0 / maxf(absf(direcao_seguinte.x), absf(direcao_seguinte.y))
+		var raio_quadrado := 210.0 / maxf(absf(direcao.x), absf(direcao.y))
+		var raio_quadrado_seguinte := 210.0 / maxf(absf(direcao_seguinte.x), absf(direcao_seguinte.y))
 		var interior := Vector3(direcao.x * raio_quadrado, 0.0, direcao.y * raio_quadrado)
 		var interior_seguinte := Vector3(direcao_seguinte.x * raio_quadrado_seguinte, 0.0, direcao_seguinte.y * raio_quadrado_seguinte)
 		var exterior := borda_externa[i]
@@ -238,7 +275,7 @@ void fragment() {
 
 func _adicionar_vertice_transicao(st: SurfaceTool, ponto: Vector3, mistura: float) -> void:
 	st.set_normal(Vector3.UP)
-	st.set_uv(Vector2(ponto.x / 300.0 + 0.5, ponto.z / 300.0 + 0.5))
+	st.set_uv(Vector2(ponto.x / 420.0 + 0.5, ponto.z / 420.0 + 0.5))
 	st.set_color(Color(mistura, 0.0, 0.0, 1.0))
 	st.add_vertex(ponto)
 

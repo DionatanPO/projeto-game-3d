@@ -61,11 +61,26 @@ func _definir_volume(bus: String, valor_0_100: float) -> void:
 	var idx := AudioServer.get_bus_index(bus)
 	if idx < 0:
 		return
-	AudioServer.set_bus_volume_db(idx, linear_to_db(maxf(valor_0_100 / 100.0, 0.0001)))
+	
+	# Mapear slider linear (0-100) para faixa decibel mais natural (0dB a -60dB)
+	# Isso fornece controle mais preciso perceptualmente
+	var db_range_min := -60.0  # Volume mínimo em decibels
+	var db_range_max := 0.0    # Volume máximo em decibels
+	var db_value := db_range_min + (valor_0_100 / 100.0) * (db_range_max - db_range_min)
+	
+	AudioServer.set_bus_volume_db(idx, db_value)
 
 
 func _volume_de(bus: String) -> float:
 	var idx := AudioServer.get_bus_index(bus)
 	if idx < 0:
 		return 80.0
-	return db_to_linear(AudioServer.get_bus_volume_db(idx)) * 100.0
+	var db_value := AudioServer.get_bus_volume_db(idx)
+	
+	# Converter decibels de volta para valor do slider (0-100) usando a mesma faixa
+	var db_range_min := -60.0  # Volume mínimo em decibels
+	var db_range_max := 0.0    # Volume máximo em decibels
+	if db_range_max == db_range_min:
+		return 50.0  # Evitar divisão por zero
+	var slider_value := ((db_value - db_range_min) / (db_range_max - db_range_min)) * 100.0
+	return clampf(slider_value, 0.0, 100.0)

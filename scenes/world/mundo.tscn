@@ -2,57 +2,10 @@
 
 [ext_resource type="Script" uid="uid://ds2ax8sge3r3l" path="res://scripts/world/mundo.gd" id="1_m"]
 [ext_resource type="PackedScene" uid="uid://dcucsh6m5gurg" path="res://scenes/world/jogador.tscn" id="2_m"]
-[ext_resource type="PackedScene" uid="uid://deh4olcgnovb1" path="res://scenes/world/cenarios/sede_fazenda.tscn" id="3_m"]
-[ext_resource type="PackedScene" uid="uid://ph06s7wblro" path="res://scenes/world/cenarios/plantacao_milho.tscn" id="4_m"]
-[ext_resource type="PackedScene" uid="uid://c4f0hcxriit3c" path="res://scenes/world/cenarios/plantacao_soja.tscn" id="5_m"]
-[ext_resource type="PackedScene" uid="uid://cr2mafopgaxpj" path="res://scenes/world/cenarios/estrutura_silo.tscn" id="6_m"]
-[ext_resource type="PackedScene" uid="uid://cmmhmwkn27vlq" path="res://scenes/world/cenarios/parque_solar.tscn" id="7_m"]
-[ext_resource type="PackedScene" uid="uid://cvl0nqo1pugqd" path="res://scenes/world/cenarios/parque_eolico.tscn" id="9_m"]
-[ext_resource type="PackedScene" uid="uid://b44bjbgn45737" path="res://scenes/world/cenarios/galpao.tscn" id="10_m"]
 [ext_resource type="Script" uid="uid://c0vgwqb2qdbtn" path="res://scripts/world/terreno.gd" id="11_m"]
-[ext_resource type="PackedScene" path="res://scenes/world/interactables/cerca.tscn" id="12_y4gja"]
-[ext_resource type="PackedScene" uid="uid://dx6solqh36lk7" path="res://scenes/world/cenarios/estrada_sede.tscn" id="13_kegvl"]
-[ext_resource type="PackedScene" uid="uid://bpc1popflov1v" path="res://scenes/world/drone_jogador.tscn" id="15_52jc1"]
-[ext_resource type="Script" path="res://scripts/world/troca_drone_final.gd" id="16_k5g47"]
-[ext_resource type="Script" uid="uid://duut566e77qm2" path="res://scripts/world/vegetacao_mundo.gd" id="17_hgoho"]
-[ext_resource type="PackedScene" uid="uid://bar2gyfhscq54" path="res://assets/models/Plant_1.fbx" id="18_umup1"]
-[ext_resource type="PackedScene" uid="uid://br4ljesnrpw12" path="res://scenes/world/trator_jogador.tscn" id="19_uth38"]
-[ext_resource type="PackedScene" path="res://scenes/world/interactables/arvore.tscn" id="20_arvore"]
-[ext_resource type="Texture2D" uid="uid://b6xvcs4qfs0iw" path="res://assets/textures/skybox-day.png" id="20_sky"]
-[ext_resource type="Texture2D" uid="uid://l4dff7d53smv" path="res://assets/textures/grass_ground_diff_1k.jpg" id="21_ground"]
-[ext_resource type="Script" uid="uid://byoqfty627y5n" path="res://scripts/world/bordas_mundo.gd" id="22_qc64c"]
 [ext_resource type="PackedScene" uid="uid://crbgbbqyqkl40" path="res://scenes/ui/hud.tscn" id="23_4xrqu"]
-[ext_resource type="PackedScene" uid="uid://c8u77w02hdvec" path="res://scenes/world/cenarios/floresta_borda.tscn" id="23_floresta"]
-
-[sub_resource type="PanoramaSkyMaterial" id="SkyMat_m1"]
-panorama = ExtResource("20_sky")
-
-[sub_resource type="Sky" id="Sky_m1"]
-sky_material = SubResource("SkyMat_m1")
 
 [sub_resource type="Environment" id="Env_m1"]
-background_mode = 2
-sky = SubResource("Sky_m1")
-ambient_light_source = 3
-ambient_light_energy = 0.38
-tonemap_mode = 3
-tonemap_exposure = 0.9
-fog_enabled = true
-fog_mode = 1
-fog_light_color = Color(0.75, 0.86, 0.94, 1)
-fog_density = 0.3
-fog_sky_affect = 0.0
-fog_depth_begin = 240.0
-fog_depth_end = 760.0
-adjustment_enabled = true
-adjustment_contrast = 1.05
-adjustment_saturation = 0.85
-
-[sub_resource type="StandardMaterial3D" id="MatChao_m1"]
-albedo_texture = ExtResource("21_ground")
-roughness = 0.95
-uv1_scale = Vector3(40, 40, 40)
-texture_filter = 5
 
 [node name="Mundo" type="Node3D" unique_id=883100101]
 script = ExtResource("1_m")
@@ -61,159 +14,16 @@ script = ExtResource("1_m")
 environment = SubResource("Env_m1")
 
 [node name="Sol" type="DirectionalLight3D" parent="." unique_id=883100103]
-transform = Transform3D(0.87758255, -0.37554693, 0.2980157, 0, 0.62161, 0.7833269, -0.47942555, -0.687434, 0.54551405, 0, 0, 0)
+transform = Transform3D(0.877583, -0.375547, 0.298016, 0, 0.62161, 0.783327, -0.479426, -0.687434, 0.545514, 0, 0, 0)
 light_color = Color(1, 0.96, 0.88, 1)
 light_energy = 0.72
 shadow_enabled = true
 directional_shadow_max_distance = 75.0
 
-[node name="SedeFazenda" parent="." unique_id=883100104 instance=ExtResource("3_m")]
-transform = Transform3D(0.008798084, 0, 0.9999613, 0, 1, 0, -0.9999613, 0, 0.008798084, -0.07081019, 0, -2.039725)
-
-[node name="PlantacaoMilho" parent="." unique_id=883100105 instance=ExtResource("4_m")]
-transform = Transform3D(-0.9999942, 0, 0.0037364105, 0, 1, 0, -0.0034076227, 0, -1.0964797, -37.802937, 0.06411219, 17.19292)
-
-[node name="PlantacaoSoja" parent="." unique_id=883100106 instance=ExtResource("5_m")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -78.946434, -0.065308094, -14.755956)
-
-[node name="EstruturaSilo" parent="." unique_id=883100107 instance=ExtResource("6_m")]
-transform = Transform3D(0.99971306, 0, -0.023956992, 0, 1, 0, 0.023956992, 0, 0.99971306, 10.260166, -0.7363863, -35.773643)
-
-[node name="ParqueSolar" parent="." unique_id=883100112 instance=ExtResource("7_m")]
-transform = Transform3D(-0.99952, 0, 0.030979358, 0, 1, 0, -0.030979358, 0, -0.99952, 18.124538, 0.40798473, 54.078194)
-
-[node name="ParqueEolico" parent="." unique_id=883100113 instance=ExtResource("9_m")]
-transform = Transform3D(0.364399, 0, -0.93124294, 0, 1, 0, 0.93124294, 0, 0.364399, 69.530365, 0, 2.9274766)
-
-[node name="Galpao" parent="." unique_id=883100114 instance=ExtResource("10_m")]
-transform = Transform3D(-0.017517786, 0, -0.9998466, 0, 1, 0, 0.9998466, 0, -0.017517786, 25.298187, 0, 1.5983347)
-
 [node name="Terreno" type="StaticBody3D" parent="." unique_id=883100109]
 script = ExtResource("11_m")
-material = SubResource("MatChao_m1")
-
-[node name="CercadoEstrada" type="Node3D" parent="." unique_id=1329737040]
-
-[node name="E_N3" parent="CercadoEstrada" unique_id=2113512937 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -94.71479, 0, -4.17)
-
-[node name="E_S3" parent="CercadoEstrada" unique_id=2034927277 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -94.85, 0, 5.63)
-
-[node name="E_S4" parent="CercadoEstrada" unique_id=1755910771 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -95.26397, 0, 5.63)
-
-[node name="E_N5" parent="CercadoEstrada" unique_id=236328305 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -86.33, 0, -4.17)
-
-[node name="E_N5" parent="CercadoEstrada/E_N5" unique_id=1672299719 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.29699707, 0, 9.742333)
-
-[node name="E_N6" parent="CercadoEstrada/E_N5" unique_id=1495783213 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.556999, 0, 9.742333)
-
-[node name="E_N7" parent="CercadoEstrada/E_N5" unique_id=1586111558 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.817001, 0, 9.742333)
-
-[node name="E_N8" parent="CercadoEstrada/E_N5" unique_id=1382381542 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.076996, 0, 9.742333)
-
-[node name="E_N9" parent="CercadoEstrada/E_N5" unique_id=176755565 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.336998, 0, 9.742333)
-
-[node name="E_N10" parent="CercadoEstrada/E_N5" unique_id=910038293 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.597, 0, 9.742333)
-
-[node name="E_N6" parent="CercadoEstrada" unique_id=804761260 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -82.07, 0, -4.17)
-
-[node name="E_N7" parent="CercadoEstrada" unique_id=1494423994 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -77.81, 0, -4.17)
-
-[node name="E_N8" parent="CercadoEstrada" unique_id=1924289412 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -73.55, 0, -4.17)
-
-[node name="E_N9" parent="CercadoEstrada" unique_id=1532628043 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -69.29, 0, -4.17)
-
-[node name="E_N10" parent="CercadoEstrada" unique_id=1543796500 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -65.03, 0, -4.17)
-
-[node name="E2_N1" parent="CercadoEstrada" unique_id=1288271129 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.67, 0, -4.17)
-
-[node name="E2_S1" parent="CercadoEstrada" unique_id=73099935 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.67, 0, 5.63)
-
-[node name="E2_N2" parent="CercadoEstrada" unique_id=1824871853 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.41, 0, -4.17)
-
-[node name="E2_S2" parent="CercadoEstrada" unique_id=56592842 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.41, 0, 5.63)
-
-[node name="E2_N3" parent="CercadoEstrada" unique_id=1852758325 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.15, 0, -4.17)
-
-[node name="E2_S3" parent="CercadoEstrada" unique_id=1025573093 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.15, 0, 5.63)
-
-[node name="E2_N4" parent="CercadoEstrada" unique_id=518368350 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.89, 0, -4.17)
-
-[node name="E2_S4" parent="CercadoEstrada" unique_id=708501521 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.89, 0, 5.63)
-
-[node name="E2_N5" parent="CercadoEstrada" unique_id=1801343263 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.63, 0, -4.17)
-
-[node name="E2_S5" parent="CercadoEstrada" unique_id=1476397929 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.63, 0, 5.63)
-
-[node name="E2_N7" parent="CercadoEstrada" unique_id=2008497083 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.399729, 0, -4.17)
-
-[node name="E2_S7" parent="CercadoEstrada" unique_id=2062267059 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.918133, 0, 5.8218694)
-
-[node name="E2_N8" parent="CercadoEstrada" unique_id=1144612748 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.139729, 0, -4.17)
-
-[node name="E2_S8" parent="CercadoEstrada" unique_id=966002072 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.658133, 0, 5.8218694)
-
-[node name="E2_N9" parent="CercadoEstrada" unique_id=1475340686 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.879728, 0, -4.17)
-
-[node name="E2_S9" parent="CercadoEstrada" unique_id=1410765502 instance=ExtResource("12_y4gja")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.398132, 0, 5.8218694)
 
 [node name="Jogador" parent="." unique_id=1161009451 instance=ExtResource("2_m")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -96.79012, 1.5, 0.73486805)
-
-[node name="EstradaSede" parent="." unique_id=993713081 instance=ExtResource("13_kegvl")]
-
-[node name="DroneJogador" parent="." unique_id=881234501 instance=ExtResource("15_52jc1")]
-transform = Transform3D(7.54979e-08, 0, -1, 0, 1, 0, 1, 0, 7.54979e-08, 17.5, 1, 1.7)
-
-[node name="TrocaDrone" type="Area3D" parent="." unique_id=1117733838]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.5, 1, 3.4)
-script = ExtResource("16_k5g47")
-
-[node name="VegetacaoMundo" type="Node3D" parent="." unique_id=1868138157]
-script = ExtResource("17_hgoho")
-
-[node name="TestePlanta" parent="." unique_id=2076565417 instance=ExtResource("18_umup1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -140, 2, -140)
-
-[node name="TratorJogador" parent="." unique_id=287191294 instance=ExtResource("19_uth38")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -108, 0.5, 0.73)
-
-[node name="ArvoreExemplo" parent="." unique_id=1735549565 instance=ExtResource("20_arvore")]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -20, 0, 8)
-
-[node name="BordasMundo" type="Node3D" parent="." unique_id=1770945863]
-script = ExtResource("22_qc64c")
-
-[node name="FlorestaBorda" parent="." unique_id=1677974928 instance=ExtResource("23_floresta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -87.1111, 1.5, 0.661381)
 
 [node name="HUD" parent="." unique_id=657714139 instance=ExtResource("23_4xrqu")]

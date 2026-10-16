@@ -19,17 +19,35 @@ extends CanvasLayer
 @onready var btn_aba_controles: Button = $Diario/Inset/Conteudo/SeletorAbas/BtnControles
 @onready var btn_aba_audio: Button = $Diario/Inset/Conteudo/SeletorAbas/BtnAudio
 @onready var btn_aba_tela: Button = $Diario/Inset/Conteudo/SeletorAbas/BtnTela
+@onready var btn_aba_graficos: Button = $Diario/Inset/Conteudo/SeletorAbas/BtnGraficos
+@onready var btn_grafico_baixo: Button = $Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/Botoes/BtnBaixo
+@onready var btn_grafico_medio: Button = $Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/Botoes/BtnMedio
+@onready var btn_grafico_alto: Button = $Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/Botoes/BtnAlto
+@onready var btn_fsr_off: Button = $Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/BotoesUpscaling/BtnFSR_Off
+@onready var btn_fsr1: Button = $Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/BotoesUpscaling/BtnFSR1
+@onready var btn_fsr2: Button = $Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/BotoesUpscaling/BtnFSR2
+@onready var slider_upscaling: HSlider = $Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/EscalaUpscaling
+@onready var valor_escala: Label = $Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/ValorEscala
+@onready var btn_vsync: CheckButton = $Diario/Inset/Conteudo/Abas/Tela/Margem/Coluna/BtnVSync
 
 var _dialogo_aberto_para := ""
 var _botoes_abas: Array = []
 @onready var scrim: ColorRect = $Scrim
 @onready var popup_missao: PanelContainer = $MissaoCompleta
 @onready var popup_texto: Label = $MissaoCompleta/Inset/Conteudo/Texto
+@onready var fps_label: Label = $FPS
+
+var _fps_tempo := 0.0
+
+var _som_ui_click: AudioStreamPlayer
+var _som_ui_hover: AudioStreamPlayer
+var _som_ui_switch: AudioStreamPlayer
 
 const CENA_FASE_TESTE := "res://scenes/world/environment/fase_teste.tscn"
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	set_process(true)
 	AgroUITheme.apply_to(dialogo)
 	AgroUITheme.apply_to(diario)
 	AgroUITheme.style_panel(dialogo, "glass")
@@ -41,13 +59,30 @@ func _ready() -> void:
 	dialogo_titulo.add_theme_font_size_override("font_size", 16)
 	dialogo_texto.add_theme_font_size_override("font_size", 11)
 	dialogo_fonte.add_theme_font_size_override("font_size", 9)
-	$Diario/Inset/Conteudo/Titulo.add_theme_font_size_override("font_size", 15)
+	$Diario/Inset/Conteudo/Titulo.add_theme_font_size_override("font_size", 18)
+	$Diario/Inset/Conteudo/Subtitulo.add_theme_color_override("font_color", AgroUITheme.MUTED_INK)
+	$Diario/Inset/Conteudo/Subtitulo.add_theme_font_size_override("font_size", 12)
+	for cabecalho in [
+		$Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/RotuloGrafico,
+		$Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/RotuloUpscaling,
+		$Diario/Inset/Conteudo/Abas/Tela/Margem/Coluna/RotuloVSync,
+	]:
+		cabecalho.add_theme_font_size_override("font_size", 12)
+		cabecalho.add_theme_color_override("font_color", AgroUITheme.MUTED_INK)
+	for dica in [
+		$Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/DicaGrafico,
+		$Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/DicaUpscaling,
+		$Diario/Inset/Conteudo/Abas/Tela/Margem/Coluna/DicaTela,
+		$Diario/Inset/Conteudo/Abas/Tela/Margem/Coluna/DicaVSync,
+		$Diario/Inset/Conteudo/Abas/Graficos/Margem/Coluna/ValorEscala,
+	]:
+		dica.add_theme_font_size_override("font_size", 11)
+		dica.add_theme_color_override("font_color", AgroUITheme.MUTED_INK)
 	missoes_info.add_theme_font_size_override("font_size", 12)
 	aviso_vazio.add_theme_font_size_override("font_size", 12)
 	aviso_vazio.add_theme_color_override("font_color", Color("#a16207"))
 	objetivo_missao.add_theme_font_size_override("font_size", 14)
 	$Diario/Inset/Conteudo/Abas/Controles/Margem/Coluna/TextoControles.add_theme_font_size_override("font_size", 12)
-	$Diario/Inset/Conteudo/Subtitulo.add_theme_color_override("font_color", AgroUITheme.MUTED_INK)
 	$Dialogo/Inset/Conteudo/BotaoEntendi.pressed.connect(_on_entendi)
 	$Diario/Inset/Conteudo/Acoes/BotaoFechar.pressed.connect(_on_fechar_diario)
 	$Diario/Inset/Conteudo/Acoes/BotaoVoltar.pressed.connect(_on_voltar_menu)
@@ -66,10 +101,27 @@ func _ready() -> void:
 	slider_musica.value_changed.connect(_on_musica_mudou)
 	check_mudo.toggled.connect(_on_mudo)
 	check_tela.toggled.connect(_on_tela_cheia)
-	_botoes_abas = [btn_aba_missao, btn_aba_controles, btn_aba_audio, btn_aba_tela]
+	_botoes_abas = [btn_aba_missao, btn_aba_controles, btn_aba_audio, btn_aba_tela, btn_aba_graficos]
 	for i in _botoes_abas.size():
 		_botoes_abas[i].pressed.connect(_on_aba.bind(i))
 	_on_aba(0)
+	btn_grafico_baixo.pressed.connect(_on_grafico.bind("baixo"))
+	btn_grafico_medio.pressed.connect(_on_grafico.bind("medio"))
+	btn_grafico_alto.pressed.connect(_on_grafico.bind("alto"))
+	_atualizar_botoes_grafico(str(SaveSystem.dados.get("grafico", "alto")))
+	_aplicar_grafico(str(SaveSystem.dados.get("grafico", "alto")))
+	btn_fsr_off.pressed.connect(_on_upscaling.bind("off"))
+	btn_fsr1.pressed.connect(_on_upscaling.bind("fsr1"))
+	btn_fsr2.pressed.connect(_on_upscaling.bind("fsr2"))
+	slider_upscaling.set_value_no_signal(float(SaveSystem.dados.get("upscaling_preset", 1)))
+	slider_upscaling.value_changed.connect(_on_upscaling_escala)
+	_atualizar_botoes_upscaling(str(SaveSystem.dados.get("upscaling", "off")))
+	_atualizar_rotulo_escala(int(SaveSystem.dados.get("upscaling_preset", 1)))
+	_aplicar_upscaling(str(SaveSystem.dados.get("upscaling", "off")), _escala_do_preset(int(SaveSystem.dados.get("upscaling_preset", 1))))
+	btn_vsync.set_pressed_no_signal(bool(SaveSystem.dados.get("vsync", false)))
+	_aplicar_vsync(bool(SaveSystem.dados.get("vsync", false)))
+	btn_vsync.toggled.connect(_on_vsync)
+	_configurar_sons_ui()
 	dialogo.hide()
 	diario.hide()
 	popup_missao.hide()
@@ -142,6 +194,190 @@ func _on_mudo(ativado: bool) -> void:
 func _on_tela_cheia(ativado: bool) -> void:
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN if ativado else DisplayServer.WINDOW_MODE_WINDOWED)
 
+
+func _on_grafico(nivel: String) -> void:
+	SaveSystem.dados["grafico"] = nivel
+	SaveSystem.salvar()
+	_atualizar_botoes_grafico(nivel)
+	_aplicar_grafico(nivel)
+	if _som_ui_switch != null:
+		_som_ui_switch.play()
+
+
+func _atualizar_botoes_grafico(nivel: String) -> void:
+	btn_grafico_baixo.set_pressed_no_signal(nivel == "baixo")
+	btn_grafico_medio.set_pressed_no_signal(nivel == "medio")
+	btn_grafico_alto.set_pressed_no_signal(nivel == "alto")
+	for par in [[btn_grafico_baixo, "baixo"], [btn_grafico_medio, "medio"], [btn_grafico_alto, "alto"]]:
+		if par[1] == nivel:
+			AgroUITheme.style_primary_button(par[0])
+		else:
+			AgroUITheme.style_secondary_button(par[0])
+
+
+func _aplicar_grafico(nivel: String) -> void:
+	var cena := get_tree().current_scene
+	var sol := cena.get_node_or_null("Sol") as DirectionalLight3D if cena != null else null
+	if sol == null:
+		sol = get_node_or_null("/root/Mundo/Sol") as DirectionalLight3D
+	var ceu := cena.get_node_or_null("MundoCeu") as WorldEnvironment if cena != null else null
+	if ceu == null:
+		ceu = get_node_or_null("/root/Mundo/MundoCeu") as WorldEnvironment
+	if sol == null or ceu == null or ceu.environment == null:
+		return
+	var env := ceu.environment
+	match nivel:
+		"baixo":
+			sol.shadow_enabled = false
+			sol.light_energy = 0.6
+			env.background_mode = Environment.BG_CLEAR_COLOR
+			env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+			env.ambient_light_color = Color(0.7, 0.75, 0.8)
+			env.ambient_light_energy = 0.6
+			env.fog_enabled = false
+			env.tonemap_mode = Environment.TONE_MAPPER_LINEAR
+			env.adjustment_enabled = false
+		"medio":
+			sol.shadow_enabled = true
+			sol.light_energy = 0.6
+			sol.directional_shadow_max_distance = 40.0
+			env.background_mode = Environment.BG_COLOR
+			env.background_color = Color(0.53, 0.75, 0.92)
+			env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+			env.ambient_light_color = Color(0.75, 0.82, 0.9)
+			env.ambient_light_energy = 0.5
+			env.fog_enabled = false
+			env.tonemap_mode = Environment.TONE_MAPPER_LINEAR
+			env.adjustment_enabled = false
+		_:
+			sol.shadow_enabled = true
+			sol.light_energy = 0.72
+			sol.directional_shadow_max_distance = 75.0
+			if env.sky == null:
+				var mat := ProceduralSkyMaterial.new()
+				mat.sky_top_color = Color(0.35, 0.55, 0.85)
+				mat.sky_horizon_color = Color(0.7, 0.82, 0.92)
+				mat.ground_bottom_color = Color(0.4, 0.42, 0.38)
+				mat.ground_horizon_color = Color(0.65, 0.7, 0.62)
+				var ceu_proc := Sky.new()
+				ceu_proc.sky_material = mat
+				env.sky = ceu_proc
+			env.background_mode = Environment.BG_SKY
+			env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
+			env.ambient_light_energy = 0.38
+			env.fog_enabled = false
+			env.tonemap_mode = Environment.TONE_MAPPER_LINEAR
+			env.adjustment_enabled = false
+
+
+func _on_upscaling(modo: String) -> void:
+	SaveSystem.dados["upscaling"] = modo
+	SaveSystem.salvar()
+	_atualizar_botoes_upscaling(modo)
+	_aplicar_upscaling(modo, _escala_do_preset(int(SaveSystem.dados.get("upscaling_preset", 1))))
+
+
+func _on_upscaling_escala(preset: float) -> void:
+	var p := int(round(preset))
+	SaveSystem.dados["upscaling_preset"] = p
+	SaveSystem.dados["upscaling_scale"] = _escala_do_preset(p)
+	SaveSystem.salvar()
+	_atualizar_rotulo_escala(p)
+	_aplicar_upscaling(str(SaveSystem.dados.get("upscaling", "off")), _escala_do_preset(p))
+
+
+func _escala_do_preset(p: int) -> float:
+	match p:
+		0:
+			return 0.5
+		2:
+			return 0.85
+		_:
+			return 0.67
+
+
+func _atualizar_rotulo_escala(p: int) -> void:
+	match p:
+		0:
+			valor_escala.text = "Performance • mais FPS"
+		2:
+			valor_escala.text = "Qualidade • mais nítido"
+		_:
+			valor_escala.text = "Equilibrado"
+
+
+func _on_vsync(ativado: bool) -> void:
+	SaveSystem.dados["vsync"] = ativado
+	SaveSystem.salvar()
+	_aplicar_vsync(ativado)
+
+
+func _aplicar_vsync(ativado: bool) -> void:
+	if ativado:
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
+	else:
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+	Engine.max_fps = 0
+
+
+func _configurar_sons_ui() -> void:
+	_som_ui_click = AudioStreamPlayer.new()
+	_som_ui_click.stream = load("res://assets/audio/ui/click1.ogg")
+	_som_ui_click.bus = "Efeitos"
+	add_child(_som_ui_click)
+	_som_ui_hover = AudioStreamPlayer.new()
+	_som_ui_hover.stream = load("res://assets/audio/ui/rollover1.ogg")
+	_som_ui_hover.bus = "Efeitos"
+	_som_ui_hover.volume_db = -8.0
+	add_child(_som_ui_hover)
+	_som_ui_switch = AudioStreamPlayer.new()
+	_som_ui_switch.stream = load("res://assets/audio/ui/switch1.ogg")
+	_som_ui_switch.bus = "Efeitos"
+	add_child(_som_ui_switch)
+	for b in _botoes_abas + [btn_grafico_baixo, btn_grafico_medio, btn_grafico_alto, btn_fsr_off, btn_fsr1, btn_fsr2, $Dialogo/Inset/Conteudo/BotaoEntendi, $Diario/Inset/Conteudo/Acoes/BotaoFechar, $Diario/Inset/Conteudo/Acoes/BotaoVoltar]:
+		b.pressed.connect(_tocar_click_ui)
+		(b as Button).mouse_entered.connect(_tocar_hover_ui)
+
+
+func _tocar_click_ui() -> void:
+	if _som_ui_click != null:
+		_som_ui_click.play()
+
+
+func _tocar_hover_ui() -> void:
+	if _som_ui_hover != null:
+		_som_ui_hover.play()
+
+
+func _atualizar_botoes_upscaling(modo: String) -> void:
+	btn_fsr_off.set_pressed_no_signal(modo == "off")
+	btn_fsr1.set_pressed_no_signal(modo == "fsr1")
+	btn_fsr2.set_pressed_no_signal(modo == "fsr2")
+	for par in [[btn_fsr_off, "off"], [btn_fsr1, "fsr1"], [btn_fsr2, "fsr2"]]:
+		if par[1] == modo:
+			AgroUITheme.style_primary_button(par[0])
+		else:
+			AgroUITheme.style_secondary_button(par[0])
+
+
+func _aplicar_upscaling(modo: String, escala: float) -> void:
+	var vp := get_viewport()
+	if vp == null:
+		return
+	var metodo := RenderingServer.get_current_rendering_method()
+	if modo == "fsr2" and metodo != "forward_plus":
+		modo = "fsr1"
+	match modo:
+		"fsr1":
+			vp.scaling_3d_mode = Viewport.SCALING_3D_MODE_FSR
+			vp.scaling_3d_scale = clampf(escala, 0.5, 1.0)
+		"fsr2":
+			vp.scaling_3d_mode = Viewport.SCALING_3D_MODE_FSR2
+			vp.scaling_3d_scale = clampf(escala, 0.5, 1.0)
+		_:
+			vp.scaling_3d_mode = Viewport.SCALING_3D_MODE_BILINEAR
+			vp.scaling_3d_scale = 1.0
+
 func _on_aba(indice: int) -> void:
 	abas.current_tab = indice
 	for i in _botoes_abas.size():
@@ -209,3 +445,12 @@ func _preencher_diario() -> void:
 		var marca := "✓" if Missoes.esta_concluida(missao_id) else "○"
 		linhas.append("%s  %s" % [marca, m.get("titulo", missao_id)])
 	missoes_info.text = "\n".join(linhas)
+
+
+func _process(delta: float) -> void:
+	_fps_tempo += delta
+	if _fps_tempo < 0.25:
+		return
+	_fps_tempo = 0.0
+	var fps := Engine.get_frames_per_second()
+	fps_label.text = "%d FPS (%.1f ms)" % [fps, 1000.0 / maxf(float(fps), 1.0)]

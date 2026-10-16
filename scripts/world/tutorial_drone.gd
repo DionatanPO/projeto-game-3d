@@ -419,9 +419,8 @@ func _configurar_musica() -> void:
 	_som_musica.finished.connect(_reiniciar_musica)
 	if AudioServer.get_bus_index("Musica") >= 0:
 		_som_musica.bus = "Musica"
-	# Aplicar volume salvo (padrão 80.0 se não houver dado)
-	var vol := float(SaveSystem.dados.get("volume_musica", 80.0))
-	_som_musica.volume_db = linear_to_db(maxf(vol / 100.0, 0.0001))
+	# Volume control now handled by AudioConfig bus volume
+	_som_musica.volume_db = 0.0  # No additional attenuation from player
 	add_child(_som_musica)
 
 
