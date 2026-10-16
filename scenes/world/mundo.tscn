@@ -13,7 +13,7 @@
 [ext_resource type="PackedScene" path="res://scenes/world/interactables/cerca.tscn" id="12_y4gja"]
 [ext_resource type="PackedScene" uid="uid://dx6solqh36lk7" path="res://scenes/world/cenarios/estrada_sede.tscn" id="13_kegvl"]
 [ext_resource type="PackedScene" uid="uid://bpc1popflov1v" path="res://scenes/world/drone_jogador.tscn" id="15_52jc1"]
-[ext_resource type="Script" uid="uid://c5yp5xutt33sj" path="res://scripts/world/troca_drone.gd" id="16_k5g47"]
+[ext_resource type="Script" path="res://scripts/world/troca_drone_final.gd" id="16_k5g47"]
 [ext_resource type="Script" uid="uid://duut566e77qm2" path="res://scripts/world/vegetacao_mundo.gd" id="17_hgoho"]
 [ext_resource type="PackedScene" uid="uid://bar2gyfhscq54" path="res://assets/models/Plant_1.fbx" id="18_umup1"]
 [ext_resource type="PackedScene" uid="uid://br4ljesnrpw12" path="res://scenes/world/trator_jogador.tscn" id="19_uth38"]

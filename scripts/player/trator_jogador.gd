@@ -60,16 +60,22 @@ func _ready() -> void:
 	_som_motor.stream = _gerar_motor_diesel()
 	_som_motor.max_distance = 60.0
 	_som_motor.volume_db = -60.0
+	if AudioServer.get_bus_index("Efeitos") >= 0:
+		_som_motor.bus = "Efeitos"
 	add_child(_som_motor)
 	_som_buzina = AudioStreamPlayer3D.new()
 	_som_buzina.name = "SomBuzina"
 	_som_buzina.stream = _gerar_buzina()
 	_som_buzina.max_distance = 80.0
+	if AudioServer.get_bus_index("Efeitos") >= 0:
+		_som_buzina.bus = "Efeitos"
 	add_child(_som_buzina)
 	_som_re = AudioStreamPlayer3D.new()
 	_som_re.name = "SomRe"
 	_som_re.stream = _gerar_beep_re()
 	_som_re.max_distance = 40.0
+	if AudioServer.get_bus_index("Efeitos") >= 0:
+		_som_re.bus = "Efeitos"
 	add_child(_som_re)
 	var pos: Variant = SaveSystem.dados.get("posicao_trator", [HOME_TRATOR.x, HOME_TRATOR.y, HOME_TRATOR.z])
 	if pos is Array and (pos as Array).size() == 3:

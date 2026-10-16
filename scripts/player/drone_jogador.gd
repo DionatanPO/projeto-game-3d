@@ -18,7 +18,7 @@ extends CharacterBody3D
 @export var ligado := true
 @export var fov_base := 70.0
 @export var fov_turbo := 86.0
-@export var tremor_max := 0.022
+@export var tremor_max := 0.012
 @export var vinheta_max := 0.45
 
 var gravidade: float = ProjectSettings.get_setting("physics/3d/default_gravity", 9.8)
@@ -39,6 +39,7 @@ var _cam_base := Vector3(0.0, 1.9, 3.85)
 var _vinheta_camada: CanvasLayer
 var _vinheta: TextureRect
 var _vento: AudioStreamPlayer3D
+var _tremor_suave := 0.0
 
 const SPAWN_GALPAO := Vector3(15.5, 1.0, 3.4)
 const HOME_DRONE_ANTIGO := Vector3(-2.0, 1.0, -50.0)
@@ -69,6 +70,8 @@ func _ready() -> void:
 	_som.stream = _gerar_zumbido()
 	_som.volume_db = -30.0
 	_som.max_distance = 80.0
+	if AudioServer.get_bus_index("Efeitos") >= 0:
+		_som.bus = "Efeitos"
 	add_child(_som)
 	_construir_vinheta()
 	_vento = AudioStreamPlayer3D.new()
@@ -76,6 +79,8 @@ func _ready() -> void:
 	_vento.stream = _gerar_vento()
 	_vento.volume_db = -48.0
 	_vento.max_distance = 120.0
+	if AudioServer.get_bus_index("Efeitos") >= 0:
+		_vento.bus = "Efeitos"
 	add_child(_vento)
 	# Comeca desligado (a estacao liga ao embarcar); antes tocava ~2 frames ate a troca desligar.
 	ligado = str(SaveSystem.dados.get("veiculo", "jogador")) == "drone"
@@ -265,9 +270,11 @@ func _efeitos_velocidade(delta: float) -> void:
 	var v := smoothstep(0.25, 1.0, fator) if ativo else 0.0
 	_vinheta_camada.visible = v > 0.02
 	_vinheta.modulate.a = v * vinheta_max
-	# 3) Tremor sutil em alta velocidade.
+	# 3) Tremor quase imperceptivel, so no turbo (entra/sai suave).
+	var turbo := ativo and Input.is_action_pressed("correr")
+	_tremor_suave = move_toward(_tremor_suave, 1.0 if turbo else 0.0, delta * 2.5)
+	var amp := tremor_max * _tremor_suave
 	var t := Time.get_ticks_msec() / 1000.0
-	var amp := tremor_max * fator if ativo else 0.0
 	cam.position = _cam_base + Vector3(sin(t * 39.7) * amp, sin(t * 33.1 + 1.3) * amp, 0.0)
 	# 4) Vento: volume e pitch seguem a velocidade.
 	if ativo and not _vento.playing:

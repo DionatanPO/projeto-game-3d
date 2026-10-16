@@ -67,5 +67,4 @@ draw_pass_1 = SubResource("Mesh_spray")
 [node name="CameraRig" type="Node3D" parent="." unique_id=881234509]
 
 [node name="Camera3D" type="Camera3D" parent="CameraRig" unique_id=881234510]
-current = true
 fov = 70.0

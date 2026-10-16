@@ -10,7 +10,8 @@ extends CanvasLayer
 @onready var aviso_vazio: Label = $Diario/Inset/Conteudo/Abas/Missão/Margem/Coluna/AvisoVazio
 @onready var missoes_info: Label = $Diario/Inset/Conteudo/Abas/Missão/Margem/Coluna/MissoesInfo
 @onready var objetivo_missao: Label = $Diario/Inset/Conteudo/Abas/Missão/Margem/Coluna/Objetivo
-@onready var slider_volume: HSlider = $Diario/Inset/Conteudo/Abas/Áudio/Margem/Coluna/VolumeGeral
+@onready var slider_efeitos: HSlider = $Diario/Inset/Conteudo/Abas/Áudio/Margem/Coluna/VolumeEfeitos
+@onready var slider_musica: HSlider = $Diario/Inset/Conteudo/Abas/Áudio/Margem/Coluna/VolumeMusica
 @onready var check_mudo: CheckButton = $Diario/Inset/Conteudo/Abas/Áudio/Margem/Coluna/Mudo
 @onready var check_tela: CheckButton = $Diario/Inset/Conteudo/Abas/Tela/Margem/Coluna/TelaCheia
 @onready var abas: TabContainer = $Diario/Inset/Conteudo/Abas
@@ -57,10 +58,12 @@ func _ready() -> void:
 	AgroUITheme.style_secondary_button($Diario/Inset/Conteudo/Acoes/BotaoVoltar)
 	AgroUITheme.style_primary_button($MissaoCompleta/Inset/Conteudo/BotaoNovaFase)
 	AgroUITheme.style_secondary_button($MissaoCompleta/Inset/Conteudo/BotaoContinuar)
-	slider_volume.set_value_no_signal(db_to_linear(AudioServer.get_bus_volume_db(0)) * 100.0)
+	slider_efeitos.set_value_no_signal(AudioConfig.volume_efeitos())
+	slider_musica.set_value_no_signal(AudioConfig.volume_musica())
 	check_mudo.set_pressed_no_signal(AudioServer.is_bus_mute(0))
 	check_tela.set_pressed_no_signal(DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN)
-	slider_volume.value_changed.connect(_on_volume_mudou)
+	slider_efeitos.value_changed.connect(_on_efeitos_mudou)
+	slider_musica.value_changed.connect(_on_musica_mudou)
 	check_mudo.toggled.connect(_on_mudo)
 	check_tela.toggled.connect(_on_tela_cheia)
 	_botoes_abas = [btn_aba_missao, btn_aba_controles, btn_aba_audio, btn_aba_tela]
@@ -126,10 +129,12 @@ func _input(event: InputEvent) -> void:
 		_on_fechar_diario()
 		get_viewport().set_input_as_handled()
 
-func _on_volume_mudou(valor: float) -> void:
-	AudioServer.set_bus_mute(0, false)
-	check_mudo.set_pressed_no_signal(false)
-	AudioServer.set_bus_volume_db(0, linear_to_db(maxf(valor / 100.0, 0.0001)))
+func _on_efeitos_mudou(valor: float) -> void:
+	AudioConfig.definir_volume_efeitos(valor)
+
+
+func _on_musica_mudou(valor: float) -> void:
+	AudioConfig.definir_volume_musica(valor)
 
 func _on_mudo(ativado: bool) -> void:
 	AudioServer.set_bus_mute(0, ativado)

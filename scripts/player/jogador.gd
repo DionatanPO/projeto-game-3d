@@ -86,6 +86,8 @@ func _configurar_sons_passos() -> void:
 	_audio_passos.max_distance = 22.0
 	_audio_passos.unit_size = 5.0
 	_audio_passos.volume_db = -4.0
+	if AudioServer.get_bus_index("Efeitos") >= 0:
+		_audio_passos.bus = "Efeitos"
 	add_child(_audio_passos)
 
 

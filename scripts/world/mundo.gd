@@ -3,6 +3,8 @@ extends Node3D
 ## no mundo (ver CENARIOS.md). Modele cada cenario no seu arquivo; aqui
 ## nada de conteudo, so posicionamento + luz/ceu compartilhados.
 
+var _som_musica: AudioStreamPlayer
+
 const ORIGENS := {
 	"sede": Vector3(0, 0, 0),
 	"milho": Vector3(120, 0, 0),
@@ -25,7 +27,25 @@ const NO_CENARIO := {
 
 
 func _ready() -> void:
-	pass
+	_configurar_musica()
+
+
+func _configurar_musica() -> void:
+	_som_musica = AudioStreamPlayer.new()
+	_som_musica.name = "SomMusica"
+	_som_musica.stream = load("res://assets/audio/musicas/First_Light_on_the_Rows.mp3")
+	_som_musica.finished.connect(_reiniciar_musica)
+	if AudioServer.get_bus_index("Musica") >= 0:
+		_som_musica.bus = "Musica"
+	var vol := float(SaveSystem.dados.get("volume_musica", 80.0))
+	_som_musica.volume_db = linear_to_db(maxf(vol / 100.0, 0.0001))
+	add_child(_som_musica)
+	_som_musica.play()
+
+
+func _reiniciar_musica() -> void:
+	_som_musica.seek(0)
+	_som_musica.play()
 
 
 ## Leva o jogador (grupo "jogador") ate a origem de um cenario.

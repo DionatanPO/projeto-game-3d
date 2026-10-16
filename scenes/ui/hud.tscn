@@ -201,17 +201,25 @@ theme_override_constants/margin_bottom = 10
 [node name="Coluna" type="VBoxContainer" parent="Diario/Inset/Conteudo/Abas/Áudio/Margem" unique_id=1925506302]
 layout_mode = 2
 
-[node name="RotuloVolume" type="Label" parent="Diario/Inset/Conteudo/Abas/Áudio/Margem/Coluna" unique_id=1755726811]
+[node name="RotuloEfeitos" type="Label" parent="Diario/Inset/Conteudo/Abas/Áudio/Margem/Coluna"]
 layout_mode = 2
-text = "Volume geral"
+text = "Efeitos sonoros"
 
-[node name="VolumeGeral" type="HSlider" parent="Diario/Inset/Conteudo/Abas/Áudio/Margem/Coluna" unique_id=835750608]
+[node name="VolumeEfeitos" type="HSlider" parent="Diario/Inset/Conteudo/Abas/Áudio/Margem/Coluna"]
+layout_mode = 2
+value = 80.0
+
+[node name="RotuloMusica" type="Label" parent="Diario/Inset/Conteudo/Abas/Áudio/Margem/Coluna"]
+layout_mode = 2
+text = "Música"
+
+[node name="VolumeMusica" type="HSlider" parent="Diario/Inset/Conteudo/Abas/Áudio/Margem/Coluna"]
 layout_mode = 2
 value = 80.0
 
 [node name="Mudo" type="CheckButton" parent="Diario/Inset/Conteudo/Abas/Áudio/Margem/Coluna" unique_id=1044781997]
 layout_mode = 2
-text = "Mudo"
+text = "Mudo (tudo)"
 
 [node name="Tela" type="VBoxContainer" parent="Diario/Inset/Conteudo/Abas" unique_id=1605025362]
 visible = false

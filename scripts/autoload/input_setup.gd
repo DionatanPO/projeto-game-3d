@@ -13,6 +13,7 @@ const ACOES: Dictionary = {
 	"pulverizar": [KEY_E],
 	"correr": [KEY_SHIFT],
 	"interagir": [KEY_E],
+	"tutorial_drone": [KEY_T],
 	"buzinar": [KEY_H],
 	"diario": [KEY_TAB],
 }
@@ -24,6 +25,7 @@ const BOTOES_PAD: Dictionary = {
 	"ligar_motor": [JOY_BUTTON_RIGHT_SHOULDER],
 	"correr": [JOY_BUTTON_LEFT_SHOULDER],
 	"interagir": [JOY_BUTTON_X],
+	"tutorial_drone": [JOY_BUTTON_Y],
 	"buzinar": [JOY_BUTTON_BACK, JOY_BUTTON_LEFT_SHOULDER],
 	"diario": [JOY_BUTTON_START],
 }
