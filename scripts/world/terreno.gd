@@ -55,6 +55,9 @@ func _ready() -> void:
 	_gerar()
 
 
+var _granulado: Texture2D
+
+
 func _gerar() -> void:
 	for filho in get_children():
 		remove_child(filho)
@@ -103,9 +106,15 @@ func _gerar() -> void:
 	malha.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
 	var mat_uso: Material = material
 	if mat_uso == null:
+		if _granulado == null:
+			_granulado = _criar_granulado()
 		var std := StandardMaterial3D.new()
 		std.vertex_color_use_as_albedo = true
+		std.albedo_texture = _granulado
+		std.uv1_scale = Vector3(160, 160, 160)
 		std.roughness = 0.95
+		std.roughness_texture = _granulado
+		std.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 		mat_uso = std
 	var mi := MeshInstance3D.new()
 	mi.name = "Malha"
@@ -207,6 +216,20 @@ func ruido(x: float, z: float) -> float:
 	var c := _hash(xi, zi + 1)
 	var d := _hash(xi + 1, zi + 1)
 	return (lerpf(lerpf(a, b, u), lerpf(c, d, u), v) - 0.5) * 2.0
+
+
+## Granulado 256px gerado em codigo (sem asset): macro + grão fino.
+## Multiplica a cor por zona via vertex color; mipmaps cuidam da distancia.
+func _criar_granulado() -> ImageTexture:
+	var tam := 256
+	var img := Image.create(tam, tam, false, Image.FORMAT_RGB8)
+	for y in tam:
+		for x in tam:
+			var macro := ruido(float(x) * 0.12, float(y) * 0.12) * 0.5 + 0.5
+			var fino := ruido(float(x) * 0.9 + 40.0, float(y) * 0.9 - 17.0) * 0.5 + 0.5
+			var v := clampf(0.82 + macro * 0.10 + (fino - 0.5) * 0.12, 0.0, 1.0)
+			img.set_pixel(x, y, Color(v, v, v))
+	return ImageTexture.create_from_image(img)
 
 
 func _hash(x: int, z: int) -> float:
