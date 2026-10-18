@@ -73,7 +73,17 @@ func _ready() -> void:
 	modelo.rotation.y = PI * 0.5
 	_som = AudioStreamPlayer3D.new()
 	_som.name = "SomMotor"
-	_som.stream = _gerar_zumbido()
+	# Zumbido do drone: arquivo real (assets/audio/som_drone_loop.mp3) em loop.
+	# O "acelerar/desacelerar" continua sendo simulado por pitch_scale + volume_db
+	# no _process. Se o arquivo faltar, volta pro zumbido sintetizado.
+	var trilha_zumbido := load("res://assets/audio/som_drone_loop.mp3") as AudioStream
+	if trilha_zumbido == null:
+		trilha_zumbido = _gerar_zumbido()
+	elif trilha_zumbido is AudioStreamMP3:
+		(trilha_zumbido as AudioStreamMP3).loop = true
+	elif trilha_zumbido is AudioStreamWAV:
+		(trilha_zumbido as AudioStreamWAV).loop_mode = AudioStreamWAV.LOOP_FORWARD
+	_som.stream = trilha_zumbido
 	_som.volume_db = -30.0
 	_som.max_distance = 80.0
 	if AudioServer.get_bus_index("Efeitos") >= 0:
@@ -287,7 +297,10 @@ func _efeitos_velocidade(delta: float) -> void:
 	if ativo and not _vento.playing:
 		_vento.play()
 	if ativo:
-		_vento.volume_db = lerpf(-48.0, -14.0, fator)
+		# Vento original: -48 dB parado -> -14 dB na velocidade maxima.
+		# (A subida continua suavizada, so pra nao dar salto no volume.)
+		var alvo_db := lerpf(-48.0, -14.0, fator)
+		_vento.volume_db = lerpf(_vento.volume_db, alvo_db, 1.0 - exp(-5.0 * delta))
 		_vento.pitch_scale = lerpf(0.8, 1.35, fator)
 
 

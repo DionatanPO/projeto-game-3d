@@ -8,7 +8,9 @@ extends CharacterBody3D
 @export var velocidade_correr := 7.0
 ## Fator sobre a velocidade nativa do clip de andar (1.0 = nativa).
 ## Sobe corpo e animacao juntos, entao os pes continuam casando.
-@export var fator_andar := 1.3
+## 1.6 = ~2.03 m/s (passo largo do clip e fixo: acelerar mais que isso faz a
+## passada do andar ficar mais rapida que a da corrida, que fica estranho).
+@export var fator_andar := 1.6
 ## Rampa de velocidade (m/s^2): suaviza andar<->correr e saidas/paradas.
 @export var aceleracao := 10.0
 @export var desaceleracao := 14.0
@@ -17,6 +19,17 @@ extends CharacterBody3D
 @export var sensibilidade_stick := 2.8
 ## Segundos parado ate trocar o Idle normal pelo SadIdle (cabeca baixa).
 @export var tempo_sad_idle := 3.0
+
+## Passos sintetizados de grama/terra (passo_1..6.wav, gerados fora do jogo):
+## entram em rodizio pra passada nao repetir sempre o mesmo som.
+const PASSOS_ARQUIVOS := [
+	"res://assets/audio/passo_1.wav",
+	"res://assets/audio/passo_2.wav",
+	"res://assets/audio/passo_3.wav",
+	"res://assets/audio/passo_4.wav",
+	"res://assets/audio/passo_5.wav",
+	"res://assets/audio/passo_6.wav",
+]
 
 @onready var rig: Node3D = $CameraRig
 @onready var bracos_camera: SpringArm3D = $CameraRig/BracosCamera
@@ -31,6 +44,9 @@ var _audio_passos: AudioStreamPlayer3D
 var _som_passo_andar: AudioStream
 var _som_passo_corrida: AudioStream
 var _som_pulo: AudioStream
+## Passos de grama/terra carregados de fato (vazio = cai nos passo_andar/correr).
+var _sons_passo: Array[AudioStream] = []
+var _idx_passo := 0
 var _tempo_entre_passos := 0.0
 ## Velocidade nativa dos clips Mixamo (m/s, medida do root motion do quadril
 ## antes de remove-lo). Serve para sincronizar a passada com o corpo e evitar
@@ -54,9 +70,11 @@ var _pulo_andando := false
 const BLEND_TERRA := 0.22
 const BLEND_PULO_SAIDA := 0.1
 const BLEND_POUSO := 0.25
-## Velocidade em que o intervalo do passo (0.48 s) foi regulado. Serve para
-## preservar passos-por-metro quando o andar e calibrado pela animacao.
-const PASSO_REF_ANDAR := 4.5
+## Intervalo do som do passo andando (s), tirado da propria animacao Walk:
+## os clips Mixamo tem 2 apoios por ciclo, entao o passo sai a cada
+## (duracao do ciclo / 2). Assim o som nunca sai fora do pe, em qualquer
+## velocidade/fator. Calculado em _ready (cai em 0.48 s sem animacao).
+var _intervalo_passo_andar := 0.48
 
 
 func _ready() -> void:
@@ -74,10 +92,29 @@ func _ready() -> void:
 			velocidade_andar = _nativa_andar * fator_andar
 			print("ANDAR_NATIVO=", _nativa_andar, " ANDAR_AJUSTADO=", velocidade_andar)
 		_atualizar_animacao("Idle")
+		_intervalo_passo_andar = _intervalo_passo_do_clip("Walk", fator_andar)
 	_configurar_sons_passos()
 
 
+## Intervalo entre sons de passo tirado da propria animacao (s). Os clips
+## Mixamo tem 2 apoios por ciclo, entao o passo sai a cada (duracao / 2).
+## A duracao cai com o speed_scale, entao o som acompanha os pes sozinho.
+func _intervalo_passo_do_clip(nome: String, escala: float) -> float:
+	if animador == null or not animador.has_animation(nome):
+		return 0.48
+	var duracao := animador.get_animation(nome).length / maxf(escala, 0.05)
+	return duracao * 0.5
+
+
 func _configurar_sons_passos() -> void:
+	# Passos de grama/terra primeiro (passo_1..6.wav), em rodizio. Se algum
+	# arquivo faltar, sobra vazio e os antigos (passo_andar.wav /
+	# passo_correr.wav) voltam a ser usados.
+	for caminho in PASSOS_ARQUIVOS:
+		if ResourceLoader.exists(caminho):
+			var corte := load(caminho) as AudioStream
+			if corte != null:
+				_sons_passo.append(corte)
 	_som_passo_andar = load("res://assets/audio/passo_andar.wav") as AudioStream
 	_som_passo_corrida = load("res://assets/audio/passo_correr.wav") as AudioStream
 	_som_pulo = load("res://assets/audio/passo_pulo.wav") as AudioStream
@@ -85,7 +122,7 @@ func _configurar_sons_passos() -> void:
 	_audio_passos.name = "AudioPassos"
 	_audio_passos.max_distance = 22.0
 	_audio_passos.unit_size = 5.0
-	_audio_passos.volume_db = -4.0
+	_audio_passos.volume_db = -30.0
 	if AudioServer.get_bus_index("Efeitos") >= 0:
 		_audio_passos.bus = "Efeitos"
 	add_child(_audio_passos)
@@ -94,7 +131,15 @@ func _configurar_sons_passos() -> void:
 func _tocar_som_passo(correndo: bool) -> void:
 	if _audio_passos == null:
 		return
-	_audio_passos.stream = _som_passo_corrida if correndo else _som_passo_andar
+	if not _sons_passo.is_empty():
+		# Uma pisada por passo, sempre na ordem: soa natural e nao repete.
+		_audio_passos.stream = _sons_passo[_idx_passo]
+		_idx_passo = (_idx_passo + 1) % _sons_passo.size()
+		# Correndo usa a mesma familia de som, so um pouco mais aguda.
+		_audio_passos.pitch_scale = 1.15 if correndo else 1.0
+	else:
+		_audio_passos.stream = _som_passo_corrida if correndo else _som_passo_andar
+		_audio_passos.pitch_scale = 1.0
 	if _audio_passos.stream != null:
 		_audio_passos.play()
 
@@ -103,6 +148,7 @@ func _tocar_som_pulo() -> void:
 	if _audio_passos == null or _som_pulo == null:
 		return
 	_audio_passos.stream = _som_pulo
+	_audio_passos.pitch_scale = 1.0
 	_audio_passos.play()
 
 
@@ -294,9 +340,9 @@ func _physics_process(delta: float) -> void:
 		animacao_movimento = "Run"
 	var correndo_anim := animacao_movimento == "Run"
 	if no_chao and em_movimento:
-		# Intervalo do passo preserva passos-por-metro da regulagem original
-		# (0.48 s a 4.5 m/s): com o andar mais lento, o passo sai mais espacado.
-		var intervalo_passo := 0.31 if correndo_anim else 0.48 * (PASSO_REF_ANDAR / velocidade_andar)
+		# Intervalo do passo vem da animacao (2 apoios por ciclo), entao o som
+		# casa com os pes. A corrida ja estava sincronizada: nao mexe.
+		var intervalo_passo := 0.31 if correndo_anim else _intervalo_passo_andar
 		_tempo_entre_passos += delta
 		if _tempo_entre_passos >= intervalo_passo:
 			_tocar_som_passo(correndo_anim)

@@ -16,6 +16,7 @@ const ACOES: Dictionary = {
 	"tutorial_drone": [KEY_T],
 	"buzinar": [KEY_H],
 	"diario": [KEY_TAB],
+	"chuva": [KEY_F1],  # Ativar/desativar simulacao de chuva
 }
 
 ## Botoes do controle (Xbox): A pula, LB corre, X interage, Y abre o caderno.
@@ -64,4 +65,3 @@ func _ready() -> void:
 		evento_eixo.axis = dados[0] as JoyAxis
 		evento_eixo.axis_value = float(dados[1])
 		InputMap.action_add_event(acao, evento_eixo)
-

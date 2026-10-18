@@ -6,7 +6,8 @@ extends CharacterBody3D
 ## perto a pe -> "E usa o trator"; dirigindo -> "E desce".
 ## Corpo = trator.glb; rodas = roda_trator.glb (dianteiras menores e estercam,
 ## traseiras maiores, todas giram conforme a velocidade).
-## Sons sintetizados em codigo como o drone (motor diesel + buzina + re).
+## Audio: motor (som_trator.mp3 em loop) e buzina (buzina_trator.mp3) vem de
+## arquivo; o beep de re continua sintetizado em codigo.
 
 const HOME_TRATOR := Vector3(13.0, 0.7, -7.0)
 const RAIO_ESTACAO := 4.5
@@ -36,6 +37,9 @@ var _prompt: Label3D
 var _som_motor: AudioStreamPlayer3D
 var _som_buzina: AudioStreamPlayer3D
 var _som_re: AudioStreamPlayer3D
+var _poeira_roda_te: GPUParticles3D
+var _poeira_roda_td: GPUParticles3D
+var _fuma_chamine: GPUParticles3D
 var _tempo_beep := 0.0
 var _angulo_vertical := -0.32
 
@@ -55,9 +59,22 @@ var _angulo_vertical := -0.32
 func _ready() -> void:
 	add_to_group("trator_jogador")
 	_montar_estacao()
+	_poeira_roda_te = _criar_poeira_roda("PoeiraRodaTE", Vector3(0.9, 0.25, 1.0))
+	_poeira_roda_td = _criar_poeira_roda("PoeiraRodaTD", Vector3(0.9, 0.25, -1.0))
+	_fuma_chamine = _criar_fumaca_chamine()
 	_som_motor = AudioStreamPlayer3D.new()
 	_som_motor.name = "SomMotor"
-	_som_motor.stream = _gerar_motor_diesel()
+	# Motor do trator: arquivo real (assets/audio/som_trator.mp3) em loop continuo.
+	# A "acelerada/freada" continua sendo simulada por pitch_scale + volume_db
+	# no _physics_process. Se o arquivo faltar, volta pro diesel sintetizado.
+	var trilha_motor := load("res://assets/audio/som_trator.mp3") as AudioStream
+	if trilha_motor == null:
+		trilha_motor = _gerar_motor_diesel()
+	elif trilha_motor is AudioStreamMP3:
+		(trilha_motor as AudioStreamMP3).loop = true
+	elif trilha_motor is AudioStreamWAV:
+		(trilha_motor as AudioStreamWAV).loop_mode = AudioStreamWAV.LOOP_FORWARD
+	_som_motor.stream = trilha_motor
 	_som_motor.max_distance = 60.0
 	_som_motor.volume_db = -60.0
 	if AudioServer.get_bus_index("Efeitos") >= 0:
@@ -65,7 +82,17 @@ func _ready() -> void:
 	add_child(_som_motor)
 	_som_buzina = AudioStreamPlayer3D.new()
 	_som_buzina.name = "SomBuzina"
-	_som_buzina.stream = _gerar_buzina()
+	# Buzina: arquivo real (assets/audio/buzina_trator.mp3), toca uma vez por
+	# aperto. Se o arquivo faltar, volta pro bip sintetizado.
+	var trilha_buzina := load("res://assets/audio/buzina_trator.mp3") as AudioStream
+	if trilha_buzina == null:
+		trilha_buzina = _gerar_buzina()
+	elif trilha_buzina is AudioStreamMP3:
+		(trilha_buzina as AudioStreamMP3).loop = false
+	_som_buzina.stream = trilha_buzina
+	# Um pouco acima do nivel do arquivo pra ficar no mesmo volume da buzina
+	# sintetizada que ela substitui (o mp3 tem pico em -10.7 dBFS).
+	_som_buzina.volume_db = 5.0
 	_som_buzina.max_distance = 80.0
 	if AudioServer.get_bus_index("Efeitos") >= 0:
 		_som_buzina.bus = "Efeitos"
@@ -189,6 +216,112 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0.0, freio * delta)
 		_sincronizar_proximidade()
 	move_and_slide()
+	var levantar_poeira := ativo and absf(_vel) > 1.0 and is_on_floor()
+	if _poeira_roda_te:
+		_poeira_roda_te.emitting = levantar_poeira
+	if _poeira_roda_td:
+		_poeira_roda_td.emitting = levantar_poeira
+
+
+func _criar_poeira_roda(nome: String, posicao: Vector3) -> GPUParticles3D:
+	var poeira := GPUParticles3D.new()
+	poeira.name = nome
+	poeira.position = posicao
+	poeira.amount = 90
+	poeira.lifetime = 0.9
+	poeira.explosiveness = 0.0
+	poeira.emitting = false
+	poeira.visibility_aabb = AABB(Vector3(-20.0, -4.0, -20.0), Vector3(40.0, 12.0, 40.0))
+
+	var processo := ParticleProcessMaterial.new()
+	processo.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+	processo.emission_sphere_radius = 0.16
+	processo.direction = Vector3(1.0, 0.25, 0.0)
+	processo.spread = 35.0
+	processo.initial_velocity_min = 0.4
+	processo.initial_velocity_max = 1.5
+	processo.gravity = Vector3(0.0, 0.45, 0.0)
+	processo.damping_min = 0.25
+	processo.damping_max = 0.55
+	processo.scale_min = 0.65
+	processo.scale_max = 1.35
+	processo.color = Color(0.62, 0.48, 0.3, 0.62)
+	var curva_alpha := Curve.new()
+	curva_alpha.add_point(Vector2(0.0, 0.0))
+	curva_alpha.add_point(Vector2(0.15, 1.0))
+	curva_alpha.add_point(Vector2(1.0, 0.0))
+	var textura_alpha := CurveTexture.new()
+	textura_alpha.curve = curva_alpha
+	processo.alpha_curve = textura_alpha
+	poeira.process_material = processo
+
+	var malha := SphereMesh.new()
+	malha.radius = 0.12
+	malha.height = 0.24
+	var visual := StandardMaterial3D.new()
+	visual.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	visual.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	visual.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
+	visual.albedo_color = Color(0.62, 0.48, 0.3, 0.5)
+	malha.material = visual
+	poeira.draw_pass_1 = malha
+	modelo.add_child(poeira)
+	return poeira
+
+
+func _criar_fumaca_chamine() -> GPUParticles3D:
+	var fumaca := GPUParticles3D.new()
+	fumaca.name = "FumacaChamine"
+	# Frente do trator (eixo -X), logo acima do capo. Lado direito = -Z.
+	fumaca.position = Vector3(-0.65, 2.50, -0.50)
+	fumaca.amount = 32
+	fumaca.lifetime = 0.6
+	fumaca.explosiveness = 0.0
+	fumaca.emitting = false
+	fumaca.local_coords = false
+	fumaca.visibility_aabb = AABB(Vector3(-4.0, -1.0, -4.0), Vector3(8.0, 9.0, 8.0))
+
+	var processo := ParticleProcessMaterial.new()
+	processo.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+	processo.emission_sphere_radius = 0.03
+	processo.direction = Vector3(0.0, 1.0, 0.0)
+	processo.spread = 4.0
+	processo.initial_velocity_min = 0.35
+	processo.initial_velocity_max = 0.8
+	processo.gravity = Vector3(0.0, 0.35, 0.0)
+	processo.damping_min = 0.05
+	processo.damping_max = 0.2
+	processo.scale_min = 0.8
+	processo.scale_max = 1.2
+	var curva_scale := Curve.new()
+	curva_scale.add_point(Vector2(0.0, 1.5))
+	curva_scale.add_point(Vector2(1.0, 0.1))
+	var textura_scale := CurveTexture.new()
+	textura_scale.curve = curva_scale
+	processo.scale_curve = textura_scale
+	processo.color = Color(0.48, 0.47, 0.45, 1.0)
+	var curva_alpha := Curve.new()
+	curva_alpha.add_point(Vector2(0.0, 0.0))
+	curva_alpha.add_point(Vector2(0.1, 0.02))
+	curva_alpha.add_point(Vector2(1.0, 0.0))
+	var textura_alpha := CurveTexture.new()
+	textura_alpha.curve = curva_alpha
+	processo.alpha_curve = textura_alpha
+	fumaca.process_material = processo
+
+	var malha := SphereMesh.new()
+	malha.radius = 0.055
+	malha.height = 0.11
+	var visual := StandardMaterial3D.new()
+	visual.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	visual.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	visual.cull_mode = BaseMaterial3D.CULL_DISABLED
+	visual.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
+	visual.albedo_color = Color(0.48, 0.47, 0.45, 1.0)
+	malha.material = visual
+	fumaca.draw_pass_1 = malha
+	modelo.add_child(fumaca)
+	return fumaca
 
 
 ## Redundancia por distancia: mostra o prompt mesmo se o sinal da Area falhar.
@@ -276,6 +409,8 @@ func _set_jogador(ativo_jogador: bool) -> void:
 func _entrar(silencioso: bool) -> void:
 	_set_jogador(false)
 	ativo = true
+	if _fuma_chamine:
+		_fuma_chamine.emitting = true
 	rig.rotation.y = BASE_RIG_Y
 	cam.current = true
 	_prompt.visible = false
@@ -293,6 +428,8 @@ func _sair() -> void:
 		_jogador.velocity = Vector3.ZERO
 	_set_jogador(true)
 	ativo = false
+	if _fuma_chamine:
+		_fuma_chamine.emitting = false
 	_vel = 0.0
 	cam.current = false
 	if _som_motor.playing:

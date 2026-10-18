@@ -3,11 +3,15 @@
 [ext_resource type="Script" uid="uid://ds2ax8sge3r3l" path="res://scripts/world/mundo.gd" id="1_m"]
 [ext_resource type="PackedScene" uid="uid://dcucsh6m5gurg" path="res://scenes/world/jogador.tscn" id="2_m"]
 [ext_resource type="PackedScene" uid="uid://deh4olcgnovb1" path="res://scenes/world/cenarios/sede_fazenda.tscn" id="5_8cwwk"]
+[ext_resource type="PackedScene" uid="uid://cmmhmwkn27vlq" path="res://scenes/world/cenarios/parque_solar.tscn" id="10_fcn4g"]
+[ext_resource type="PackedScene" uid="uid://cvl0nqo1pugqd" path="res://scenes/world/cenarios/parque_eolico.tscn" id="11_kegvl"]
 [ext_resource type="Script" uid="uid://c0vgwqb2qdbtn" path="res://scripts/world/terreno.gd" id="11_m"]
+[ext_resource type="PackedScene" uid="uid://c4f0hcxriit3c" path="res://scenes/world/cenarios/plantacao_soja.tscn" id="12_y4gja"]
 [ext_resource type="PackedScene" uid="uid://bpc1popflov1v" path="res://scenes/world/drone_jogador.tscn" id="15_52jc1"]
 [ext_resource type="Script" uid="uid://c5yp5xutt33sj" path="res://scripts/world/troca_drone.gd" id="16_k5g47"]
 [ext_resource type="PackedScene" uid="uid://br4ljesnrpw12" path="res://scenes/world/trator_jogador.tscn" id="19_uth38"]
 [ext_resource type="PackedScene" uid="uid://crbgbbqyqkl40" path="res://scenes/ui/hud.tscn" id="23_4xrqu"]
+[ext_resource type="PackedScene" uid="uid://ph06s7wblro" path="res://scenes/world/cenarios/plantacao_milho.tscn" id="24_milho"]
 
 [sub_resource type="Environment" id="Env_m1"]
 background_mode = 1
@@ -52,6 +56,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 1.2, 1)
 [node name="TratorJogador" parent="." unique_id=287191294 instance=ExtResource("19_uth38")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0.7, -7)
 
+[node name="PlantacaoMilho" parent="." unique_id=883100120 instance=ExtResource("24_milho")]
+transform = Transform3D(0.008786522, 0, 0.9999614, 0, 1, 0, -0.9999614, 0, 0.008786522, -36.39164, 0, 41.70751)
+
 [node name="TrocaDrone" type="Area3D" parent="." unique_id=1117733838]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 1, 1)
 script = ExtResource("16_k5g47")
+
+[node name="ParqueSolar" parent="." unique_id=883105101 instance=ExtResource("10_fcn4g")]
+transform = Transform3D(-0.99994266, 0, -0.010709232, 0, 1, 0, 0.010709232, 0, -0.99994266, -4.3208103, 0.034510165, 51.045685)
+
+[node name="ParqueEolico" parent="." unique_id=839695814 instance=ExtResource("11_kegvl")]
+transform = Transform3D(-0.9999706, 0, 0.007668269, 0, 1, 0, -0.007668269, 0, -0.9999706, -1.0295725, 0, 89.899)
+
+[node name="PlantacaoSoja" parent="." unique_id=883103101 instance=ExtResource("12_y4gja")]
+transform = Transform3D(0.00036390225, 0, 0.99999994, 0, 1, 0, -0.99999994, 0, 0.00036390225, 52.586197, 0, 41.511818)

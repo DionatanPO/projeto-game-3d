@@ -51,6 +51,27 @@ const PONTOS := [
 ]
 
 
+# Retangulos de terra nua em coords de mundo [x0, z0, x1, z1], com margem
+# nas bordas: plantacoes de milho/soja. Nesses areas nao gera arvores/pedras
+# (preparo do solo), alinhado com as posicoes reais dos cenarios no mundo.
+const RETANGULOS_TERRA := [
+	# Plantacao de milho (origem mundo ~-36.39, 0, 41.71)
+	[-49.0, 20.5, 18.5, 46.5],
+	# Plantacao de soja (origem mundo ~52.59, 0, 41.51)
+	[36.0, 17.0, 78.0, 50.0],
+]
+# Bases das turbinas eolicas em coords de mundo [x, z, raio]: so o pe de
+# cada torre e aplainado, sem retangulo.
+const BASES_EOLICO := [
+	[30.97, 89.9, 6.0],
+	[32.77, 128.6, 6.0],
+	[0.78, 110.64, 6.0],
+	[-29.22, 134.64, 6.0],
+	[-1.03, 71.9, 6.0],
+	[-31.03, 95.9, 6.0],
+]
+
+
 func _ready() -> void:
 	_gerar()
 
@@ -170,9 +191,29 @@ func _mascara_plano(x: float, z: float) -> float:
 		var dz := z - float(p[1])
 		var d := Vector2(dx, dz).length() - float(p[2])
 		d_min = minf(d_min, d)
+	d_min = minf(d_min, _dist_zonas_terra(x, z))
 	if d_min <= 0.0:
 		return 0.0
 	return clampf(d_min / 25.0, 0.0, 1.0)
+
+
+## Menor distancia fora das zonas de terra (retangulos + bases eolicas).
+func _dist_zonas_terra(x: float, z: float) -> float:
+	var d := 9999.0
+	for r in RETANGULOS_TERRA:
+		d = minf(d, _dist_retangulo(x, z, r))
+	for b in BASES_EOLICO:
+		var dx := x - float(b[0])
+		var dz := z - float(b[1])
+		d = minf(d, Vector2(dx, dz).length() - float(b[2]))
+	return d
+
+
+## Distancia fora do retangulo (0 dentro). [x0, z0, x1, z1].
+func _dist_retangulo(x: float, z: float, r: Array) -> float:
+	var dx := maxf(maxf(float(r[0]) - x, 0.0), x - float(r[2]))
+	var dz := maxf(maxf(float(r[1]) - z, 0.0), z - float(r[3]))
+	return Vector2(dx, dz).length()
 
 
 ## Cor por zona (sem textura): terra no nucleo/spawn, grama variada fora,
@@ -186,7 +227,8 @@ func _cor_zona(x: float, z: float, h: float) -> Color:
 	var cor := grama_a.lerp(grama_b, n)
 	var d_centro := Vector2(x, z).length()
 	var m_terra := 1.0 - smoothstep(18.0, 34.0, d_centro)
-	cor = cor.lerp(terra, m_terra * 0.9)
+	var m_ret := 1.0 - smoothstep(0.0, 4.0, _dist_zonas_terra(x, z))
+	cor = cor.lerp(terra, maxf(m_terra * 0.9, m_ret * 0.95))
 	var m_pedra := smoothstep(3.5, 7.0, h)
 	cor = cor.lerp(pedra, m_pedra)
 	return cor
@@ -297,6 +339,8 @@ func _espalhar_pack(rng: RandomNumberGenerator, nome: String, partes: Array, qtd
 			z = rng.randf_range(-195.0, 195.0)
 		var d_perto := minf(Vector2(x, z).length(), Vector2(x + 87.0, z - 0.66).length())
 		if Vector2(x, z).length() <= raio_livre:
+			continue
+		if _dist_zonas_terra(x, z) <= 0.0:
 			continue
 		if concentrar and d_perto > 110.0 and rng.randf() < (d_perto - 110.0) / 150.0:
 			continue

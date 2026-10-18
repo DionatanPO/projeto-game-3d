@@ -1,7 +1,9 @@
 extends Node3D
-## TutorialDrone: pista em zigue-zague de treino do drone agricola.
-## 10 argolas alternando esquerda/direita e alto/baixo + timer de 90 s.
-## Entrada: janela com as teclas -> [Comecar] liga o motor e inicia o timer.
+## TutorialDrone: laboratorio de teste fechado (sala retangular com paredes
+## e teto) onde 10 portais luminosos flutuam em zigue-zague, alternando
+## esquerda/direita e alto/baixo + timer de 90 s. O fim e so uma faixa
+## iluminada no piso, sem arco. Entrada: janela com as teclas -> [Comecar]
+## liga o motor e inicia o timer.
 ## Esc abre pausa (Continuar / Sair). Fim: vitoria (tempo final) ou tempo
 ## esgotado (Tentar de novo / Voltar ao mapa). Na saida, o drone volta a
 ## posicao salva no mapa (o voo aqui nao contamina o save).
@@ -17,7 +19,7 @@ const DIST_PLANTA_APOS_CHEGADA := 45.0
 const ALTURAS := [5.0, 10.5, 5.5, 12.0, 4.5, 9.0, 6.0, 11.0, 5.0, 8.0]
 const POS_X := [0.0, -6.0, 6.0, -9.0, 9.0, -6.0, 6.0, -9.0, 9.0, 0.0]
 const SPAWN := Vector3(0.0, 1.0, 8.0)
-const RAIO_ARGOLA := 4.5
+const RAIO_ARGOLA := 3.6
 
 enum Estado { ENTRADA, VOANDO, PAUSA, FIM }
 
@@ -232,7 +234,7 @@ func tentar_de_novo() -> void:
 		var malha: MeshInstance3D = _aneis[i]["no"]
 		malha.material_override = _mat_atual if i == 0 else _mat_futura
 		malha.scale = Vector3.ONE
-	_hud_argolas.text = "Argolas 0/%d" % QTD_ARGOLAS
+	_hud_argolas.text = "Portais 0/%d" % QTD_ARGOLAS
 	_hud_tempo.text = _formatar_tempo(int(TEMPO_LIMITE))
 	_drone.position = SPAWN
 	_drone.velocity = Vector3.ZERO
@@ -262,7 +264,7 @@ func _ao_atravessar(corpo: Node3D, i: int) -> void:
 	malha.material_override = _mat_feita
 	malha.scale = Vector3.ONE
 	_indice += 1
-	_hud_argolas.text = "Argolas %d/%d" % [mini(_indice, QTD_ARGOLAS), QTD_ARGOLAS]
+	_hud_argolas.text = "Portais %d/%d" % [mini(_indice, QTD_ARGOLAS), QTD_ARGOLAS]
 	if _indice >= QTD_ARGOLAS:
 		if _som_vitoria != null:
 			_som_vitoria.play()
@@ -293,7 +295,7 @@ func _vencer() -> void:
 	_congelar_drone(true)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	_fim_titulo.text = "Tutorial concluido!"
-	_fim_texto.text = "Voce cruzou as %d argolas em %s." % [QTD_ARGOLAS, _formatar_tempo(int(_tempo))]
+	_fim_texto.text = "Voce cruzou os %d portais em %s." % [QTD_ARGOLAS, _formatar_tempo(int(_tempo))]
 	_jan_fim.visible = true
 	_scrim.visible = true
 
@@ -303,7 +305,7 @@ func _perder() -> void:
 	_congelar_drone(true)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	_fim_titulo.text = "Tempo esgotado!"
-	_fim_texto.text = "Voce cruzou %d de %d argolas. Tente de novo." % [mini(_indice, QTD_ARGOLAS), QTD_ARGOLAS]
+	_fim_texto.text = "Voce cruzou %d de %d portais. Tente de novo." % [mini(_indice, QTD_ARGOLAS), QTD_ARGOLAS]
 	_jan_fim.visible = true
 	_scrim.visible = true
 
@@ -328,9 +330,8 @@ func _montar_mundo() -> void:
 	_mat_futura = _mat_argola(Color(0.55, 0.42, 0.10), Color(1.0, 0.75, 0.15), 0.4)
 	_mat_atual = _mat_argola(Color(0.05, 0.45, 0.55), Color(0.2, 0.95, 1.0), 1.6)
 	_mat_feita = _mat_argola(Color(0.08, 0.45, 0.12), Color(0.25, 1.0, 0.35), 1.2)
-	_ceu_e_sol()
-	_chao()
-	_pista()
+	_ambiente_lab()
+	_laboratorio()
 	for i in QTD_ARGOLAS:
 		var z := lerpf(Z_ARGOLA_INI, Z_ARGOLA_FIM, float(i) / float(QTD_ARGOLAS - 1))
 		_argola(i, Vector3(POS_X[i % POS_X.size()], ALTURAS[i % ALTURAS.size()], z))
@@ -429,50 +430,103 @@ func _reiniciar_musica() -> void:
 	_som_musica.play()
 
 
-func _ceu_e_sol() -> void:
+## Ambiente interno do laboratorio: fundo neutro e luz uniforme, sem ceu
+## nem neblina (sala fechada nao tem horizonte).
+func _ambiente_lab() -> void:
 	var env := Environment.new()
-	env.background_mode = Environment.BG_SKY
-	var ceu := Sky.new()
-	var mat := ProceduralSkyMaterial.new()
-	mat.sky_top_color = Color(0.25, 0.5, 0.9)
-	mat.sky_horizon_color = Color(0.65, 0.8, 0.95)
-	mat.ground_bottom_color = Color(0.2, 0.3, 0.2)
-	mat.ground_horizon_color = Color(0.65, 0.8, 0.9)
-	ceu.sky_material = mat
-	env.sky = ceu
-	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
-	env.ambient_light_energy = 0.9
-	env.fog_enabled = true
-	env.fog_depth_begin = 150.0
-	env.fog_depth_end = 450.0
+	env.background_mode = Environment.BG_COLOR
+	env.background_color = Color(0.15, 0.16, 0.18)
+	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+	env.ambient_light_color = Color(0.85, 0.88, 0.95)
+	env.ambient_light_energy = 1.05
 	var we := WorldEnvironment.new()
 	we.environment = env
 	add_child(we)
-	var sol := DirectionalLight3D.new()
-	sol.rotation = Vector3(-0.9, -0.6, 0.0)
-	sol.light_energy = 1.1
-	sol.shadow_enabled = true
-	add_child(sol)
+	# Sem sombra: parede e teto nao podem deixar o interior escuro.
+	var luz_solar := DirectionalLight3D.new()
+	luz_solar.rotation = Vector3(-0.9, -0.6, 0.0)
+	luz_solar.light_color = Color(0.95, 0.97, 1.0)
+	luz_solar.light_energy = 0.5
+	luz_solar.shadow_enabled = false
+	add_child(luz_solar)
 
 
-func _chao() -> void:
+## Sala retangular fechada (piso + 4 paredes + teto) com cara de laboratorio
+## limpo: MESMA cor lisa no piso, paredes e teto (sem textura nenhuma) e
+## tubos de luz no teto.
+func _laboratorio() -> void:
+	var raiz := Node3D.new()
+	raiz.name = "Laboratorio"
+	add_child(raiz)
+	var x_lado := 26.0
+	var z_ini := 20.0
+	var z_fim := -262.0
+	var comp := z_ini - z_fim
+	var z_centro := (z_ini + z_fim) * 0.5
+	var altura := 24.0
+
+	# Laboratorio limpo: piso, paredes e teto na MESMA cor lisa (sem textura).
+	var mat_lab := _mat_liso(Color(0.62, 0.65, 0.70))
+
+	# Piso: topo em -0.2, no mesmo nivel do plano de colisao do chao.
+	_caixa(raiz, "Piso", Vector3(x_lado * 2.0, 0.4, comp), Vector3(0, -0.4, z_centro), mat_lab)
+	_caixa(raiz, "ParedeEsq", Vector3(0.6, altura, comp), Vector3(-x_lado - 0.3, altura * 0.5 - 0.2, z_centro), mat_lab)
+	_caixa(raiz, "ParedeDir", Vector3(0.6, altura, comp), Vector3(x_lado + 0.3, altura * 0.5 - 0.2, z_centro), mat_lab)
+	_caixa(raiz, "ParedeFrente", Vector3(x_lado * 2.0 + 1.2, altura, 0.6), Vector3(0, altura * 0.5 - 0.2, z_ini + 0.3), mat_lab)
+	_caixa(raiz, "ParedeFundo", Vector3(x_lado * 2.0 + 1.2, altura, 0.6), Vector3(0, altura * 0.5 - 0.2, z_fim - 0.3), mat_lab)
+	_caixa(raiz, "Teto", Vector3(x_lado * 2.0 + 1.2, 0.6, comp + 1.2), Vector3(0, altura + 0.3, z_centro), mat_lab)
+
+	# Sem faixa de cor nas paredes: o laboratorio e todo da MESMA cor.
+	# (Se quiser um acento de volta, e so reinserir o bloco de "faixa".)
+
+	# Tubos fluorescentes no teto.
+	var tubo := StandardMaterial3D.new()
+	tubo.albedo_color = Color(0.95, 0.97, 1.0)
+	tubo.emission_enabled = true
+	tubo.emission = Color(0.95, 0.97, 1.0)
+	tubo.emission_energy_multiplier = 2.0
+	for x_tubo in [-15.0, 0.0, 15.0]:
+		_caixa(raiz, "TuboLuz", Vector3(1.0, 0.12, comp - 20.0), Vector3(x_tubo, altura - 0.5, z_centro), tubo)
+	# Luzes suaves espalhadas pelo corredor (bem espacadas para o teto e as
+	# paredes ficarem iluminados por igual, sem cantos escuros).
+	for z_luz in range(10, -262, -40):
+		var luz := OmniLight3D.new()
+		luz.light_color = Color(0.9, 0.94, 1.0)
+		luz.light_energy = 0.6
+		luz.omni_range = 70.0
+		luz.position = Vector3(0, altura - 3.0, float(z_luz))
+		raiz.add_child(luz)
+
+	# Marca de largada pintada no piso + linha inicial clara.
+	var marca := StandardMaterial3D.new()
+	marca.albedo_color = Color(0.8, 0.83, 0.87)
+	marca.roughness = 0.8
+	_caixa(raiz, "MarcaLargada", Vector3(11.0, 0.06, 8.0), Vector3(0, -0.17, 8.0), marca)
+	var linha := StandardMaterial3D.new()
+	linha.albedo_color = Color(0.9, 0.93, 0.96)
+	linha.emission_enabled = true
+	linha.emission = Color(0.8, 0.9, 1.0)
+	linha.emission_energy_multiplier = 0.8
+	_caixa(raiz, "LinhaInicial", Vector3(14.0, 0.08, 0.4), Vector3(0, -0.16, 12.0), linha)
+
+	# Colisao extra do piso.
 	var corpo := StaticBody3D.new()
-	corpo.name = "ChaoTutorial"
-	add_child(corpo)
-	var plano := MeshInstance3D.new()
-	var malha := PlaneMesh.new()
-	malha.size = Vector2(600, 600)
-	plano.mesh = malha
-	var m := StandardMaterial3D.new()
-	m.albedo_color = Color(0.25, 0.46, 0.22)
-	plano.material_override = m
-	plano.position = Vector3(0, -0.3, -70)
-	corpo.add_child(plano)
+	corpo.name = "ColisaoPiso"
+	raiz.add_child(corpo)
 	var col := CollisionShape3D.new()
-	var limite := WorldBoundaryShape3D.new()
-	limite.plane = Plane(Vector3.UP, -0.2)
-	col.shape = limite
+	var forma := BoxShape3D.new()
+	forma.size = Vector3(x_lado * 2.0, 0.4, comp)
+	col.shape = forma
+	col.position = Vector3(0, -0.4, z_centro)
 	corpo.add_child(col)
+
+
+## Material liso do laboratorio: cor unica, sem textura nenhuma.
+func _mat_liso(cor: Color) -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	m.albedo_color = cor
+	m.roughness = 0.7
+	return m
 
 
 func _caixa(pai: Node3D, nome: String, tamanho: Vector3, pos: Vector3, mat: Material) -> MeshInstance3D:
@@ -487,85 +541,27 @@ func _caixa(pai: Node3D, nome: String, tamanho: Vector3, pos: Vector3, mat: Mate
 	return mi
 
 
-func _pista() -> void:
-	var raiz := Node3D.new()
-	raiz.name = "Pista"
-	add_child(raiz)
-	# Pista acompanha o tamanho do percurso (argolas + espaco da chegada + planta).
-	var z_ini := 12.0
-	var z_fim := Z_ARGOLA_FIM - DIST_PLANTA_APOS_CHEGADA - 20.0
-	var comp := z_ini - z_fim
-	var z_centro := (z_ini + z_fim) * 0.5
-	var asfalto := StandardMaterial3D.new()
-	asfalto.albedo_color = Color(0.16, 0.17, 0.2)
-	_caixa(raiz, "Base", Vector3(24, 0.4, comp), Vector3(0, -0.2, z_centro), asfalto)
-	var corpo := StaticBody3D.new()
-	corpo.name = "ColisaoPista"
-	raiz.add_child(corpo)
-	var col := CollisionShape3D.new()
-	var forma := BoxShape3D.new()
-	forma.size = Vector3(24, 0.4, comp)
-	col.shape = forma
-	col.position = Vector3(0, -0.2, z_centro)
-	corpo.add_child(col)
-	var borda := StandardMaterial3D.new()
-	borda.albedo_color = Color(0.1, 0.8, 0.9)
-	borda.emission_enabled = true
-	borda.emission = Color(0.1, 0.8, 0.9)
-	borda.emission_energy_multiplier = 1.5
-	_caixa(raiz, "BordaEsq", Vector3(0.3, 0.08, comp), Vector3(-11.7, 0.04, z_centro), borda)
-	_caixa(raiz, "BordaDir", Vector3(0.3, 0.08, comp), Vector3(11.7, 0.04, z_centro), borda)
-	var faixa := StandardMaterial3D.new()
-	faixa.albedo_color = Color(0.9, 0.8, 0.2)
-	faixa.emission_enabled = true
-	faixa.emission = Color(0.9, 0.8, 0.2)
-	faixa.emission_energy_multiplier = 0.6
-	var z := 8.0
-	while z > z_fim + 4.0:
-		_caixa(raiz, "Faixa", Vector3(0.5, 0.06, 3.0), Vector3(0, 0.03, z), faixa)
-		z -= 8.0
-	var largada := StandardMaterial3D.new()
-	largada.albedo_color = Color(0.1, 0.6, 0.2)
-	largada.emission_enabled = true
-	largada.emission = Color(0.1, 0.7, 0.25)
-	largada.emission_energy_multiplier = 0.8
-	_caixa(raiz, "Largada", Vector3(9, 0.1, 8), Vector3(0, 0.05, 8), largada)
-	var rotulo := Label3D.new()
-	rotulo.text = "INICIO"
-	rotulo.font_size = 128
-	rotulo.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	rotulo.position = Vector3(0, 3.0, 11.5)
-	raiz.add_child(rotulo)
-
-
+## Portal do percurso: um ANEL redondo e luminoso, virado para o sentido do
+## voo (o drone passa POR DENTRO dele). Recebe a cor de estado (atual /
+## proxima / concluida) e pulsa para guiar o drone. Sem haste.
 func _argola(i: int, centro: Vector3) -> void:
 	var raiz := Node3D.new()
-	raiz.name = "Argola%d" % (i + 1)
+	raiz.name = "Portal%d" % (i + 1)
 	raiz.position = centro
 	add_child(raiz)
+	var anel := MeshInstance3D.new()
+	anel.name = "Anel"
 	var toro := TorusMesh.new()
-	toro.inner_radius = 3.6
-	toro.outer_radius = 4.2
+	toro.inner_radius = 3.4   # vao por onde o drone passa
+	toro.outer_radius = 4.2   # espessura do aro
 	toro.rings = 48
 	toro.ring_segments = 12
-	var malha := MeshInstance3D.new()
-	malha.name = "Anel"
-	malha.mesh = toro
-	malha.rotation.x = PI * 0.5
-	malha.material_override = _mat_atual if i == 0 else _mat_futura
-	raiz.add_child(malha)
-	var poste_mat := StandardMaterial3D.new()
-	poste_mat.albedo_color = Color(0.2, 0.2, 0.22)
-	for lado in [-4.5, 4.5]:
-		var poste := MeshInstance3D.new()
-		var cil := CylinderMesh.new()
-		cil.top_radius = 0.15
-		cil.bottom_radius = 0.15
-		cil.height = centro.y
-		poste.mesh = cil
-		poste.material_override = poste_mat
-		poste.position = Vector3(lado, -centro.y * 0.5, 0)
-		raiz.add_child(poste)
+	anel.mesh = toro
+	# O torus nasce deitado no plano XZ; girar 90 graus poe o furo virado
+	# para +-Z, que e o sentido do voo (o drone atravessa por dentro).
+	anel.rotation.x = PI * 0.5
+	anel.material_override = _mat_atual if i == 0 else _mat_futura
+	raiz.add_child(anel)
 	var area := Area3D.new()
 	area.name = "Alvo"
 	var col := CollisionShape3D.new()
@@ -575,44 +571,40 @@ func _argola(i: int, centro: Vector3) -> void:
 	area.add_child(col)
 	raiz.add_child(area)
 	area.body_entered.connect(_ao_atravessar.bind(i))
-	_aneis.append({"no": malha, "area": area, "centro": centro})
+	_aneis.append({"no": anel, "area": area, "centro": centro})
 
 
+## Chegada: so uma faixa luminosa no piso + luz acesa acima dela.
+## Sem estrutura de arco nem xadrez: o brilho marca onde parar.
+## A Area3D de deteccao continua igual (so finaliza apos pulverizar).
 func _arco_chegada() -> void:
 	var raiz := Node3D.new()
 	raiz.name = "Chegada"
 	# A linha de chegada fica APOS a planta de pulverizacao.
-	# O so pode finalizar apos pulverizar a planta e atravessar esse arco.
 	raiz.position = Vector3(0, 0, Z_ARGOLA_FIM - DIST_PLANTA_APOS_CHEGADA - 25.0)
 	add_child(raiz)
-	var mat := StandardMaterial3D.new()
-	mat.albedo_color = Color(0.92, 0.92, 0.92)
-	mat.emission_enabled = true
-	mat.emission = Color(1, 1, 1)
-	mat.emission_energy_multiplier = 0.7
-	_caixa(raiz, "ColEsq", Vector3(0.6, 9, 0.6), Vector3(-5, 4.5, 0), mat)
-	_caixa(raiz, "ColDir", Vector3(0.6, 9, 0.6), Vector3(5, 4.5, 0), mat)
-	_caixa(raiz, "Topo", Vector3(11, 0.8, 0.8), Vector3(0, 9.2, 0), mat)
+	# Faixa clara no piso.
+	var mat_faixa := StandardMaterial3D.new()
+	mat_faixa.albedo_color = Color(0.9, 0.92, 0.95)
+	mat_faixa.roughness = 0.5
+	mat_faixa.emission_enabled = true
+	mat_faixa.emission = Color(0.85, 0.95, 1.0)
+	mat_faixa.emission_energy_multiplier = 1.2
+	_caixa(raiz, "Faixa", Vector3(14, 0.06, 2.2), Vector3(0, -0.15, 0), mat_faixa)
+	# Luz acesa sobre a area da chegada.
+	var luz := OmniLight3D.new()
+	luz.name = "LuzChegada"
+	luz.light_color = Color(0.85, 0.95, 1.0)
+	luz.light_energy = 1.6
+	luz.omni_range = 16.0
+	luz.position = Vector3(0, 4.0, 0)
+	raiz.add_child(luz)
 	var rotulo := Label3D.new()
 	rotulo.text = "CHEGADA"
 	rotulo.font_size = 128
 	rotulo.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	rotulo.position = Vector3(0, 11.0, 0)
+	rotulo.position = Vector3(0, 6.0, 0)
 	raiz.add_child(rotulo)
-
-	# Pista xadrez estilo Mario Kart no chao da linha de chegada
-	var quad_sz := 1.2
-	var col_preto := StandardMaterial3D.new()
-	col_preto.albedo_color = Color(0.15, 0.15, 0.15)
-	var col_branco := StandardMaterial3D.new()
-	col_branco.albedo_color = Color(0.95, 0.95, 0.95)
-	var grid := 6  # quantidade de quadradinhos de cada lado
-	var inicio := -grid * quad_sz * 0.5
-	for x in range(grid):
-		for z in range(grid):
-			var eh_preto := (x + z) % 2 == 0
-			var quad_mat := col_preto if eh_preto else col_branco
-			var q := _caixa(raiz, "Quad%d_%d" % [x, z], Vector3(quad_sz, 0.1, quad_sz), Vector3(inicio + x * quad_sz + quad_sz * 0.5, 0.05, z * quad_sz + quad_sz * 0.5 - grid * quad_sz * 0.5 + quad_sz * 0.5), quad_mat)
 
 	# Area de deteccao da linha de chegada (so funciona apos pulverizar a planta)
 	var area := Area3D.new()
@@ -634,6 +626,16 @@ func _montar_planta() -> void:
 	raiz.name = "Planta"
 	raiz.position = Vector3(0, 0, Z_ARGOLA_FIM - DIST_PLANTA_APOS_CHEGADA)
 	add_child(raiz)
+
+	# Canteiro de concreto com terra por cima (espécime do lab).
+	var mat_canteiro := StandardMaterial3D.new()
+	mat_canteiro.albedo_color = Color(0.42, 0.44, 0.48)
+	mat_canteiro.roughness = 0.9
+	_caixa(raiz, "Canteiro", Vector3(7, 1.0, 7), Vector3(0, 0.3, 0), mat_canteiro)
+	var mat_terra := StandardMaterial3D.new()
+	mat_terra.albedo_color = Color(0.25, 0.17, 0.11)
+	mat_terra.roughness = 1.0
+	_caixa(raiz, "Terra", Vector3(6.2, 0.2, 6.2), Vector3(0, 0.85, 0), mat_terra)
 
 	# Tronco
 	var mat_tronco := StandardMaterial3D.new()
@@ -664,12 +666,12 @@ func _montar_planta() -> void:
 	_area_planta.add_child(col)
 	raiz.add_child(_area_planta)
 
-	# Milho decorativo em cima da area de pulverizacao (no chao)
+	# Milho decorativo em cima da area de pulverizacao (no canteiro)
 	var cena_milho := load("res://assets/models/Corn_2.fbx")
 	if cena_milho != null:
 		var milho: Node = cena_milho.instantiate()
 		milho.name = "Milho"
-		milho.position = Vector3(0, 0.0, 0)
+		milho.position = Vector3(0, 0.95, 0)
 		raiz.add_child(milho)
 
 
@@ -730,7 +732,7 @@ func _montar_ui() -> void:
 	_hud_argolas.name = "Argolas"
 	var pil_argolas := _pildora_hud(_hud_argolas, 15)
 	topo.add_child(pil_argolas)
-	_hud_argolas.text = "Argolas 0/%d" % QTD_ARGOLAS
+	_hud_argolas.text = "Portais 0/%d" % QTD_ARGOLAS
 	_hud_tempo.text = _formatar_tempo(int(TEMPO_LIMITE))
 	_jan_entrada = _janela("Tutorial do Drone", "TREINAMENTO  •  DRONE AGRICOLA")
 	_jan_entrada.name = "JanEntrada"
@@ -775,7 +777,7 @@ func _pildora_hud(rotulo: Label, fonte: int) -> PanelContainer:
 
 
 func _texto_controles() -> String:
-	return "Atravesse as %d argolas em ordem antes do tempo acabar!\n\nW / S — frente e re   •   A / D — lados\nEspaco — subir   •   C — descer\nShift — turbo   •   L — liga/desliga o motor\nMouse — olhar (clique captura a mira)" % QTD_ARGOLAS
+	return "Atravesse os %d portais em ordem antes do tempo acabar!\n\nW / S — frente e re   •   A / D — lados\nEspaco — subir   •   C — descer\nShift — turbo   •   L — liga/desliga o motor\nMouse — olhar (clique captura a mira)" % QTD_ARGOLAS
 
 
 ## Janela no mesmo padrao do Diario/Dialogo do HUD:
