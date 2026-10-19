@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bv4iws3o55m3c"]
+
+[ext_resource type="Script" path="res://scripts/world/plantacao.gd" id="1_wgxam"]
+
+[node name="Plantacao" type="Node3D" unique_id=1848806246]
+script = ExtResource("1_wgxam")

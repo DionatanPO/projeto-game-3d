@@ -47,8 +47,9 @@ var _vinheta: TextureRect
 var _vento: AudioStreamPlayer3D
 var _tremor_suave := 0.0
 
-const SPAWN_GALPAO := Vector3(7.2, 1.2, 1.0)
+const SPAWN_GALPAO := Vector3(-3.5, 1.2, 2.5)
 const HOME_DRONE_ANTIGO := Vector3(-2.0, 1.0, -50.0)
+const HOME_DRONE_GALPAO_ANTIGO := Vector3(7.2, 1.2, 1.0)
 
 const POSICOES := [
 	Vector3(1.803, 3.05, 1.803),
@@ -67,8 +68,8 @@ func _ready() -> void:
 	var pos: Variant = SaveSystem.dados.get("posicao_drone", [SPAWN_GALPAO.x, SPAWN_GALPAO.y, SPAWN_GALPAO.z])
 	if pos is Array and (pos as Array).size() == 3:
 		position = Vector3(float(pos[0]), clampf(float(pos[1]), 1.0, 12.0), float(pos[2]))
-		# Migra o antigo ponto padrão do drone para a frente do galpão.
-		if position.distance_to(HOME_DRONE_ANTIGO) < 0.5:
+		# Migra posições antigas para a nova posição ao lado da torre d'água.
+		if position.distance_to(HOME_DRONE_ANTIGO) < 0.5 or position.distance_to(HOME_DRONE_GALPAO_ANTIGO) < 0.5:
 			position = SPAWN_GALPAO
 	modelo.rotation.y = PI * 0.5
 	_som = AudioStreamPlayer3D.new()

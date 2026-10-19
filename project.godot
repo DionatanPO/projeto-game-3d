@@ -13,7 +13,7 @@ config_version=5
 config/name="AgroBrasil 3D"
 config/description="Jogo digital educativo 3D sobre o agronegocio brasileiro, tecnologia agricola e sustentabilidade. Prototipo base."
 run/main_scene="res://scenes/ui/menus/menu_inicial.tscn"
-config/features=PackedStringArray("4.7", "GL Compatibility")
+config/features=PackedStringArray("4.7", "Forward Plus")
 boot_splash/bg_color=Color(0.24, 0.42, 0.24, 1)
 
 [autoload]
@@ -47,7 +47,6 @@ pointing/emulate_touch_from_mouse=true
 
 [rendering]
 
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
+renderer/rendering_method.mobile="forward_plus"
 textures/vram_compression/import_etc2_astc=true
-environment/defaults/default_clear_color=Color(0.53, 0.75, 0.92, 1)
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)

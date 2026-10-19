@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://d0hwo2jgdyb11"
-path="res://.godot/imported/estrada.glb-a6db069face284466b3000955c871fc6.scn"
+uid="uid://m11xqkpquj8o"
+path="res://.godot/imported/drone_agricola_backup_preotimizacao.glb-73c83d839368cc8fa3897c153dfb653d.scn"
 
 [deps]
 
-source_file="res://assets/models/estrada.glb"
-dest_files=["res://.godot/imported/estrada.glb-a6db069face284466b3000955c871fc6.scn"]
+source_file="res://assets/models/drone_agricola_backup_preotimizacao.glb"
+dest_files=["res://.godot/imported/drone_agricola_backup_preotimizacao.glb-73c83d839368cc8fa3897c153dfb653d.scn"]
 
 [params]
 

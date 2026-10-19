@@ -5,7 +5,7 @@ extends Area3D
 
 const RAIO := 6.0
 const RAIO_PERTO := 9.0
-const HOME_DRONE := Vector3(7.2, 1.0, 1.0)
+const HOME_DRONE := Vector3(-3.5, 1.0, 2.5)
 
 var _prompt: Label3D
 var _jogador: CharacterBody3D
@@ -163,6 +163,9 @@ func _unhandled_input(evento: InputEvent) -> void:
 
 ## Abre o treino. A conclusao e registrada somente ao vencer.
 func _ir_tutorial() -> void:
+	# Quem ja chegou ao tutorial nao precisa rever a abertura do mapa na volta.
+	SaveSystem.dados["intro_mundo_vista"] = true
+	SaveSystem.salvar()
 	get_tree().change_scene_to_file("res://scenes/world/tutorial_drone.tscn")
 
 

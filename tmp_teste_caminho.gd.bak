@@ -1,0 +1,33 @@
+extends Node3D
+
+func _todos(no: Node, acc: Array) -> void:
+	acc.append(no)
+	for f in no.get_children():
+		_todos(f, acc)
+
+func _ready() -> void:
+	await get_tree().process_frame
+	var multi: Array = []
+	var acc: Array = []
+	_todos($Terreno, acc)
+	for n in acc:
+		if n is MultiMeshInstance3D:
+			multi.append(n)
+	var antes := {}
+	for m in multi:
+		antes[m.get_instance_id()] = (m.multimesh.instance_count if m.multimesh else 0)
+	var caminho = preload("res://scenes/world/cenarios/caminho.tscn").instantiate()
+	add_child(caminho)
+	caminho.definir_pontos([Vector3(-90, 0, 70), Vector3(0, 0, 0), Vector3(90, 0, -70)])
+	caminho.limpar_vegetacao_agora()
+	var removidas := 0
+	var alterados := 0
+	for m in multi:
+		if not is_instance_valid(m):
+			continue
+		var c = (m.multimesh.instance_count if m.multimesh else 0)
+		var a = antes.get(m.get_instance_id(), 0)
+		if c < a:
+			alterados += 1
+			removidas += a - c
+	print("TESTE_CAMINHO multimeshes=%d alterados=%d removidas=%d" % [multi.size(), alterados, removidas])

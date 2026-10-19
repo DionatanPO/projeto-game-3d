@@ -17,6 +17,54 @@ var _sun_day_energy: float = 0.0
 var _sun_day_color: Color = Color.WHITE
 var _lightning_generation: int = 0
 
+## ---- Cutscene Cinematográfica de Abertura ---------------------------
+const INTRO_CLAREAR := 0.8
+const INTRO_ESCURECER := 0.6
+const INTRO_VOLTA := 0.5
+const POS_FINAL_JOGADOR := Vector3(0.0, 1.5, -11.91)
+const POS_INICIAL_JOGADOR := Vector3(0.0, 1.5, -19.5)
+
+const CINEMATICA: Array[Dictionary] = [
+	{
+		"pos_ini": Vector3(-45.0, 40.0, 120.0), "pos_fim": Vector3(-18.0, 26.0, 88.0),
+		"alvo_ini": Vector3(-1.0, 8.0, 89.0), "alvo_fim": Vector3(0.0, 2.0, 30.0),
+		"tempo": 4.5, "texto": "FAZENDA AGROBRASIL  •  INOVAÇÃO E SUSTENTABILIDADE",
+	},
+	{
+		"pos_ini": Vector3(-48.0, 9.5, 62.0), "pos_fim": Vector3(-18.0, 6.5, 36.0),
+		"alvo_ini": Vector3(-36.0, 1.5, 41.0), "alvo_fim": Vector3(10.0, 1.0, 20.0),
+		"tempo": 4.2, "texto": "CAMPOS DE CULTIVO  •  TECNOLOGIA E AGRICULTURA DE PRECISÃO",
+	},
+	{
+		"pos_ini": Vector3(18.0, 5.5, -14.0), "pos_fim": Vector3(8.5, 3.5, -4.0),
+		"alvo_ini": Vector3(13.0, 1.5, -7.0), "alvo_fim": Vector3(7.2, 1.2, 1.0),
+		"tempo": 3.8, "texto": "EQUIPAMENTOS INTELIGENTES  •  TRATORES E DRONES DE MONITORAMENTO",
+	},
+	{
+		"pos_ini": Vector3(-14.0, 6.0, -22.0), "pos_fim": Vector3(-4.5, 3.2, -16.5),
+		"alvo_ini": Vector3(1.2, 2.0, 3.0), "alvo_fim": Vector3(0.0, 1.6, -11.9),
+		"tempo": 3.8, "texto": "SEDE DA FAZENDA  •  O PONTO DE PARTIDA DA SUA JORNADA",
+	},
+	{
+		"pos_ini": Vector3(0.0, 3.2, -18.5), "pos_fim": Vector3(0.0, 2.2, -15.0),
+		"alvo_ini": Vector3(0.0, 1.5, -11.9), "alvo_fim": Vector3(0.0, 1.5, -11.9),
+		"tempo": 3.5, "texto": "EXPLORE, APRENDA E CULTIVE O FUTURO",
+	},
+]
+
+var _em_cutscene := false
+var _intro_tempo := 0.0
+var _intro_total := 0.0
+var _intro_plano := -1
+var _camera_cine: Camera3D
+var _ui_layer: CanvasLayer
+var _intro_barras: Array[ColorRect] = []
+var _intro_texto: Label
+var _intro_dica: Label
+var _intro_fade: ColorRect
+var _musica_cutscene: AudioStreamPlayer
+var _hud_node: Control
+
 const ORIGENS := {
 	"sede": Vector3(0, 0, 0),
 	"milho": Vector3(120, 0, 0),
@@ -46,9 +94,59 @@ func _ready() -> void:
 	Engine.max_fps = 0
 	# Som ambiente da fazenda: so toca com o jogador a pe (inicia/para em _process).
 	_configurar_musica()
-	_atualizar_som_ambiente()
 	_inicializar_sistema_chuva()
 	_encontrar_jogador()
+	# A abertura cinematografica e so da primeira entrada no mapa. Ao voltar
+	# de outra cena (ex.: tutorial do drone), o jogador cai direto no controle.
+	if _intro_ja_vista():
+		_entrar_direto_no_jogo()
+	else:
+		_iniciar_cutscene()
+
+
+## A abertura do mundo roda uma unica vez. Saves antigos que ja passaram pelo
+## tutorial do drone tambem contam como "ja apresentados".
+func _intro_ja_vista() -> bool:
+	if bool(SaveSystem.dados.get("intro_mundo_vista", false)):
+		return true
+	if bool(SaveSystem.dados.get("tutorial_drone_visto", false)) \
+			or bool(SaveSystem.dados.get("tutorial_drone_concluido", false)):
+		SaveSystem.dados["intro_mundo_vista"] = true
+		SaveSystem.salvar()
+		return true
+	return false
+
+
+## Entrada sem cutscene: faz o mesmo "devolver controle" da abertura (HUD
+## visivel, jogador livre, camera do veiculo ativo e mouse capturado).
+func _entrar_direto_no_jogo() -> void:
+	_em_cutscene = false
+	_intro_tempo = 0.0
+	_hud_node = get_node_or_null("HUD") as Control
+	if _hud_node != null:
+		_hud_node.visible = true
+	if _player_ref != null:
+		_player_ref.set("bloqueado", false)
+		if _player_ref.has_method("parar_cutscene"):
+			_player_ref.parar_cutscene()
+	_retomar_camera_ativa()
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
+## Deixa a camera do veiculo ativo em primeiro plano (jogador/drone/trator).
+func _retomar_camera_ativa() -> void:
+	var veiculo := str(SaveSystem.dados.get("veiculo", "jogador"))
+	var grupo := "jogador"
+	if veiculo == "drone":
+		grupo = "drone_jogador"
+	elif veiculo == "trator":
+		grupo = "trator_jogador"
+	var corpo := get_tree().get_first_node_in_group(grupo) as Node3D
+	if corpo == null:
+		return
+	var cam := corpo.find_child("Camera3D", true, false) as Camera3D
+	if cam != null:
+		cam.make_current()
 
 
 func _configurar_musica() -> void:
@@ -74,6 +172,10 @@ func _configurar_musica() -> void:
 ## retoma (de onde parou) ao descer. "veiculo" no save e a fonte da verdade.
 func _atualizar_som_ambiente() -> void:
 	if _som_musica == null:
+		return
+	if _em_cutscene:
+		if _som_musica.playing:
+			_som_musica.stop()
 		return
 	var a_pe := str(SaveSystem.dados.get("veiculo", "jogador")) == "jogador"
 	if a_pe and not _som_musica.playing:
@@ -191,7 +293,16 @@ func _inicializar_sistema_chuva() -> void:
 	pass
 
 
+func _unhandled_input(evento: InputEvent) -> void:
+	if _em_cutscene and _evento_pula(evento):
+		_pular_intro()
+		get_viewport().set_input_as_handled()
+
+
 func _process(delta: float) -> void:
+	if _em_cutscene:
+		_processar_cutscene(delta)
+		return
 	_process_input()
 	_atualizar_alvo_chuva()
 	_atualizar_som_ambiente()
@@ -316,3 +427,251 @@ func teleportar_para(cenario: String) -> void:
 	corpo.position = destino
 	if corpo is CharacterBody3D:
 		(corpo as CharacterBody3D).velocity = Vector3.ZERO
+
+
+# ------------------------------------------------------------------
+# Cutscene Cinematográfica de Abertura do Mundo
+# ------------------------------------------------------------------
+
+func _iniciar_cutscene() -> void:
+	_em_cutscene = true
+	_intro_tempo = 0.0
+	_intro_plano = -1
+	_intro_total = 0.0
+	for plano in CINEMATICA:
+		_intro_total += float(plano["tempo"])
+
+	_hud_node = get_node_or_null("HUD") as Control
+	if _hud_node != null:
+		_hud_node.visible = false
+
+	# Posiciona o jogador no ponto de partida da caminhada
+	if _player_ref != null:
+		_player_ref.global_position = POS_INICIAL_JOGADOR
+		_player_ref.set("bloqueado", true)
+		if _player_ref.has_method("parar_cutscene"):
+			_player_ref.parar_cutscene(POS_INICIAL_JOGADOR)
+		# Orienta o modelo para o destino da caminhada
+		var modelo_jogador := _player_ref.find_child("Modelo", true, false) as Node3D
+		if modelo_jogador != null:
+			var dir_destino := (POS_FINAL_JOGADOR - POS_INICIAL_JOGADOR)
+			dir_destino.y = 0.0
+			if dir_destino.length() > 0.01:
+				dir_destino = dir_destino.normalized()
+				modelo_jogador.rotation.y = atan2(-dir_destino.x, -dir_destino.z)
+
+
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+	_montar_ui_cutscene()
+
+	for barra in _intro_barras:
+		barra.visible = true
+	_intro_texto.text = ""
+	_intro_texto.visible = true
+	_intro_dica.visible = true
+	_intro_fade.visible = true
+	_intro_fade.color.a = 1.0
+
+	_camera_cine = Camera3D.new()
+	_camera_cine.name = "CameraCinematografica"
+	_camera_cine.fov = 68.0
+	_camera_cine.far = 450.0
+	add_child(_camera_cine)
+	_camera_cine.global_position = CINEMATICA[0]["pos_ini"]
+	_camera_cine.look_at(CINEMATICA[0]["alvo_ini"], Vector3.UP)
+	_camera_cine.make_current()
+
+	_tocar_musica_cutscene()
+
+
+func _tocar_musica_cutscene() -> void:
+	_musica_cutscene = AudioStreamPlayer.new()
+	_musica_cutscene.name = "MusicaCutscene"
+	var trilha := load("res://assets/audio/musicas/First_Light_on_the_Rows.mp3") as AudioStream
+	if trilha is AudioStreamMP3:
+		(trilha as AudioStreamMP3).loop = true
+	_musica_cutscene.stream = trilha
+	if AudioServer.get_bus_index("Musica") >= 0:
+		_musica_cutscene.bus = "Musica"
+	_musica_cutscene.volume_db = -2.0
+	add_child(_musica_cutscene)
+	_musica_cutscene.play()
+
+
+func _processar_cutscene(delta: float) -> void:
+	_intro_tempo += delta
+
+	# A partir do plano 4 (≈15s), o personagem caminha autonomamente até a sede.
+	# A função agora apenas ativa o destino no jogador; o movimento acontece no _physics_process.
+	if _intro_tempo >= 15.0 and _player_ref != null and _player_ref.has_method("caminhar_cutscene"):
+		_player_ref.caminhar_cutscene(delta, POS_FINAL_JOGADOR)
+
+	# Reta final: escurece e devolve o controle ao jogador
+	if _intro_tempo >= _intro_total:
+		_intro_fade.color.a = clampf((_intro_tempo - _intro_total) / INTRO_ESCURECER, 0.0, 1.0)
+		if _intro_fade.color.a >= 1.0:
+			_devolver_controle()
+		return
+	# Fade de abertura: clareia a tela nos primeiros INTRO_CLAREAR segundos
+	_intro_fade.color.a = clampf(1.0 - _intro_tempo / INTRO_CLAREAR, 0.0, 1.0)
+
+	var acumulado := 0.0
+	for i in CINEMATICA.size():
+		var plano: Dictionary = CINEMATICA[i]
+		var tempo := float(plano["tempo"])
+		if _intro_tempo < acumulado + tempo:
+			_aplicar_plano(plano, (_intro_tempo - acumulado) / tempo, i)
+			return
+		acumulado += tempo
+
+
+func _aplicar_plano(plano: Dictionary, t: float, i: int) -> void:
+	if _camera_cine == null:
+		return
+	var e := smoothstep(0.0, 1.0, clampf(t, 0.0, 1.0))
+	var pos := (plano["pos_ini"] as Vector3).lerp(plano["pos_fim"] as Vector3, e)
+	var alvo := (plano["alvo_ini"] as Vector3).lerp(plano["alvo_fim"] as Vector3, e)
+	if pos.distance_to(alvo) > 0.5:
+		_camera_cine.global_position = pos
+		_camera_cine.look_at(alvo, Vector3.UP)
+	if _intro_plano != i:
+		_intro_plano = i
+		_intro_texto.text = str(plano["texto"])
+
+
+func _pular_intro() -> void:
+	if _player_ref != null and _player_ref.has_method("parar_cutscene"):
+		_player_ref.parar_cutscene(POS_FINAL_JOGADOR)
+	_intro_tempo = _intro_total
+
+
+func _devolver_controle() -> void:
+	_em_cutscene = false
+	_intro_tempo = 0.0
+	# A abertura so volta a tocar em um jogo novo (SaveSystem.apagar()).
+	SaveSystem.dados["intro_mundo_vista"] = true
+	SaveSystem.salvar()
+
+	if _camera_cine != null:
+		_camera_cine.queue_free()
+		_camera_cine = null
+
+	if _player_ref != null:
+		_player_ref.set("bloqueado", false)
+		if _player_ref.has_method("parar_cutscene"):
+			_player_ref.parar_cutscene(POS_FINAL_JOGADOR)
+		var cam := _player_ref.find_child("Camera3D", true, false) as Camera3D
+		if cam != null:
+			cam.make_current()
+
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+	if _hud_node != null:
+		_hud_node.visible = true
+
+	for barra in _intro_barras:
+		barra.visible = false
+	if _intro_texto != null:
+		_intro_texto.visible = false
+	if _intro_dica != null:
+		_intro_dica.visible = false
+
+	# Clareia a visão do jogador a partir do preto
+	var tw := create_tween()
+	tw.tween_property(_intro_fade, "color:a", 0.0, INTRO_VOLTA)
+	tw.tween_callback(Callable(_intro_fade, "hide"))
+
+	# Fade out suave da música da cutscene e início do som ambiente
+	if _musica_cutscene != null:
+		var tw_mus := create_tween()
+		tw_mus.tween_property(_musica_cutscene, "volume_db", -40.0, 1.4)
+		tw_mus.tween_callback(func() -> void:
+			if _musica_cutscene != null:
+				_musica_cutscene.stop()
+				_musica_cutscene.queue_free()
+				_musica_cutscene = null
+		)
+
+	_atualizar_som_ambiente()
+
+
+func _evento_pula(evento: InputEvent) -> bool:
+	if evento is InputEventKey:
+		return (evento as InputEventKey).pressed and not (evento as InputEventKey).echo
+	if evento is InputEventMouseButton:
+		return (evento as InputEventMouseButton).pressed
+	if evento is InputEventJoypadButton:
+		return (evento as InputEventJoypadButton).pressed
+	if evento is InputEventScreenTouch:
+		return (evento as InputEventScreenTouch).pressed
+	return false
+
+
+func _montar_ui_cutscene() -> void:
+	_ui_layer = CanvasLayer.new()
+	_ui_layer.name = "CutsceneUI"
+	_ui_layer.layer = 100
+	add_child(_ui_layer)
+
+	var barra_topo := ColorRect.new()
+	barra_topo.name = "BarraCineTopo"
+	barra_topo.color = Color(0, 0, 0, 1)
+	barra_topo.anchor_right = 1.0
+	barra_topo.anchor_bottom = 0.11
+	barra_topo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	barra_topo.visible = false
+	_ui_layer.add_child(barra_topo)
+	_intro_barras.append(barra_topo)
+
+	var barra_baixo := ColorRect.new()
+	barra_baixo.name = "BarraCineBaixo"
+	barra_baixo.color = Color(0, 0, 0, 1)
+	barra_baixo.anchor_top = 0.89
+	barra_baixo.anchor_right = 1.0
+	barra_baixo.anchor_bottom = 1.0
+	barra_baixo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	barra_baixo.visible = false
+	_ui_layer.add_child(barra_baixo)
+	_intro_barras.append(barra_baixo)
+
+	_intro_texto = Label.new()
+	_intro_texto.name = "LegendaCine"
+	_intro_texto.text = ""
+	_intro_texto.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_intro_texto.add_theme_font_size_override("font_size", 20)
+	_intro_texto.add_theme_color_override("font_color", Color(1, 1, 1, 1))
+	_intro_texto.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_intro_texto.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_intro_texto.anchor_top = 0.89
+	_intro_texto.anchor_right = 1.0
+	_intro_texto.anchor_bottom = 1.0
+	_intro_texto.offset_left = 40.0
+	_intro_texto.offset_right = -40.0
+	_intro_texto.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_intro_texto.visible = false
+	_ui_layer.add_child(_intro_texto)
+
+	_intro_dica = Label.new()
+	_intro_dica.name = "DicaCine"
+	_intro_dica.text = "Pular: qualquer tecla, botão ou clique"
+	_intro_dica.add_theme_font_size_override("font_size", 13)
+	_intro_dica.add_theme_color_override("font_color", Color(1, 1, 1, 0.78))
+	_intro_dica.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.85))
+	_intro_dica.add_theme_constant_override("outline_size", 5)
+	_intro_dica.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_intro_dica.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	_intro_dica.offset_top = 20.0
+	_intro_dica.offset_bottom = 44.0
+	_intro_dica.offset_right = -26.0
+	_intro_dica.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_intro_dica.visible = false
+	_ui_layer.add_child(_intro_dica)
+
+	_intro_fade = ColorRect.new()
+	_intro_fade.name = "FadeCine"
+	_intro_fade.color = Color(0, 0, 0, 1)
+	_intro_fade.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_intro_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_intro_fade.visible = false
+	_ui_layer.add_child(_intro_fade)

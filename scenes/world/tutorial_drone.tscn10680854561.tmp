@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://b1r3sqrl05y2w"]
+
+[ext_resource type="Script" uid="uid://chgkqapbccag3" path="res://scripts/world/tutorial_drone.gd" id="1_t"]
+[ext_resource type="PackedScene" uid="uid://bpc1popflov1v" path="res://scenes/world/drone_jogador.tscn" id="2_t"]
+
+[node name="TutorialDrone" type="Node3D" unique_id=369981451]
+script = ExtResource("1_t")
+
+[node name="DroneJogador" parent="." unique_id=254974437 instance=ExtResource("2_t")]

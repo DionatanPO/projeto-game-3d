@@ -51,15 +51,13 @@ const PONTOS := [
 ]
 
 
-# Retangulos de terra nua em coords de mundo [x0, z0, x1, z1], com margem
-# nas bordas: plantacoes de milho/soja. Nesses areas nao gera arvores/pedras
-# (preparo do solo), alinhado com as posicoes reais dos cenarios no mundo.
-const RETANGULOS_TERRA := [
-	# Plantacao de milho (origem mundo ~-36.39, 0, 41.71)
-	[-49.0, 20.5, 18.5, 46.5],
-	# Plantacao de soja (origem mundo ~52.59, 0, 41.51)
-	[36.0, 17.0, 78.0, 50.0],
-]
+# As plantacoes agora sao cenas reutilizaveis (cenarios/plantacao.tscn), que
+# preparam o proprio solo e removem a vegetacao da area. O terreno nao tem mais
+# retangulos fixos de terra para milho/soja: assim nao sobram demarcacoes
+# antigas fora de lugar quando uma plantacao e movida.
+# Piso do parque solar: zona de terra (igual as bases eolicas) que tira a
+# vegetacao e deixa o chao imitando solo sob/ao redor dos paineis. [x, z, raio].
+const PISO_SOLAR := [0.66, 44.66, 11.0]
 # Bases das turbinas eolicas em coords de mundo [x, z, raio]: so o pe de
 # cada torre e aplainado, sem retangulo.
 const BASES_EOLICO := [
@@ -197,23 +195,14 @@ func _mascara_plano(x: float, z: float) -> float:
 	return clampf(d_min / 25.0, 0.0, 1.0)
 
 
-## Menor distancia fora das zonas de terra (retangulos + bases eolicas).
+## Menor distancia fora das zonas de terra (piso solar + bases eolicas).
 func _dist_zonas_terra(x: float, z: float) -> float:
-	var d := 9999.0
-	for r in RETANGULOS_TERRA:
-		d = minf(d, _dist_retangulo(x, z, r))
+	var d := Vector2(x - float(PISO_SOLAR[0]), z - float(PISO_SOLAR[1])).length() - float(PISO_SOLAR[2])
 	for b in BASES_EOLICO:
 		var dx := x - float(b[0])
 		var dz := z - float(b[1])
 		d = minf(d, Vector2(dx, dz).length() - float(b[2]))
 	return d
-
-
-## Distancia fora do retangulo (0 dentro). [x0, z0, x1, z1].
-func _dist_retangulo(x: float, z: float, r: Array) -> float:
-	var dx := maxf(maxf(float(r[0]) - x, 0.0), x - float(r[2]))
-	var dz := maxf(maxf(float(r[1]) - z, 0.0), z - float(r[3]))
-	return Vector2(dx, dz).length()
 
 
 ## Cor por zona (sem textura): terra no nucleo/spawn, grama variada fora,

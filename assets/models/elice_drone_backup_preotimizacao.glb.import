@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://du6wvg6r6qnlf"
-path="res://.godot/imported/estrada_encruzilhada.glb-b478b7adbd26f7e77a885926984b0505.scn"
+uid="uid://fp75rxg7yc1v"
+path="res://.godot/imported/elice_drone_backup_preotimizacao.glb-6f26cdba416b1aee73f6ed34860db838.scn"
 
 [deps]
 
-source_file="res://assets/models/estrada_encruzilhada.glb"
-dest_files=["res://.godot/imported/estrada_encruzilhada.glb-b478b7adbd26f7e77a885926984b0505.scn"]
+source_file="res://assets/models/elice_drone_backup_preotimizacao.glb"
+dest_files=["res://.godot/imported/elice_drone_backup_preotimizacao.glb-6f26cdba416b1aee73f6ed34860db838.scn"]
 
 [params]
 

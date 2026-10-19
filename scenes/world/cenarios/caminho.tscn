@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://b1xgcvgxeso4o"]
+
+[ext_resource type="Script" uid="uid://cbexubvjgaegl" path="res://scripts/world/caminho.gd" id="1_qc7qh"]
+
+[node name="Caminho" type="Node3D" unique_id=1792794053]
+transform = Transform3D(1.1865475, 0, 0, 0, 1, 0, 0, 0, 1.9122013, 0, 0, 0)
+script = ExtResource("1_qc7qh")
+borda_suave = 0.0
+grupos_ignorados = PackedStringArray("jogador", "drone_jogador", "trator_jogador", "plantacao", "caminho")
+nomes_vegetacao = PackedStringArray("grama", "grass", "flor", "flower", "samambaia", "fern", "moita", "bush", "arvore", "árvore", "tree", "vegetacao", "vegetação", "plant", "mato", "erva", "soja", "milho", "trigo", "cana", "cafe", "café", "cultivo", "pedra", "pedrisco", "rock", "pebble", "seixo")

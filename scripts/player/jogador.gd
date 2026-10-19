@@ -31,6 +31,12 @@ const PASSOS_ARQUIVOS := [
 	"res://assets/audio/passo_6.wav",
 ]
 
+@export var bloqueado := false
+
+## Estado interno da caminhada autônoma da cutscene.
+var _em_cutscene_caminhando := false
+var _destino_cutscene := Vector3.ZERO
+
 @onready var rig: Node3D = $CameraRig
 @onready var bracos_camera: SpringArm3D = $CameraRig/BracosCamera
 @onready var modelo: Node3D = $Modelo
@@ -271,6 +277,8 @@ func _congelar_pernas_no_pulo(clip: Animation) -> void:
 
 
 func _unhandled_input(evento: InputEvent) -> void:
+	if bloqueado:
+		return
 	if evento is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		_olhar(-(evento as InputEventMouseMotion).relative.x * sensibilidade_mouse, -(evento as InputEventMouseMotion).relative.y * sensibilidade_mouse)
 	if evento is InputEventMouseButton and (evento as InputEventMouseButton).pressed:
@@ -279,6 +287,50 @@ func _unhandled_input(evento: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if bloqueado:
+		# Modo caminhada autônoma da cutscene: move o personagem em direção ao destino.
+		if _em_cutscene_caminhando and _destino_cutscene != Vector3.ZERO:
+			var diff := _destino_cutscene - global_position
+			diff.y = 0.0
+			if diff.length() < 0.25:
+				# Chegou: congela na posição final e vai para Idle.
+				global_position.x = _destino_cutscene.x
+				global_position.z = _destino_cutscene.z
+				velocity = Vector3.ZERO
+				move_and_slide()
+				_em_cutscene_caminhando = false
+				_atualizar_animacao("Idle")
+				if animador != null:
+					animador.speed_scale = 1.0
+				return
+			var dir := diff.normalized()
+			velocity.x = dir.x * velocidade_andar
+			velocity.z = dir.z * velocidade_andar
+			if not is_on_floor():
+				velocity.y -= gravidade * delta
+			move_and_slide()
+			# Gira o modelo para a direção da caminhada
+			var alvo_yaw := atan2(-dir.x, -dir.z)
+			modelo.rotation.y = lerp_angle(modelo.rotation.y, alvo_yaw, 1.0 - exp(-10.0 * delta))
+			_atualizar_animacao("Walk")
+			if animador != null:
+				animador.speed_scale = fator_andar
+			# Som dos passos
+			_tempo_entre_passos += delta
+			if _tempo_entre_passos >= _intervalo_passo_andar:
+				_tocar_som_passo(false)
+				_tempo_entre_passos = 0.0
+			return
+		# Parado e bloqueado: apenas aplica gravidade e toca Idle.
+		velocity.x = 0.0
+		velocity.z = 0.0
+		if not is_on_floor():
+			velocity.y -= gravidade * delta
+		move_and_slide()
+		if animador != null and is_on_floor():
+			_atualizar_animacao("Idle")
+		return
+
 	var no_chao := is_on_floor()
 	if not no_chao:
 		velocity.y -= gravidade * delta
@@ -433,3 +485,29 @@ func _atualizar_animacao(nome: String) -> void:
 		if manter_fase:
 			animador.seek(fase * animacao.length, true)
 		_animacao_atual = chave
+
+
+## Inicia a caminhada autônoma da cutscene em direção ao destino.
+## O movimento real acontece em _physics_process para evitar corrida com o bloqueio.
+func caminhar_cutscene(_delta: float, destino: Vector3) -> bool:
+	if not _em_cutscene_caminhando:
+		_em_cutscene_caminhando = true
+		_destino_cutscene = destino
+		_tempo_entre_passos = 0.0
+	# Retorna se já chegou (o _physics_process vai limpar o estado).
+	return not _em_cutscene_caminhando
+
+
+## Para o personagem na pose de descanso no ponto final da cutscene.
+func parar_cutscene(destino_final: Vector3 = Vector3.ZERO) -> void:
+	_em_cutscene_caminhando = false
+	_destino_cutscene = Vector3.ZERO
+	if destino_final != Vector3.ZERO:
+		global_position.x = destino_final.x
+		global_position.z = destino_final.z
+	velocity = Vector3.ZERO
+	move_and_slide()
+	_atualizar_animacao("Idle")
+	if animador != null:
+		animador.speed_scale = 1.0
+

@@ -169,12 +169,18 @@ func _alternar_diario() -> void:
 	get_tree().paused = diario.visible
 	if diario.visible:
 		_preencher_diario()
+		# Libera o cursor: no jogo o mouse fica capturado e, sem isto, o
+		# caderno abre com o cursor preso/escondido e nao da para clicar.
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		$Diario/Inset/Conteudo/Acoes/BotaoFechar.grab_focus()
 
 func _on_fechar_diario() -> void:
 	diario.hide()
 	scrim.hide()
 	get_tree().paused = false
+	# Volta a capturar o mouse (gameplay), a menos que outro painel esteja aberto.
+	if not dialogo.visible and not popup_missao.visible:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _input(event: InputEvent) -> void:
 	if diario.visible and (event.is_action_pressed("diario") or event.is_action_pressed("ui_cancel")):

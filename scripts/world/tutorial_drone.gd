@@ -3,7 +3,9 @@ extends Node3D
 ## e teto) onde 10 portais luminosos flutuam em zigue-zague, alternando
 ## esquerda/direita e alto/baixo + timer de 90 s. O fim e so uma faixa
 ## iluminada no piso, sem arco. Entrada: janela com as teclas -> [Comecar]
-## liga o motor e inicia o timer.
+## roda a CUTSCENE de abertura (camera propria passeando pelo laboratorio,
+## legenda embaixo e "pular" em qualquer tecla/botao) -> liga o motor e
+## inicia o timer. O cronometro so corre depois da cutscene.
 ## Esc abre pausa (Continuar / Sair). Fim: vitoria (tempo final) ou tempo
 ## esgotado (Tentar de novo / Voltar ao mapa). Na saida, o drone volta a
 ## posicao salva no mapa (o voo aqui nao contamina o save).
@@ -21,7 +23,47 @@ const POS_X := [0.0, -6.0, 6.0, -9.0, 9.0, -6.0, 6.0, -9.0, 9.0, 0.0]
 const SPAWN := Vector3(0.0, 1.0, 8.0)
 const RAIO_ARGOLA := 3.6
 
-enum Estado { ENTRADA, VOANDO, PAUSA, FIM }
+enum Estado { ENTRADA, INTRO, VOANDO, PAUSA, FIM }
+
+## ---- Cutscene de abertura ------------------------------------------
+## A camera da cutscene e criada em codigo e assume o lugar da camera do
+## drone (make_current). Cada plano tem posicao e alvo no inicio e no fim:
+## a camera desliza entre eles olhando para o alvo interpolado, com uma
+## legenda embaixo e aviso de "pular" (qualquer tecla/botao/clique).
+## O cronometro so comeca a correr quando a cutscene acaba.
+const INTRO_CLAREAR := 0.7     # s: do preto para a imagem (comeco)
+const INTRO_ESCURECER := 0.5   # s: para o preto antes de devolver o controle
+const INTRO_VOLTA := 0.45      # s: do preto para a imagem, ja com o drone
+## Planos: pos_ini, pos_fim, alvo_ini, alvo_fim, tempo (s) e legenda.
+## Todos os pontos ficam DENTRO do laboratorio (x +-26, y ate 24, z de +20
+## a -262), senao a camera olharia a sala por fora.
+const CINEMATICA := [
+	{
+		"pos_ini": Vector3(0.0, 18.0, 16.0), "pos_fim": Vector3(0.0, 11.0, -2.0),
+		"alvo_ini": Vector3(0.0, 6.0, -34.0), "alvo_fim": Vector3(0.0, 7.0, -70.0),
+		"tempo": 2.8, "texto": "LABORATÓRIO DE VOO  •  DRONE AGRÍCOLA",
+	},
+	{
+		"pos_ini": Vector3(0.0, 5.0, -8.0), "pos_fim": Vector3(0.0, 12.0, -62.0),
+		"alvo_ini": Vector3(0.0, 5.0, -20.0), "alvo_fim": Vector3(0.0, 8.0, -110.0),
+		"tempo": 3.0, "texto": "ATRAVESSE OS 10 PORTAIS, EM ORDEM, NO TEMPO",
+	},
+	{
+		"pos_ini": Vector3(6.5, 3.8, -197.0), "pos_fim": Vector3(-1.5, 4.6, -208.0),
+		"alvo_ini": Vector3(0.0, 1.5, -215.0), "alvo_fim": Vector3(0.0, 1.5, -215.0),
+		"tempo": 2.6, "texto": "PULVERIZE A PLANTAÇÃO (E)",
+	},
+	{
+		"pos_ini": Vector3(0.0, 7.0, -224.0), "pos_fim": Vector3(0.0, 10.0, -234.0),
+		"alvo_ini": Vector3(0.0, 1.5, -240.0), "alvo_fim": Vector3(0.0, 2.5, -240.0),
+		"tempo": 2.4, "texto": "E CRUZE A LINHA DE CHEGADA",
+	},
+	{
+		"pos_ini": Vector3(0.0, 6.0, 20.0), "pos_fim": Vector3(0.0, 4.2, 14.5),
+		"alvo_ini": Vector3(0.0, 2.5, 8.0), "alvo_fim": Vector3(0.0, 2.5, 6.0),
+		"tempo": 2.2, "texto": "W/S e A/D VOAM  •  ESPAÇO SOBE, C DESCE",
+	},
+]
 
 var _estado := Estado.ENTRADA
 var _tempo := 0.0
@@ -46,7 +88,19 @@ var _jan_fim: CenterContainer
 var _fim_titulo: Label
 var _fim_texto: Label
 
-var _planta: MeshInstance3D
+# Cutscene de abertura (camera propria + legendas + fade + barras pretas).
+var _camera_cine: Camera3D
+var _hud_topo: HBoxContainer
+var _intro_texto: Label
+var _intro_dica: Label
+var _intro_fade: ColorRect
+var _intro_barras: Array[ColorRect] = []
+var _intro_tempo := 0.0
+var _intro_total := 0.0
+var _intro_plano := -1
+
+var _milharal: MultiMeshInstance3D
+var _mat_pulverizacao: StandardMaterial3D
 var _area_planta: Area3D
 var _planta_pulverizada := false
 var _progresso_pulverizacao := 0.0
@@ -73,6 +127,13 @@ func _ready() -> void:
 
 
 func _unhandled_input(evento: InputEvent) -> void:
+	# Cutscene de abertura: qualquer tecla, botao ou clique pula para o fim
+	# (uma folga de 0.4 s evita que o clique do [Comecar] ja pule tudo).
+	if _estado == Estado.INTRO:
+		if _intro_tempo >= 0.4 and _evento_pula(evento):
+			_pular_intro()
+			get_viewport().set_input_as_handled()
+		return
 	if evento.is_action_pressed("ui_cancel"):
 		if _estado == Estado.VOANDO:
 			pausar()
@@ -82,6 +143,9 @@ func _unhandled_input(evento: InputEvent) -> void:
 
 
 func _process(delta: float) -> void:
+	if _estado == Estado.INTRO:
+		_processar_intro(delta)
+		return
 	if _estado != Estado.VOANDO:
 		return
 	_tempo += delta
@@ -112,21 +176,14 @@ func _process(delta: float) -> void:
 					if Input.is_action_pressed("pulverizar"):
 						_lbl_pulverizar.text = "Pulverizando... %d%%" % int(_progresso_pulverizacao * 100)
 						_lbl_pulverizar.add_theme_color_override("font_color", Color(0, 1, 0))
-						# Efeito visual gradual: planta vai clareando enquanto e pulverizada
+						# Efeito visual gradual: o milharal ganha um verde mais claro
 						_progresso_pulverizacao = minf(_progresso_pulverizacao + delta * 0.5, 1.0)
-						if _planta != null:
-							var mat := _planta.material_override
-							if mat != null:
-								# Interpola cor do verde escuro para verde claro
-								var c := Color(0.2, 0.6, 0.2).lerp(Color(0.6, 1.0, 0.6), _progresso_pulverizacao)
-								mat.albedo_color = c
-								mat.emission = c
-								mat.emission_energy_multiplier = 0.6 + 0.9 * _progresso_pulverizacao
+						_atualizar_visual_pulverizacao()
 						if _progresso_pulverizacao >= 1.0:
 							_planta_pulverizada = true
 							_chegada_liberada = true
 							if _lbl_pulverizar != null:
-								_lbl_pulverizar.text = "Planta pulverizada! Voe ate a linha de chegada."
+								_lbl_pulverizar.text = "Plantação pulverizada! Voe até a linha de chegada."
 								_lbl_pulverizar.add_theme_color_override("font_color", Color(0, 1, 0))
 							if _barra_pulverizar != null:
 								_barra_pulverizar.visible = false
@@ -140,13 +197,7 @@ func _process(delta: float) -> void:
 			elif Input.is_action_pressed("pulverizar"):
 				# Sem label, ainda assim pulveriza
 				_progresso_pulverizacao = minf(_progresso_pulverizacao + delta * 0.5, 1.0)
-				if _planta != null:
-					var mat := _planta.material_override
-					if mat != null:
-						var c := Color(0.2, 0.6, 0.2).lerp(Color(0.6, 1.0, 0.6), _progresso_pulverizacao)
-						mat.albedo_color = c
-						mat.emission = c
-						mat.emission_energy_multiplier = 0.6 + 0.9 * _progresso_pulverizacao
+				_atualizar_visual_pulverizacao()
 				if _progresso_pulverizacao >= 1.0:
 					_planta_pulverizada = true
 					_chegada_liberada = true
@@ -185,10 +236,119 @@ func comecar() -> void:
 		return
 	_jan_entrada.visible = false
 	_scrim.visible = false
-	_drone.set("ligado", true)
-	_estado = Estado.VOANDO
+	_iniciar_intro()
+
+
+# ------------------------------------------------------------------
+# Cutscene de abertura: camera propria passeando pelo laboratorio com
+# legendas; o drone fica desligado e congelado ate a cena terminar.
+
+func _iniciar_intro() -> void:
+	_estado = Estado.INTRO
+	_intro_tempo = 0.0
+	_intro_plano = -1
+	_intro_total = 0.0
+	for plano in CINEMATICA:
+		_intro_total += float(plano["tempo"])
+	if _hud_topo != null:
+		_hud_topo.visible = false
+	_drone.set("ligado", false)
+	_congelar_drone(true)
+	for barra in _intro_barras:
+		barra.visible = true
+	_intro_texto.text = ""
+	_intro_texto.visible = true
+	_intro_dica.visible = true
+	_intro_fade.visible = true
+	_intro_fade.color.a = 1.0
+	# Camera da cutscene assume o lugar da camera do drone.
+	_camera_cine = Camera3D.new()
+	_camera_cine.name = "CameraCinematografica"
+	_camera_cine.fov = 68.0
+	_camera_cine.far = 400.0
+	add_child(_camera_cine)
+	_camera_cine.global_position = CINEMATICA[0]["pos_ini"]
+	_camera_cine.make_current()
 	if _som_musica != null and not _som_musica.playing:
 		_som_musica.play()
+
+
+func _processar_intro(delta: float) -> void:
+	_intro_tempo += delta
+	# Reta final: escurece e so entao devolve o controle ao jogador.
+	if _intro_tempo >= _intro_total:
+		_intro_fade.color.a = clampf((_intro_tempo - _intro_total) / INTRO_ESCURECER, 0.0, 1.0)
+		if _intro_fade.color.a >= 1.0:
+			_devolver_controle()
+		return
+	# Fade de abertura: sai do preto nos primeiros INTRO_CLAREAR segundos.
+	_intro_fade.color.a = clampf(1.0 - _intro_tempo / INTRO_CLAREAR, 0.0, 1.0)
+	# Localiza o plano atual e o progresso dentro dele (0..1).
+	var acumulado := 0.0
+	for i in CINEMATICA.size():
+		var plano: Dictionary = CINEMATICA[i]
+		var tempo := float(plano["tempo"])
+		if _intro_tempo < acumulado + tempo:
+			_aplicar_plano(plano, (_intro_tempo - acumulado) / tempo, i)
+			return
+		acumulado += tempo
+
+
+func _aplicar_plano(plano: Dictionary, t: float, i: int) -> void:
+	if _camera_cine == null:
+		return
+	# smoothstep deixa o movimento mais "cinema" (acelera e freia).
+	var e := smoothstep(0.0, 1.0, clampf(t, 0.0, 1.0))
+	var pos := (plano["pos_ini"] as Vector3).lerp(plano["pos_fim"] as Vector3, e)
+	var alvo := (plano["alvo_ini"] as Vector3).lerp(plano["alvo_fim"] as Vector3, e)
+	if pos.distance_to(alvo) > 0.5:
+		_camera_cine.global_position = pos
+		_camera_cine.look_at(alvo, Vector3.UP)
+	if _intro_plano != i:
+		_intro_plano = i
+		_intro_texto.text = str(plano["texto"])
+
+
+## Pular a cutscene: cai direto na transicao final (escurecer + devolver).
+func _pular_intro() -> void:
+	_intro_tempo = _intro_total
+
+
+func _devolver_controle() -> void:
+	_estado = Estado.VOANDO
+	_intro_tempo = 0.0
+	if _camera_cine != null:
+		_camera_cine.queue_free()
+		_camera_cine = null
+	var cam_drone := _drone.get("cam") as Camera3D
+	if cam_drone != null:
+		cam_drone.make_current()
+	if _hud_topo != null:
+		_hud_topo.visible = true
+	for barra in _intro_barras:
+		barra.visible = false
+	_intro_texto.visible = false
+	_intro_dica.visible = false
+	_hud_tempo.text = _formatar_tempo(int(TEMPO_LIMITE))
+	_drone.set("ligado", true)
+	_congelar_drone(false)
+	# A vista do drone ja esta na tela por baixo do preto, que sobe suave.
+	var tw := create_tween()
+	tw.tween_property(_intro_fade, "color:a", 0.0, INTRO_VOLTA)
+	tw.tween_callback(Callable(_intro_fade, "hide"))
+
+
+## Qualquer tecla, botao de controle, clique ou toque pula a cutscene.
+func _evento_pula(evento: InputEvent) -> bool:
+	if evento is InputEventKey:
+		return (evento as InputEventKey).pressed and not (evento as InputEventKey).echo
+	if evento is InputEventMouseButton:
+		return (evento as InputEventMouseButton).pressed
+	if evento is InputEventJoypadButton:
+		return (evento as InputEventJoypadButton).pressed
+	if evento is InputEventScreenTouch:
+		return (evento as InputEventScreenTouch).pressed
+	return false
 
 
 func pausar() -> void:
@@ -219,12 +379,7 @@ func tentar_de_novo() -> void:
 	_chegada_liberada = false
 	_chegada_area = null
 	_progresso_pulverizacao = 0.0
-	if _planta != null:
-		var mat := _planta.material_override
-		if mat != null:
-			mat.albedo_color = Color(0.2, 0.6, 0.2)
-			mat.emission = Color(0.2, 0.6, 0.2)
-			mat.emission_energy_multiplier = 0.6
+	_atualizar_visual_pulverizacao()
 	if _lbl_pulverizar != null:
 		_lbl_pulverizar.visible = false
 	if _barra_pulverizar != null:
@@ -620,7 +775,8 @@ func _arco_chegada() -> void:
 
 
 func _montar_planta() -> void:
-	# Planta no ponto de chegada, apos a ultima argola. O drone deve
+	# Plantacao no ponto de chegada, apos a ultima argola: um canteiro de
+	# laboratorio com fileiras de milho (Corn_2) em cima. O drone deve
 	# pulverizar para concluir o tutorial.
 	var raiz := Node3D.new()
 	raiz.name = "Planta"
@@ -637,24 +793,8 @@ func _montar_planta() -> void:
 	mat_terra.roughness = 1.0
 	_caixa(raiz, "Terra", Vector3(6.2, 0.2, 6.2), Vector3(0, 0.85, 0), mat_terra)
 
-	# Tronco
-	var mat_tronco := StandardMaterial3D.new()
-	mat_tronco.albedo_color = Color(0.45, 0.3, 0.2)
-	_caixa(raiz, "Tronco", Vector3(0.6, 2.2, 0.6), Vector3(0, 1.1, 0), mat_tronco)
-
-	# Folhagem
-	var mat_folhas := StandardMaterial3D.new()
-	mat_folhas.albedo_color = Color(0.2, 0.6, 0.2)
-	mat_folhas.emission_enabled = true
-	mat_folhas.emission = Color(0.2, 0.6, 0.2)
-	mat_folhas.emission_energy_multiplier = 0.6
-	_planta = MeshInstance3D.new()
-	_planta.name = "Folhagem"
-	_planta.mesh = SphereMesh.new()
-	(_planta.mesh as SphereMesh).radius = 1.8
-	_planta.material_override = mat_folhas
-	_planta.position = Vector3(0, 3.2, 0)
-	raiz.add_child(_planta)
+	# Fileiras de milho em cima da terra (topo da terra = y 0.95).
+	_montar_milharal(raiz, 0.95)
 
 	# Area de deteccao de pulverizacao
 	_area_planta = Area3D.new()
@@ -666,13 +806,67 @@ func _montar_planta() -> void:
 	_area_planta.add_child(col)
 	raiz.add_child(_area_planta)
 
-	# Milho decorativo em cima da area de pulverizacao (no canteiro)
-	var cena_milho := load("res://assets/models/Corn_2.fbx")
-	if cena_milho != null:
-		var milho: Node = cena_milho.instantiate()
-		milho.name = "Milho"
-		milho.position = Vector3(0, 0.95, 0)
-		raiz.add_child(milho)
+
+## Milharal do canteiro: fileiras de Corn_2 no mesmo estilo da plantacao do
+## mapa (giro e escala aleatorios com semente fixa). Tudo num MultiMesh
+## (1 draw call) e com um material_overlay que "molha"/clareia conforme a
+## pulverizacao avanca.
+func _montar_milharal(pai: Node3D, base_y: float) -> void:
+	var dados := _extrair_malha(preload("res://assets/models/Corn_2.fbx"))
+	if dados.is_empty():
+		push_error("TutorialDrone: malha do milho (Corn_2) nao encontrada.")
+		return
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 2026
+	var lista: Array[Transform3D] = []
+	# 7 colunas x 5 fileiras dentro dos 6,2 x 6,2 m de terra (bem cheio,
+	# como um milharal de verdade).
+	for fileira in 5:
+		for coluna in 7:
+			var x := -2.85 + coluna * 0.95 + rng.randf_range(-0.14, 0.14)
+			var z := -2.3 + fileira * 1.15 + rng.randf_range(-0.14, 0.14)
+			var s := rng.randf_range(1.0, 1.45)
+			var base := Transform3D(
+				Basis(Vector3.UP, rng.randf_range(0.0, TAU)).scaled(Vector3(s, s, s)),
+				Vector3(x, base_y, z)
+			)
+			lista.append(base * (dados["transform"] as Transform3D))
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.mesh = dados["mesh"]
+	mm.instance_count = lista.size()
+	for i in lista.size():
+		mm.set_instance_transform(i, lista[i])
+	_milharal = MultiMeshInstance3D.new()
+	_milharal.name = "Milharal"
+	_milharal.multimesh = mm
+	_milharal.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	_mat_pulverizacao = StandardMaterial3D.new()
+	_mat_pulverizacao.albedo_color = Color(0.62, 1.0, 0.62, 0.0)
+	_mat_pulverizacao.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	_mat_pulverizacao.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	_mat_pulverizacao.cull_mode = BaseMaterial3D.CULL_DISABLED
+	_milharal.material_overlay = _mat_pulverizacao
+	pai.add_child(_milharal)
+
+
+## Extrai a primeira malha de um .fbx (mesmo truque da plantacao do mapa).
+func _extrair_malha(pack: PackedScene) -> Dictionary:
+	var tmp := (pack as PackedScene).instantiate() as Node
+	var achados := tmp.find_children("*", "MeshInstance3D", true, false)
+	var dados := {}
+	if achados.size() > 0:
+		var instancia := achados[0] as MeshInstance3D
+		dados = {"mesh": instancia.mesh, "transform": instancia.transform}
+	tmp.free()
+	return dados
+
+
+## Realce verde do milharal: 0 = seco, 1 = recem-pulverizado.
+func _atualizar_visual_pulverizacao() -> void:
+	if _mat_pulverizacao == null:
+		return
+	_mat_pulverizacao.albedo_color.a = 0.45 * clampf(_progresso_pulverizacao, 0.0, 1.0)
 
 
 func _exigir_pulverizacao() -> void:
@@ -680,7 +874,7 @@ func _exigir_pulverizacao() -> void:
 	if _lbl_pulverizar == null:
 		_lbl_pulverizar = Label.new()
 		_lbl_pulverizar.name = "InstrucaoPulverizar"
-		_lbl_pulverizar.text = "Pulverize a planta! (E)"
+		_lbl_pulverizar.text = "Pulverize a plantação! (E)"
 		_lbl_pulverizar.add_theme_font_size_override("font_size", 18)
 		_lbl_pulverizar.add_theme_color_override("font_color", Color(1, 1, 0))
 		_lbl_pulverizar.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -716,22 +910,22 @@ func _montar_ui() -> void:
 	_scrim.color = Color(0.04, 0.07, 0.05, 0.76)
 	_ui.add_child(_scrim)
 	# Pílulas do topo (tempo + argolas) no padrão AgroUITheme.
-	var topo := HBoxContainer.new()
-	topo.name = "Topo"
-	topo.set_anchors_preset(Control.PRESET_CENTER_TOP)
-	topo.position = Vector2(-170, 12)
-	topo.custom_minimum_size = Vector2(340, 0)
-	topo.alignment = BoxContainer.ALIGNMENT_CENTER
-	topo.add_theme_constant_override("separation", 10)
-	_ui.add_child(topo)
+	_hud_topo = HBoxContainer.new()
+	_hud_topo.name = "Topo"
+	_hud_topo.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	_hud_topo.position = Vector2(-170, 12)
+	_hud_topo.custom_minimum_size = Vector2(340, 0)
+	_hud_topo.alignment = BoxContainer.ALIGNMENT_CENTER
+	_hud_topo.add_theme_constant_override("separation", 10)
+	_ui.add_child(_hud_topo)
 	_hud_tempo = Label.new()
 	_hud_tempo.name = "Tempo"
 	var pil_tempo := _pildora_hud(_hud_tempo, 30)
-	topo.add_child(pil_tempo)
+	_hud_topo.add_child(pil_tempo)
 	_hud_argolas = Label.new()
 	_hud_argolas.name = "Argolas"
 	var pil_argolas := _pildora_hud(_hud_argolas, 15)
-	topo.add_child(pil_argolas)
+	_hud_topo.add_child(pil_argolas)
 	_hud_argolas.text = "Portais 0/%d" % QTD_ARGOLAS
 	_hud_tempo.text = _formatar_tempo(int(TEMPO_LIMITE))
 	_jan_entrada = _janela("Tutorial do Drone", "TREINAMENTO  •  DRONE AGRICOLA")
@@ -763,6 +957,77 @@ func _montar_ui() -> void:
 	voltar.pressed.connect(sair_tutorial)
 	(_jan_fim.get_node("Painel/Inset/Conteudo") as VBoxContainer).add_child(voltar)
 	AgroUITheme.style_secondary_button(voltar)
+	_montar_ui_cutscene()
+
+
+## Elementos da cutscene de abertura, desenhados por cima das janelas:
+## barras pretas de cinema, legenda branca sobre a barra de baixo e aviso
+## de "pular" sobre a barra de cima. O fade preto entra POR ÚLTIMO para
+## cobrir todo o resto.
+func _montar_ui_cutscene() -> void:
+	var barra_topo := ColorRect.new()
+	barra_topo.name = "BarraCineTopo"
+	barra_topo.color = Color(0, 0, 0, 1)
+	barra_topo.anchor_right = 1.0
+	barra_topo.anchor_bottom = 0.11
+	barra_topo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	barra_topo.visible = false
+	_ui.add_child(barra_topo)
+	_intro_barras.append(barra_topo)
+
+	var barra_baixo := ColorRect.new()
+	barra_baixo.name = "BarraCineBaixo"
+	barra_baixo.color = Color(0, 0, 0, 1)
+	barra_baixo.anchor_top = 0.89
+	barra_baixo.anchor_right = 1.0
+	barra_baixo.anchor_bottom = 1.0
+	barra_baixo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	barra_baixo.visible = false
+	_ui.add_child(barra_baixo)
+	_intro_barras.append(barra_baixo)
+
+	# Legenda: fonte branca direto sobre a barra preta de baixo (sem pílula).
+	_intro_texto = Label.new()
+	_intro_texto.name = "LegendaCine"
+	_intro_texto.text = ""
+	_intro_texto.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_intro_texto.add_theme_font_size_override("font_size", 22)
+	_intro_texto.add_theme_color_override("font_color", Color(1, 1, 1, 1))
+	_intro_texto.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_intro_texto.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_intro_texto.anchor_top = 0.89
+	_intro_texto.anchor_right = 1.0
+	_intro_texto.anchor_bottom = 1.0
+	_intro_texto.offset_left = 40.0
+	_intro_texto.offset_right = -40.0
+	_intro_texto.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_intro_texto.visible = false
+	_ui.add_child(_intro_texto)
+
+	# Aviso de como pular, alinhado à direita sobre a barra preta de cima.
+	_intro_dica = Label.new()
+	_intro_dica.name = "DicaCine"
+	_intro_dica.text = "Pular: qualquer tecla, botão ou clique"
+	_intro_dica.add_theme_font_size_override("font_size", 13)
+	_intro_dica.add_theme_color_override("font_color", Color(1, 1, 1, 0.78))
+	_intro_dica.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.85))
+	_intro_dica.add_theme_constant_override("outline_size", 5)
+	_intro_dica.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_intro_dica.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	_intro_dica.offset_top = 20.0
+	_intro_dica.offset_bottom = 44.0
+	_intro_dica.offset_right = -26.0
+	_intro_dica.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_intro_dica.visible = false
+	_ui.add_child(_intro_dica)
+
+	_intro_fade = ColorRect.new()
+	_intro_fade.name = "FadeCine"
+	_intro_fade.color = Color(0, 0, 0, 1)
+	_intro_fade.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_intro_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_intro_fade.visible = false
+	_ui.add_child(_intro_fade)
 
 
 ## Pílula do HUD (tempo / argolas): PanelContainer branco do AgroUITheme.

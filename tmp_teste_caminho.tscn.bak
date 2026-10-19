@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://c1b1l0mbn7uuf"]
+
+[ext_resource type="Script" uid="uid://df0uanq5wy5jd" path="res://tmp_teste_caminho.gd" id="1_pi60r"]
+[ext_resource type="Script" uid="uid://c0vgwqb2qdbtn" path="res://scripts/world/terreno.gd" id="2_bqx4u"]
+
+[node name="TmpCaminho" type="Node3D" unique_id=179066503]
+script = ExtResource("1_pi60r")
+
+[node name="Terreno" type="StaticBody3D" parent="." unique_id=1707167254]
+script = ExtResource("2_bqx4u")
