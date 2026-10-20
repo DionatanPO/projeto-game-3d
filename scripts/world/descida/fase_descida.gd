@@ -556,18 +556,24 @@ func _criar_anel_rampa(x: float, y_lip: float, z_tras: float, largura: float, an
 	# PI/2 coloca o anel em pé (furo na direcao do movimento, eixo Z).
 	# -angulo inclina o anel seguindo o declive da rampa.
 	grupo.rotation = Vector3(PI / 2.0 - angulo, 0.0, 0.0)
-	grupo.position = Vector3(x, y_lip + 0.8, z_tras)
+	grupo.position = Vector3(x, y_lip + 1.6, z_tras)
 
 	var anel := MeshInstance3D.new()
 	var torus := TorusMesh.new()
-	torus.inner_radius = 1.8   # furo maior para passar por dentro
-	torus.outer_radius = 2.4   # diâmetro externo ~4.8 unidades
+	torus.inner_radius = 1.8
+	torus.outer_radius = 2.4
 	torus.rings = 32
 	torus.ring_segments = 16
 	anel.mesh = torus
-	anel.material_override = _mat_anel
+	# Copia o material para cada anel poder mudar de cor individualmente.
+	var mat_anel_inst := _mat_anel.duplicate()
+	anel.material_override = mat_anel_inst
+	anel.name = "MalhaAnel"
 	anel.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	grupo.add_child(anel)
+
+	# Armazena referencia ao material no grupo para mudar cor depois.
+	grupo.set_meta("mat_anel", mat_anel_inst)
 
 	# Area de deteccao: o skatista deve passar pelo centro do anel.
 	var area := Area3D.new()
@@ -590,6 +596,11 @@ func _ao_passar_anel(area: Area3D, corpo: Node) -> void:
 	var grupo := area.get_parent()
 	if grupo == null:
 		return
+	# Muda o anel para verde brilhante indicando que ja foi atravessado.
+	var mat := grupo.get_meta("mat_anel", null)
+	if mat != null:
+		mat.emission = Color(0.6, 1.0, 0.6)
+		mat.emission_energy_multiplier = 4.0
 	# Remove o anel ja passado para nao contar de novo.
 	var idx := _anéis_ativos.find(grupo)
 	if idx >= 0:
@@ -762,10 +773,6 @@ func _textura_xadrez() -> ImageTexture:
 func _process(delta: float) -> void:
 	_garantir_blocos()
 	_atualizar_camera(delta)
-	# Gira os aneis das rampas para efeito visual.
-	for anel in _anéis_ativos:
-		if anel != null and anel.is_inside_tree():
-			anel.rotate_y(delta * 1.5)
 	if _estado == "correndo" and _jogador != null:
 		_tempo += delta
 		var s := maxf(0.0, -_jogador.global_position.z)
