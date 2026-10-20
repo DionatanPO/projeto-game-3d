@@ -549,16 +549,19 @@ func _criar_rampa(raiz: Node3D, s: float, x: float) -> void:
 
 
 ## Cria um anel circular luminoso no topo da rampa, alinhado com o declive.
+## Fica em pé (vertical) para o skatista passar por dentro dele.
 func _criar_anel_rampa(x: float, y_lip: float, z_tras: float, largura: float, angulo: float) -> Node3D:
 	var grupo := Node3D.new()
 	grupo.name = "AnelRampa"
-	grupo.position = Vector3(x, y_lip + 0.35, z_tras)
-	grupo.rotation = Vector3(-angulo, 0.0, 0.0)
+	# PI/2 coloca o anel em pé (furo na direcao do movimento, eixo Z).
+	# -angulo inclina o anel seguindo o declive da rampa.
+	grupo.rotation = Vector3(PI / 2.0 - angulo, 0.0, 0.0)
+	grupo.position = Vector3(x, y_lip + 0.8, z_tras)
 
 	var anel := MeshInstance3D.new()
 	var torus := TorusMesh.new()
-	torus.inner_radius = 1.1
-	torus.outer_radius = 1.5
+	torus.inner_radius = 1.8   # furo maior para passar por dentro
+	torus.outer_radius = 2.4   # diâmetro externo ~4.8 unidades
 	torus.rings = 32
 	torus.ring_segments = 16
 	anel.mesh = torus
@@ -571,7 +574,7 @@ func _criar_anel_rampa(x: float, y_lip: float, z_tras: float, largura: float, an
 	area.name = "AreaAnel"
 	var col := CollisionShape3D.new()
 	var esfera := SphereShape3D.new()
-	esfera.radius = 1.4
+	esfera.radius = 2.0  # raio de deteccao maior para o anel maior
 	col.shape = esfera
 	area.add_child(col)
 	area.body_entered.connect(_ao_passar_anel)
