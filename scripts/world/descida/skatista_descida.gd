@@ -92,6 +92,8 @@ func _montar_prancha() -> void:
 	var prancha := CENA_PRANCHA.instantiate() as Node3D
 	prancha.name = "Prancha"
 	prancha.position = Vector3(0.0, 0.035, 0.0)
+	# A ponta da prancha deve apontar na direcao da descida (-Z)
+	prancha.rotation_degrees = Vector3(0.0, 180.0, 0.0)
 	_modelo.add_child(prancha)
 
 
