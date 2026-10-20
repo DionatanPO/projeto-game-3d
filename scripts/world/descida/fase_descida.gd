@@ -597,7 +597,7 @@ func _ao_passar_anel(area: Area3D, corpo: Node) -> void:
 	if grupo == null:
 		return
 	# Muda o anel para verde brilhante indicando que ja foi atravessado.
-	var mat := grupo.get_meta("mat_anel", null)
+	var mat := grupo.get_meta("mat_anel", null) as StandardMaterial3D
 	if mat != null:
 		mat.emission = Color(0.6, 1.0, 0.6)
 		mat.emission_energy_multiplier = 4.0
