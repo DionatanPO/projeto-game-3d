@@ -47,6 +47,7 @@ var _forma_rampa: ConcavePolygonShape3D
 var _rampas: Array[Dictionary] = []
 var _mat_tronco: StandardMaterial3D
 var _tex_xadrez: ImageTexture
+var _mat_anel: StandardMaterial3D
 var _cache_arvores: Array = []
 var _cache_ferns: Array = []
 var _cache_pedras: Array = []
@@ -59,6 +60,8 @@ var _shake := 0.0
 var _roll := 0.0
 var _musica: AudioStreamPlayer
 var _cam_modo := 0
+var _anéis_passados := 0
+var _anéis_ativos: Array[Node3D] = []
 
 
 func _ready() -> void:
@@ -102,6 +105,14 @@ func _criar_materiais() -> void:
 	_mat_tronco = StandardMaterial3D.new()
 	_mat_tronco.albedo_color = Color(0.32, 0.20, 0.11)
 	_mat_tronco.roughness = 0.95
+
+	_mat_anel = StandardMaterial3D.new()
+	_mat_anel.albedo_color = Color(0.24, 1.0, 0.55)
+	_mat_anel.emission_enabled = true
+	_mat_anel.emission = Color(0.24, 1.0, 0.55)
+	_mat_anel.emission_energy_multiplier = 2.4
+	_mat_anel.roughness = 0.3
+	_mat_anel.metallic = 0.6
 
 
 ## Textura horizontal: grama nas laterais e terra no centro da pista.
@@ -531,6 +542,59 @@ func _criar_rampa(raiz: Node3D, s: float, x: float) -> void:
 	area.body_entered.connect(_ao_tocar_rampa)
 	raiz.add_child(area)
 
+	# Anel circular no topo da rampa (lip) para o skatista passar por dentro.
+	var anel := _criar_anel_rampa(x, y_lip_visual, z_tras, largura, angulo)
+	raiz.add_child(anel)
+	_anéis_ativos.append(anel)
+
+
+## Cria um anel circular luminoso no topo da rampa, alinhado com o declive.
+func _criar_anel_rampa(x: float, y_lip: float, z_tras: float, largura: float, angulo: float) -> Node3D:
+	var grupo := Node3D.new()
+	grupo.name = "AnelRampa"
+	grupo.position = Vector3(x, y_lip + 0.35, z_tras)
+	grupo.rotation = Vector3(-angulo, 0.0, 0.0)
+
+	var anel := MeshInstance3D.new()
+	var torus := TorusMesh.new()
+	torus.inner_radius = 1.1
+	torus.outer_radius = 1.5
+	torus.rings = 32
+	torus.ring_segments = 16
+	anel.mesh = torus
+	anel.material_override = _mat_anel
+	anel.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+	grupo.add_child(anel)
+
+	# Area de deteccao: o skatista deve passar pelo centro do anel.
+	var area := Area3D.new()
+	area.name = "AreaAnel"
+	var col := CollisionShape3D.new()
+	var esfera := SphereShape3D.new()
+	esfera.radius = 1.4
+	col.shape = esfera
+	area.add_child(col)
+	area.body_entered.connect(_ao_passar_anel)
+	grupo.add_child(area)
+
+	return grupo
+
+
+## Detecta quando o skatista passa por dentro de um anel de rampa.
+func _ao_passar_anel(area: Area3D, corpo: Node) -> void:
+	if not corpo.is_in_group("skatista"):
+		return
+	var grupo := area.get_parent()
+	if grupo == null:
+		return
+	# Remove o anel ja passado para nao contar de novo.
+	var idx := _anéis_ativos.find(grupo)
+	if idx >= 0:
+		_anéis_ativos.remove_at(idx)
+	grupo.queue_free()
+	_anéis_passados += 1
+	_hud.call("flash_anel", _anéis_passados)
+	_shake = 0.6
 
 
 ## Gera a colisao apenas com o corpo da rampa: as pedrinhas decorativas sao
@@ -695,6 +759,10 @@ func _textura_xadrez() -> ImageTexture:
 func _process(delta: float) -> void:
 	_garantir_blocos()
 	_atualizar_camera(delta)
+	# Gira os aneis das rampas para efeito visual.
+	for anel in _anéis_ativos:
+		if anel != null and anel.is_inside_tree():
+			anel.rotate_y(delta * 1.5)
 	if _estado == "correndo" and _jogador != null:
 		_tempo += delta
 		var s := maxf(0.0, -_jogador.global_position.z)
