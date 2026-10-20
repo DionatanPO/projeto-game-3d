@@ -40,6 +40,11 @@ var _finalizando := false
 var _pos_antes := Vector3.ZERO
 var _pos_depois := Vector3.ZERO
 var _fisica_iniciada := false
+# Efeitos sonoros procedurais (gerados em tempo real, sem arquivos externos).
+var _som_prancha: AudioStreamPlayer
+var _gerador_prancha: AudioStreamGenerator
+var _som_anel: AudioStreamPlayer
+var _gerador_anel: AudioStreamGenerator
 
 
 func _ready() -> void:
@@ -52,6 +57,7 @@ func _ready() -> void:
 		col.shape = capsula
 	_montar_modelo()
 	_montar_prancha()
+	_iniciar_sons()
 	collision_layer = 1
 	collision_mask = 1
 	floor_max_angle = deg_to_rad(60.0)
@@ -95,6 +101,74 @@ func _montar_prancha() -> void:
 	# A ponta da prancha deve apontar na direcao da descida (-Z)
 	prancha.rotation_degrees = Vector3(0.0, 90.0, 0.0)
 	_modelo.add_child(prancha)
+
+
+## Inicializa os geradores de som procedural (prancha e anel).
+func _iniciar_sons() -> void:
+	# Som da prancha no chão (ruído contínuo em loop).
+	_som_prancha = AudioStreamPlayer.new()
+	_som_prancha.name = "SomPrancha"
+	_gerador_prancha = AudioStreamGenerator.new()
+	_gerador_prancha.mix_rate = 44100
+	_som_prancha.stream = _gerador_prancha
+	_som_prancha.autoplay = true
+	_som_prancha.volume_db = -20.0
+	add_child(_som_prancha)
+
+	# Som de passar por anel (tom agudo curto).
+	_som_anel = AudioStreamPlayer.new()
+	_som_anel.name = "SomAnel"
+	_gerador_anel = AudioStreamGenerator.new()
+	_gerador_anel.mix_rate = 44100
+	_som_anel.stream = _gerador_anel
+	_som_anel.volume_db = -12.0
+	add_child(_som_anel)
+
+
+## Atualiza o som da prancha baseado na velocidade e contato com o chão.
+func _atualizar_som_prancha(delta: float) -> void:
+	if _gerador_prancha == null:
+		return
+	var ativo := _contato_solo and velocidade > 2.0
+	if not ativo:
+		# Fade out quando no ar ou parado.
+		_som_prancha.volume_db = lerp(_som_prancha.volume_db, -60.0, delta * 3.0)
+		return
+	# Volume proporcional à velocidade.
+	var alvo_db := lerp(-30.0, -10.0, clampf(velocidade / velocidade_max, 0.0, 1.0))
+	_som_prancha.volume_db = lerp(_som_prancha.volume_db, alvo_db, delta * 5.0)
+
+	# Gera ruído de "deslizamento" (pink noise simplificado).
+	var amostras := int(_gerador_prancha.mix_rate * delta)
+	if amostras < 1:
+		amostras = 1
+	# O Godot 4.x usa push_frame para gerar áudio em tempo real.
+	var playback := _gerador_prancha.get_playback()
+	for i in amostras:
+		# Ruído levemente filtrado para soar como prancha no asfalto.
+		var ruido := randf_range(-0.5, 0.5) * 0.15
+		playback.push_frame(Vector2(ruido, ruido))
+
+
+## Toca o som de passar por um anel (tom agudo curto).
+func _tocar_som_anel() -> void:
+	if _gerador_anel == null:
+		return
+	# Gera um tom de ~880 Hz por 0.2 segundos com decay.
+	var duracao := 0.2
+	var frequencia := 880.0
+	var taxa := _gerador_anel.mix_rate
+	var total := int(taxa * duracao)
+	var fase := 0.0
+	var passo := 2.0 * PI * frequencia / taxa
+	var envelope := 1.0
+	var decaimento := 1.0 / total
+	var playback := _gerador_anel.get_playback()
+	for i in total:
+		var amostra := sin(fase) * 0.2 * envelope
+		playback.push_frame(Vector2(amostra, amostra))
+		fase += passo
+		envelope = maxf(0.0, envelope - decaimento)
 
 
 func _process(_delta: float) -> void:
@@ -167,6 +241,7 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor() and not _contato_solo:
 		_tempo_no_ar += delta
 	distancia = maxf(distancia, -global_position.z)
+	_atualizar_som_prancha(delta)
 	_atualizar_visual(delta)
 	_pos_depois = global_position
 

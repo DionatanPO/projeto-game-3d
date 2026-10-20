@@ -609,6 +609,9 @@ func _ao_passar_anel(area: Area3D, corpo: Node) -> void:
 	_anéis_passados += 1
 	_hud.call("flash_anel", _anéis_passados)
 	_shake = 0.6
+	# Toca o som de passar pelo anel.
+	if corpo.has_method("_tocar_som_anel"):
+		corpo.call("_tocar_som_anel")
 
 
 ## Gera a colisao apenas com o corpo da rampa: as pedrinhas decorativas sao
