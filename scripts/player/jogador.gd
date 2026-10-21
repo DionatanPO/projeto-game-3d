@@ -281,7 +281,14 @@ func _congelar_pernas_no_pulo(clip: Animation) -> void:
 func _unhandled_input(evento: InputEvent) -> void:
 	if bloqueado:
 		return
-	if evento is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+	if evento is InputEventScreenDrag and Dispositivo.movel():
+		var arrasto := evento as InputEventScreenDrag
+		_olhar(
+			-arrasto.relative.x * sensibilidade_mouse * 1.4,
+			-arrasto.relative.y * sensibilidade_mouse * 1.4
+		)
+		return
+	if evento is InputEventMouseMotion and not Dispositivo.movel() and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		_olhar(-(evento as InputEventMouseMotion).relative.x * sensibilidade_mouse, -(evento as InputEventMouseMotion).relative.y * sensibilidade_mouse)
 	if evento is InputEventMouseButton and (evento as InputEventMouseButton).pressed:
 		if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:

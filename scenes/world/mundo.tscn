@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://c5yp5xutt33sj" path="res://scripts/world/troca_drone.gd" id="16_k5g47"]
 [ext_resource type="PackedScene" uid="uid://br4ljesnrpw12" path="res://scenes/world/trator_jogador.tscn" id="19_uth38"]
 [ext_resource type="PackedScene" uid="uid://crbgbbqyqkl40" path="res://scenes/ui/hud.tscn" id="23_4xrqu"]
+[ext_resource type="PackedScene" path="res://scenes/ui/controles_toque.tscn" id="26_touch"]
 [ext_resource type="PackedScene" uid="uid://03ruvkugpqam" path="res://scenes/world/cenarios/caverna.tscn" id="24_cav01"]
 [ext_resource type="PackedScene" path="res://scenes/world/cenarios/lago.tscn" id="25_lago01"]
 
@@ -49,6 +50,8 @@ script = ExtResource("11_m")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -11.913631)
 
 [node name="HUD" parent="." unique_id=657714139 instance=ExtResource("23_4xrqu")]
+
+[node name="ControlesToque" parent="." instance=ExtResource("26_touch")]
 
 [node name="SedeFazenda" parent="." unique_id=883101101 instance=ExtResource("5_8cwwk")]
 transform = Transform3D(-0.9998739, 0, -0.015880069, 0, 1, 0, 0.015880069, 0, -0.9998739, 1.1990205, 0.16898783, 3.1295366)

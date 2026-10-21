@@ -65,6 +65,7 @@ func _dados_padrao() -> Dictionary:
 		"volume_efeitos": 70.0,
 		"volume_musica": 70.0,
 		"vsync": true,
+		"controles_toque": "auto",
 		"tutorial_drone_concluido": false,
 		"intro_mundo_vista": false,
 		"tempo_jogado_seg": 0.0,

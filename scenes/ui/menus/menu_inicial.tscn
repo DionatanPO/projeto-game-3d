@@ -22,7 +22,6 @@ script = ExtResource("1_rnqe2")
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=657714140]
 visible = false
-z_index = 100
 
 [node name="Backdrop" type="TextureRect" parent="." unique_id=2036926878]
 layout_mode = 1
@@ -33,13 +32,13 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_rnqe2")
 expand_mode = 1
-stretch_mode = 0
 
 [node name="VideoFundo" type="VideoStreamPlayer" parent="." unique_id=2036926879]
-autoplay = true
-loop = true
+layout_mode = 0
 volume_db = -80.0
+autoplay = true
 expand = true
+loop = true
 
 [node name="SombraLateral" type="TextureRect" parent="." unique_id=1310461260]
 layout_mode = 1

@@ -120,6 +120,39 @@ theme_override_constants/margin_bottom = 16
 layout_mode = 2
 theme_override_constants/separation = 8
 
+[node name="RotuloToque" type="Label" parent="Painel/Inset/Coluna/Abas/Controles/ConteudoControles"]
+layout_mode = 2
+text = "CONTROLES NA TELA"
+
+[node name="ModosToque" type="HBoxContainer" parent="Painel/Inset/Coluna/Abas/Controles/ConteudoControles"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BtnToqueAuto" type="Button" parent="Painel/Inset/Coluna/Abas/Controles/ConteudoControles/ModosToque"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "AUTOMATICO"
+
+[node name="BtnToqueSempre" type="Button" parent="Painel/Inset/Coluna/Abas/Controles/ConteudoControles/ModosToque"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "SEMPRE"
+
+[node name="BtnToqueNunca" type="Button" parent="Painel/Inset/Coluna/Abas/Controles/ConteudoControles/ModosToque"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "NUNCA"
+
+[node name="DicaToque" type="Label" parent="Painel/Inset/Coluna/Abas/Controles/ConteudoControles"]
+layout_mode = 2
+text = "No automatico, aparecem apenas em celular ou tablet."
+
+[node name="SepToque" type="HSeparator" parent="Painel/Inset/Coluna/Abas/Controles/ConteudoControles"]
+layout_mode = 2
+
 [node name="Scroll" type="ScrollContainer" parent="Painel/Inset/Coluna/Abas/Controles/ConteudoControles"]
 layout_mode = 2
 size_flags_vertical = 3

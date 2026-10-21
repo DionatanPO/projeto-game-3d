@@ -6,6 +6,10 @@ extends Control
 const COR_ACCENT := Color("#2e7d4f")
 const COR_INK := Color("#21252b")
 
+const MODO_AUTO := "auto"
+const MODO_SEMPRE := "sempre"
+const MODO_NUNCA := "nunca"
+
 ## Rotulo exibido -> acao do InputMap (criadas pelo autoload InputSetup).
 const LISTA_CONTROLES := [
 	["Movimentar", "mover_frente"],
@@ -94,6 +98,16 @@ func _estilizar() -> void:
 		ajuda.add_theme_font_size_override("font_size", 12)
 		ajuda.add_theme_color_override("font_color", Color("#6b7280"))
 
+	var rotulo_toque := _no("RotuloToque") as Label
+	if rotulo_toque != null:
+		rotulo_toque.add_theme_font_size_override("font_size", 16)
+		rotulo_toque.add_theme_color_override("font_color", COR_ACCENT)
+
+	var dica_toque := _no("DicaToque") as Label
+	if dica_toque != null:
+		dica_toque.add_theme_font_size_override("font_size", 12)
+		dica_toque.add_theme_color_override("font_color", Color("#6b7280"))
+
 	var btn_voltar := _no("BotaoVoltar") as Button
 	if btn_voltar != null:
 		AgroUITheme.style_primary_button(btn_voltar)
@@ -116,6 +130,16 @@ func _conectar_sinais() -> void:
 	var btn_voltar := _no("BotaoVoltar") as Button
 	if btn_voltar != null:
 		btn_voltar.pressed.connect(_voltar)
+
+	# Modo dos controles de toque: Automatico / Sempre / Nunca
+	for item in [
+		["BtnToqueAuto", MODO_AUTO],
+		["BtnToqueSempre", MODO_SEMPRE],
+		["BtnToqueNunca", MODO_NUNCA],
+	]:
+		var botao := _no(str(item[0])) as Button
+		if botao != null:
+			botao.pressed.connect(_definir_modo_toque.bind(str(item[1])))
 
 
 # ------------------------------------------------------------ carregar/salvar
@@ -141,6 +165,7 @@ func _carregar_configuracoes() -> void:
 			DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 
 	_atualizar_labels()
+	_atualizar_botoes_toque()
 
 
 func _on_efeitos_alterado(valor: float) -> void:
@@ -275,6 +300,28 @@ func _nome_botao_joypad(indice: int) -> String:
 		JOY_BUTTON_DPAD_LEFT: return "D-Pad Esq."
 		JOY_BUTTON_DPAD_RIGHT: return "D-Pad Dir."
 	return "Botao %d" % indice
+
+
+func _definir_modo_toque(modo: String) -> void:
+	SaveSystem.dados["controles_toque"] = modo
+	SaveSystem.salvar()
+	_atualizar_botoes_toque()
+
+
+func _atualizar_botoes_toque() -> void:
+	var atual := str(SaveSystem.dados.get("controles_toque", MODO_AUTO))
+	for item in [
+		["BtnToqueAuto", MODO_AUTO],
+		["BtnToqueSempre", MODO_SEMPRE],
+		["BtnToqueNunca", MODO_NUNCA],
+	]:
+		var botao := _no(str(item[0])) as Button
+		if botao == null:
+			continue
+		if str(item[1]) == atual:
+			AgroUITheme.style_primary_button(botao)
+		else:
+			AgroUITheme.style_secondary_button(botao)
 
 
 # --------------------------------------------------------------------- fechar

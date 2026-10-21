@@ -171,7 +171,14 @@ func _on_corpo_saiu(corpo: Node3D) -> void:
 
 
 func _unhandled_input(evento: InputEvent) -> void:
-	if evento is InputEventMouseMotion and ativo and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+	if evento is InputEventScreenDrag and ativo and Dispositivo.movel():
+		var arrasto := evento as InputEventScreenDrag
+		_olhar(
+			-arrasto.relative.x * sensibilidade_mouse * 1.4,
+			-arrasto.relative.y * sensibilidade_mouse * 1.4
+		)
+		return
+	if evento is InputEventMouseMotion and ativo and not Dispositivo.movel() and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		_olhar(-(evento as InputEventMouseMotion).relative.x * sensibilidade_mouse, -(evento as InputEventMouseMotion).relative.y * sensibilidade_mouse)
 	if evento is InputEventMouseButton and (evento as InputEventMouseButton).pressed:
 		if ativo and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
