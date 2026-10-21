@@ -1,6 +1,10 @@
 [gd_scene format=3 uid="uid://y6gn7b5m03lp"]
 
 [ext_resource type="Script" uid="uid://ds2ax8sge3r3l" path="res://scripts/world/mundo.gd" id="1_m"]
+[ext_resource type="Environment" uid="uid://bhjgckuxtl53l" path="res://scenes/world/environment/mundo_ceu.tres" id="2_hgoho"]
+[ext_resource type="Script" path="res://addons/sky_3d/src/Sky3D.gd" id="2_sky3d"]
+[ext_resource type="Script" path="res://addons/sky_3d/src/SkyDome.gd" id="3_skydome"]
+[ext_resource type="Script" path="res://addons/sky_3d/src/TimeOfDay.gd" id="4_tod"]
 [ext_resource type="PackedScene" uid="uid://dcucsh6m5gurg" path="res://scenes/world/jogador.tscn" id="2_m"]
 [ext_resource type="PackedScene" uid="uid://deh4olcgnovb1" path="res://scenes/world/cenarios/sede_fazenda.tscn" id="5_8cwwk"]
 [ext_resource type="PackedScene" uid="uid://cmmhmwkn27vlq" path="res://scenes/world/cenarios/parque_solar.tscn" id="10_fcn4g"]
@@ -13,35 +17,42 @@
 [ext_resource type="Script" uid="uid://c5yp5xutt33sj" path="res://scripts/world/troca_drone.gd" id="16_k5g47"]
 [ext_resource type="PackedScene" uid="uid://br4ljesnrpw12" path="res://scenes/world/trator_jogador.tscn" id="19_uth38"]
 [ext_resource type="PackedScene" uid="uid://crbgbbqyqkl40" path="res://scenes/ui/hud.tscn" id="23_4xrqu"]
-[ext_resource type="PackedScene" path="res://scenes/ui/controles_toque.tscn" id="26_touch"]
 [ext_resource type="PackedScene" uid="uid://03ruvkugpqam" path="res://scenes/world/cenarios/caverna.tscn" id="24_cav01"]
 [ext_resource type="PackedScene" path="res://scenes/world/cenarios/lago.tscn" id="25_lago01"]
-
-[sub_resource type="Environment" id="Env_m1"]
-background_mode = 1
-background_color = Color(0.53, 0.75, 0.92, 1)
-ambient_light_source = 2
-ambient_light_color = Color(0.7, 0.75, 0.8, 1)
-ambient_light_energy = 0.6
-fog_enabled = true
-fog_mode = 1
-fog_light_color = Color(0.75, 0.86, 0.94, 1)
-fog_density = 1.0
-fog_depth_begin = 20.0
-fog_depth_end = 150.0
+[ext_resource type="PackedScene" path="res://scenes/ui/controles_toque.tscn" id="26_touch"]
 
 [node name="Mundo" type="Node3D" unique_id=883100101]
 script = ExtResource("1_m")
 
 [node name="MundoCeu" type="WorldEnvironment" parent="." unique_id=883100102]
-environment = SubResource("Env_m1")
+environment = ExtResource("2_hgoho")
+script = ExtResource("2_sky3d")
+current_time = 8.0
+minutes_per_day = 24.0
+fog_enabled = false
 
-[node name="Sol" type="DirectionalLight3D" parent="." unique_id=883100103]
-transform = Transform3D(0.877583, -0.375547, 0.298016, 0, 0.62161, 0.783327, -0.479426, -0.687434, 0.545514, 0, 0, 0)
-light_color = Color(1, 0.96, 0.88, 1)
-light_energy = 0.72
+[node name="SunLight" type="DirectionalLight3D" parent="MundoCeu"]
+transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 0, 0)
 shadow_enabled = true
-directional_shadow_max_distance = 75.0
+directional_shadow_blend_splits = true
+directional_shadow_max_distance = 100.0
+
+[node name="MoonLight" type="DirectionalLight3D" parent="MundoCeu"]
+transform = Transform3D(0.866025, 0.353553, -0.353553, 0, 0.707107, 0.707107, 0.5, -0.612372, 0.612372, 0, 0, 0)
+light_color = Color(0.572549, 0.776471, 0.956863, 1)
+shadow_enabled = true
+directional_shadow_blend_splits = true
+directional_shadow_max_distance = 100.0
+
+[node name="SkyDome" type="Node" parent="MundoCeu"]
+script = ExtResource("3_skydome")
+fog_visible = false
+
+[node name="TimeOfDay" type="Node" parent="MundoCeu"]
+script = ExtResource("4_tod")
+dome_path = NodePath("../SkyDome")
+current_time = 11.0
+minutes_per_day = 24.0
 
 [node name="Terreno" type="StaticBody3D" parent="." unique_id=883100109]
 script = ExtResource("11_m")
@@ -51,7 +62,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -11.913631)
 
 [node name="HUD" parent="." unique_id=657714139 instance=ExtResource("23_4xrqu")]
 
-[node name="ControlesToque" parent="." instance=ExtResource("26_touch")]
+[node name="ControlesToque" parent="." unique_id=241017914 instance=ExtResource("26_touch")]
 
 [node name="SedeFazenda" parent="." unique_id=883101101 instance=ExtResource("5_8cwwk")]
 transform = Transform3D(-0.9998739, 0, -0.015880069, 0, 1, 0, 0.015880069, 0, -0.9998739, 1.1990205, 0.16898783, 3.1295366)
