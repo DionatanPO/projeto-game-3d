@@ -50,6 +50,9 @@ func _ready() -> void:
 
 	_gerar_gramado(terreno)
 
+	# Ajusta as cores da grama para combinar com o terreno
+	_ajustar_cores_grama(terreno)
+
 
 func _criar_multimesh() -> MultiMesh:
 	var mm := MultiMesh.new()
@@ -160,3 +163,47 @@ func _gerar_gramado(terreno: Terrain3D) -> void:
 	_multimesh.cast_shadow = projetar_sombras
 
 	print("VegetacaoTerreno3D: %d gramas geradas em area %.0fx%.0f m" % [idx, area, area])
+
+
+func _ajustar_cores_grama(terreno: Terrain3D) -> void:
+	var data := terreno.data
+	if not data:
+		return
+
+	# Tamanho do terreno (mismo valor de export do nó Terrain3D)
+	var tamanho_terreno := 420.0
+	var grid_size := data.map_width
+	var cores_terreno := data.colors
+
+	# Se o mapa de cores não tem dados, sai
+	if cores_terreno.size() == 0 or grid_size <= 0:
+		return
+
+	# Para cada instância de grama
+	var mm := _multimesh.multimesh
+	var count := mm.instance_count
+
+	# Centro do terreno no mundo (o terreno está centrado em 0,0)
+	var centro := tamanho_terreno / 2.0
+
+	for i in count:
+		# Pega a transform da instância
+		var transform := mm.get_instance_transform(i)
+		var pos_mundo := transform.origin
+
+		# Normaliza posição para -0.5 a +0.5 range, depois para 0 a 1
+		# O terreno está centrado em origem, então:
+		var x_rel := pos_mundo.x + centro
+		var z_rel := pos_mundo.z + centro
+
+		# Converte para coords de grid (0 a grid_size-1)
+		var grid_x := clamp(int(round((x_rel / tamanho_terreno) * (grid_size - 1))), 0, grid_size - 1)
+		var grid_z := clamp(int(round((z_rel / tamanho_terreno) * (grid_size - 1))), 0, grid_size - 1)
+
+		# Índice no array de cores (row-major: z * width + x)
+		var idx_cor := grid_z * grid_size + grid_x
+
+		# Protege contra índice inválido e aplica cor do terreno
+		if idx_cor >= 0 and idx_cor < cores_terreno.size():
+			var cor_terreno := cores_terreno[idx_cor]
+			mm.set_instance_color(i, cor_terreno)
