@@ -11,7 +11,7 @@ extends StaticBody3D
 @export var altura_max := 12.0
 @export var seed := 20240
 @export var material: Material
-@export var qtd_grama := 9000
+@export var qtd_grama := 22000
 @export var qtd_pedras := 120
 @export var qtd_flores := 300
 @export var qtd_arvores := 200
@@ -169,17 +169,128 @@ func _normal_grade(g: PackedFloat32Array, n: int, passo: float, i: int, j: int) 
 	return Vector3(-dx, ex, -dz).normalized() if ex > 0.0 and ez > 0.0 else Vector3.UP
 
 
-## Altura estilo Zelda leve: plano nas areas de jogo, ondulacao suave fora,
-## montanhas baixas so na borda do mapa.
+## Altura estilo Zelda: relevo ondulado com cadeia de 4 montanhas imponentes
+## espalhadas equilibradamente pelos quadrantes do mapa, todas escaláveis:
+## 1. Pico da Nebulosa (Noroeste): O cume supremo do mapa (~54m) com neve e vista de pássaro.
+## 2. Morro do Silo (Sudeste): Platô rochoso panorâmico (~36m).
+## 3. Montanha do Mirante (Nordeste): Crista em espiral clássica (~32m).
+## 4. Serra do Horizonte (Norte Central: X ≈ 0, Z ≈ -175): Formação montanhosa de ~40m.
+## A área da caverna (X ≈ -130, Z ≈ 45) é aplainada para a gruta de pedra.
 func altura(x: float, z: float) -> float:
 	var mascara := _mascara_plano(x, z)
 	if mascara <= 0.001:
 		return 0.0
+
 	var ondulacao := fbm(x, z) * 1.6
 	var r := Vector2(x, z).length()
-	var borda := smoothstep(150.0, 210.0, r)
-	var montanha := borda * (7.0 + fbm(x * 0.5 + 31.0, z * 0.5 - 17.0) * 4.0)
-	return (ondulacao * 0.6 + montanha) * mascara
+	var borda := smoothstep(165.0, 210.0, r)
+	var borda_montanhas := borda * (6.0 + fbm(x * 0.5 + 31.0, z * 0.5 - 17.0) * 3.5)
+
+	# ─── 1. PICO DA NEBULOSA (SUPER MONTANHA - Noroeste: X ≈ -135, Z ≈ -125) ───
+	# O pico supremo do mapa: 54 metros de altura com neve
+	var mx1 := -135.0
+	var mz1 := -125.0
+	var dist_m1 := Vector2(x - mx1, z - mz1).length()
+	var h_pico1 := 0.0
+	if dist_m1 < 95.0:
+		var t1 := clampf(dist_m1 / 86.0, 0.0, 1.0)
+		var perfil1 := pow(1.0 - t1, 1.45)
+		h_pico1 = perfil1 * 54.0
+		var rocha1 := fbm(x * 1.5 - 10.0, z * 1.5 + 20.0) * (1.0 - t1) * 5.0
+		h_pico1 += rocha1
+		var angulo1 := atan2(z - mz1, x - mx1)
+		var raio_trilha1 := lerpf(12.0, 78.0, (angulo1 + PI) / TAU)
+		var d_trilha1 := absf(dist_m1 - raio_trilha1)
+		if d_trilha1 < 12.0:
+			h_pico1 -= (1.0 - d_trilha1 / 12.0) * 3.5
+
+	# ─── 2. MORRO DO SILO (Sudeste: X ≈ 125, Z ≈ -125) ────────────────────────
+	# Montanha rochosa com mirante panorâmico: 36 metros de altura
+	var mx2 := 125.0
+	var mz2 := -125.0
+	var dist_m2 := Vector2(x - mx2, z - mz2).length()
+	var h_pico2 := 0.0
+	if dist_m2 < 78.0:
+		var t2 := clampf(dist_m2 / 70.0, 0.0, 1.0)
+		var perfil2 := pow(1.0 - t2, 1.55)
+		h_pico2 = perfil2 * 36.0
+		var rocha2 := fbm(x * 1.7 + 35.0, z * 1.7 - 15.0) * (1.0 - t2) * 4.0
+		h_pico2 += rocha2
+		var angulo2 := atan2(z - mz2, x - mx2)
+		var raio_trilha2 := lerpf(10.0, 62.0, (angulo2 + PI) / TAU)
+		var d_trilha2 := absf(dist_m2 - raio_trilha2)
+		if d_trilha2 < 10.0:
+			h_pico2 -= (1.0 - d_trilha2 / 10.0) * 2.8
+
+	# ─── 3. MONTANHA DO MIRANTE (Nordeste: X ≈ 130, Z ≈ 120) ───────────────────
+	# Montanha clássica: 32 metros de altura
+	var mx3 := 130.0
+	var mz3 := 120.0
+	var dist_m3 := Vector2(x - mx3, z - mz3).length()
+	var h_pico3 := 0.0
+	if dist_m3 < 75.0:
+		var t3 := clampf(dist_m3 / 68.0, 0.0, 1.0)
+		var perfil3 := pow(1.0 - t3, 1.6)
+		h_pico3 = perfil3 * 32.0
+		var rocha3 := fbm(x * 1.8 + 12.0, z * 1.8 - 45.0) * (1.0 - t3) * 3.8
+		h_pico3 += rocha3
+		var angulo3 := atan2(z - mz3, x - mx3)
+		var raio_trilha3 := lerpf(8.0, 60.0, (angulo3 + PI) / TAU)
+		var d_trilha3 := absf(dist_m3 - raio_trilha3)
+		if d_trilha3 < 9.0:
+			h_pico3 -= (1.0 - d_trilha3 / 9.0) * 2.2
+
+	# ─── 4. SERRA DO HORIZONTE (Norte: X ≈ 0, Z ≈ -175) ────────────────────────
+	# Cordilheira ao fundo norte: 40 metros de altura
+	var mx4 := 0.0
+	var mz4 := -175.0
+	var dist_m4 := Vector2(x - mx4, z - mz4).length()
+	var h_pico4 := 0.0
+	if dist_m4 < 80.0:
+		var t4 := clampf(dist_m4 / 72.0, 0.0, 1.0)
+		var perfil4 := pow(1.0 - t4, 1.5)
+		h_pico4 = perfil4 * 40.0
+		var rocha4 := fbm(x * 1.6 - 25.0, z * 1.6 + 10.0) * (1.0 - t4) * 4.2
+		h_pico4 += rocha4
+		var angulo4 := atan2(z - mz4, x - mx4)
+		var raio_trilha4 := lerpf(10.0, 64.0, (angulo4 + PI) / TAU)
+		var d_trilha4 := absf(dist_m4 - raio_trilha4)
+		if d_trilha4 < 10.0:
+			h_pico4 -= (1.0 - d_trilha4 / 10.0) * 3.0
+
+	# ─── 5. ÁREA DA CAVERNA (Sudoeste/Oeste: X ≈ -130, Z ≈ 45) ──────────────────
+	# Sem montanha: a caverna é uma formação rochosa independente (caverna.tscn).
+	# Aplainamos levemente a zona ao redor para que o jogador caminhe sem obstáculos
+	# e as rochas da caverna assentem direto no chão.
+	var cx_cav := -130.0
+	var cz_cav := 45.0
+	var dist_cav := Vector2(x - cx_cav, z - cz_cav).length()
+	var rebaixo_cav := 0.0
+	if dist_cav < 25.0:
+		# Suaviza o terreno ao redor da caverna (mantém perto de 0)
+		var t_cav := clampf(dist_cav / 25.0, 0.0, 1.0)
+		rebaixo_cav = (1.0 - t_cav) * 0.85
+
+	var max_montanhas := maxf(h_pico1, maxf(h_pico2, maxf(h_pico3, h_pico4)))
+	var h_final := maxf((ondulacao * 0.6 + borda_montanhas) * mascara, max_montanhas * mascara)
+	# Rebaixa suavemente a área da caverna para nivelar
+	if rebaixo_cav > 0.0:
+		h_final = lerpf(h_final, 0.0, rebaixo_cav)
+
+	# ─── 6. BACIA DO LAGO (Sudeste médio: X ≈ 85, Z ≈ 65) ────────────────────
+	# Depressão suave no terreno criando leito natural para a água.
+	var lx := 85.0
+	var lz := 65.0
+	# Elipse: raio X=20, raio Z=17 para forma orgânica
+	var dlx := (x - lx) / 20.0
+	var dlz := (z - lz) / 17.0
+	var dist_lago := Vector2(dlx, dlz).length()
+	if dist_lago < 1.0:
+		var bacia := smoothstep(1.0, 0.0, dist_lago)
+		h_final -= bacia * 2.2
+
+	return h_final
+
 
 
 func _mascara_plano(x: float, z: float) -> float:
@@ -206,21 +317,41 @@ func _dist_zonas_terra(x: float, z: float) -> float:
 
 
 ## Cor por zona (sem textura): terra no nucleo/spawn, grama variada fora,
-## pedra no alto/inclinado. Uma draw call, estilo cartoon.
+## pedra no alto/inclinado e picos nevados.
 func _cor_zona(x: float, z: float, h: float) -> Color:
 	var grama_a := Color(0.14, 0.19, 0.06)
 	var grama_b := Color(0.18, 0.23, 0.08)
 	var terra := Color(0.44, 0.32, 0.21)
-	var pedra := Color(0.55, 0.56, 0.58)
+	var pedra_escura := Color(0.38, 0.40, 0.42)
+	var pedra_clara := Color(0.66, 0.68, 0.70)
+	var cume_neve := Color(0.92, 0.95, 0.98)
+
 	var n := ruido(x * 0.15, z * 0.15) * 0.5 + 0.5
 	var cor := grama_a.lerp(grama_b, n)
 	var d_centro := Vector2(x, z).length()
 	var m_terra := 1.0 - smoothstep(18.0, 34.0, d_centro)
 	var m_ret := 1.0 - smoothstep(0.0, 4.0, _dist_zonas_terra(x, z))
 	cor = cor.lerp(terra, maxf(m_terra * 0.9, m_ret * 0.95))
-	var m_pedra := smoothstep(3.5, 7.0, h)
-	cor = cor.lerp(pedra, m_pedra)
+
+	# Transição para rocha conforme ganha altitude
+	if h > 4.5:
+		var m_pedra := smoothstep(4.5, 16.0, h)
+		var tipo_pedra := pedra_escura.lerp(pedra_clara, n)
+		cor = cor.lerp(tipo_pedra, m_pedra)
+
+	# Cristas altas (acima de 20m)
+	if h > 20.0:
+		var m_alta := smoothstep(20.0, 32.0, h)
+		cor = cor.lerp(pedra_clara, m_alta * 0.7)
+
+	# Picos nevados no topo supremo (acima de 35m até 54m)
+	if h > 34.0:
+		var m_neve := smoothstep(34.0, 48.0, h)
+		cor = cor.lerp(cume_neve, m_neve * 0.95)
+
 	return cor
+
+
 
 
 ## Ruido de valor com 4 oitavas, deterministico (-1..1).
@@ -280,18 +411,27 @@ func _espalhar_zelda() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed + 99
 	_colisoes_pedra.clear()
-	_espalhar_pack(rng, "GramaA", _partes_pack(PACK_GRAMA_A), qtd_grama / 2, 26.0, 3.0, 0.7, 1.4, 65.0, 50.0, -0.02, true, 0.6)
-	_espalhar_pack(rng, "GramaB", _partes_pack(PACK_GRAMA_B), qtd_grama / 2, 26.0, 3.0, 0.7, 1.4, 65.0, 50.0, -0.02, true, 0.6)
-	_espalhar_pack(rng, "FlorB", _partes_pack(PACK_FLOR_B), qtd_flores / 2, 26.0, 3.0, 0.7, 1.2, 65.0, 50.0, -0.02, true)
-	_espalhar_pack(rng, "FlorGrupo", _partes_pack(PACK_FLOR_GRUPO), qtd_flores / 2, 26.0, 3.0, 0.7, 1.2, 65.0, 50.0, -0.02, true)
-	_espalhar_pack(rng, "Samambaia", _partes_pack(PACK_SAMAMBAIA), qtd_samambaias, 26.0, 3.0, 0.4, 0.7, 65.0, 50.0, -0.02, true)
-	_espalhar_pack(rng, "MoitaFlor", _partes_pack(PACK_MOITA_FLOR), qtd_moitas_flor, 28.0, 4.0, 0.6, 1.2, 90.0, 50.0, 0.0, false)
-	_espalhar_pack(rng, "Pedra", _partes_pack(PACK_PEDRA), qtd_pedras / 3, 30.0, 99.0, 0.8, 2.2, 160.0, 100.0, 0.05, false, 1.0, true)
-	_espalhar_pack(rng, "PedraB", _partes_pack(PACK_PEDRA_B), qtd_pedras / 3, 30.0, 99.0, 0.8, 2.2, 160.0, 100.0, 0.05, false, 1.0, true)
-	_espalhar_pack(rng, "Pedrisco", _partes_pack(PACK_PEDRISCO), qtd_pedras / 3, 20.0, 3.0, 0.5, 1.2, 90.0, 50.0, 0.0, true)
-	_espalhar_pack(rng, "ArvoreA", _partes_pack(PACK_ARVORE_A), qtd_arvores / 3, 30.0, 5.0, 0.8, 1.4, 250.0, 100.0, -0.1, false)
-	_espalhar_pack(rng, "ArvoreB", _partes_pack(PACK_ARVORE_B), qtd_arvores / 3, 30.0, 5.0, 0.8, 1.4, 250.0, 100.0, -0.1, false)
-	_espalhar_pack(rng, "ArvoreC", _partes_pack(PACK_ARVORE_C), qtd_arvores / 3, 30.0, 5.0, 0.8, 1.4, 250.0, 100.0, -0.1, false)
+	# Vegetação rasteira: grama curta e densa cobrindo o chão como tapete.
+	# Escala baixa (0.35–0.85) + y_flat 0.35 = moitas bem rentes ao solo.
+	# 22 mil instâncias em MultiMesh é leve (1 draw call por lote de 35m).
+	_espalhar_pack(rng, "GramaA", _partes_pack(PACK_GRAMA_A), qtd_grama / 2, 18.0, 3.5, 0.35, 0.85, 75.0, 35.0, -0.02, true, 0.35)
+	_espalhar_pack(rng, "GramaB", _partes_pack(PACK_GRAMA_B), qtd_grama / 2, 18.0, 3.5, 0.35, 0.85, 75.0, 35.0, -0.02, true, 0.35)
+	_espalhar_pack(rng, "FlorB", _partes_pack(PACK_FLOR_B), qtd_flores / 2, 26.0, 3.5, 0.7, 1.2, 75.0, 35.0, -0.02, true)
+	_espalhar_pack(rng, "FlorGrupo", _partes_pack(PACK_FLOR_GRUPO), qtd_flores / 2, 26.0, 3.5, 0.7, 1.2, 75.0, 35.0, -0.02, true)
+	_espalhar_pack(rng, "Samambaia", _partes_pack(PACK_SAMAMBAIA), qtd_samambaias, 26.0, 3.5, 0.4, 0.7, 75.0, 35.0, -0.02, true)
+	_espalhar_pack(rng, "MoitaFlor", _partes_pack(PACK_MOITA_FLOR), qtd_moitas_flor, 28.0, 4.5, 0.6, 1.2, 95.0, 40.0, 0.0, false)
+
+	# Pedras e pedregulhos
+	_espalhar_pack(rng, "Pedra", _partes_pack(PACK_PEDRA), qtd_pedras / 3, 30.0, 99.0, 0.8, 2.2, 180.0, 60.0, 0.05, false, 1.0, true)
+	_espalhar_pack(rng, "PedraB", _partes_pack(PACK_PEDRA_B), qtd_pedras / 3, 30.0, 99.0, 0.8, 2.2, 180.0, 60.0, 0.05, false, 1.0, true)
+	_espalhar_pack(rng, "Pedrisco", _partes_pack(PACK_PEDRISCO), qtd_pedras / 3, 20.0, 3.5, 0.5, 1.2, 95.0, 40.0, 0.0, true)
+
+	# ÁRVORES OTIMIZADAS:
+	# Lotes menores de 45m (em vez de 100m) e visibilidade estendida para 320m com margem suave de fade de 45m.
+	# Isso elimina completamente o "popping" de blocos gigantes de árvores aparecendo do nada na tela!
+	_espalhar_pack(rng, "ArvoreA", _partes_pack(PACK_ARVORE_A), qtd_arvores / 3, 30.0, 16.0, 0.8, 1.4, 320.0, 45.0, -0.1, false)
+	_espalhar_pack(rng, "ArvoreB", _partes_pack(PACK_ARVORE_B), qtd_arvores / 3, 30.0, 16.0, 0.8, 1.4, 320.0, 45.0, -0.1, false)
+	_espalhar_pack(rng, "ArvoreC", _partes_pack(PACK_ARVORE_C), qtd_arvores / 3, 30.0, 16.0, 0.8, 1.4, 320.0, 45.0, -0.1, false)
 	_construir_colisao_pedras()
 
 
@@ -312,6 +452,9 @@ func _espalhar_pack(rng: RandomNumberGenerator, nome: String, partes: Array, qtd
 	if partes.is_empty() or qtd <= 0:
 		return
 	var lotes: Dictionary = {}
+	var min_y_lote: Dictionary = {}
+	var max_y_lote: Dictionary = {}
+
 	var tent := 0
 	var colocadas := 0
 	while colocadas < qtd and tent < qtd * 15:
@@ -331,6 +474,11 @@ func _espalhar_pack(rng: RandomNumberGenerator, nome: String, partes: Array, qtd
 			continue
 		if _dist_zonas_terra(x, z) <= 0.0:
 			continue
+		# Impede vegetação dentro do lago (elipse X=85, Z=65)
+		var _dlx := (x - 85.0) / 21.0
+		var _dlz := (z - 65.0) / 18.0
+		if Vector2(_dlx, _dlz).length() < 1.0:
+			continue
 		if concentrar and d_perto > 110.0 and rng.randf() < (d_perto - 110.0) / 150.0:
 			continue
 		var h := altura(x, z)
@@ -343,8 +491,14 @@ func _espalhar_pack(rng: RandomNumberGenerator, nome: String, partes: Array, qtd
 		var cel := Vector2i(floori((x + 200.0) / tam_lote), floori((z + 200.0) / tam_lote))
 		if not lotes.has(cel):
 			lotes[cel] = []
+			min_y_lote[cel] = h
+			max_y_lote[cel] = h
+		else:
+			min_y_lote[cel] = minf(float(min_y_lote[cel]), h)
+			max_y_lote[cel] = maxf(float(max_y_lote[cel]), h)
 		(lotes[cel] as Array).append(base)
 		colocadas += 1
+
 	for parte in partes:
 		var malha := (parte as Dictionary)["mesh"] as Mesh
 		var t_parte := (parte as Dictionary)["transform"] as Transform3D
@@ -361,13 +515,18 @@ func _espalhar_pack(rng: RandomNumberGenerator, nome: String, partes: Array, qtd
 			mmi.multimesh = mm
 			mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			mmi.visibility_range_end = alcance
-			mmi.visibility_range_end_margin = 30.0
+			mmi.visibility_range_end_margin = 40.0
 			mmi.visibility_range_fade_mode = GeometryInstance3D.VISIBILITY_RANGE_FADE_SELF
+
+			# AABB preciso por célula considerando a elevação real do relevo
 			var metade := tam_lote * 0.5
 			var ccx := -200.0 + (float((cel as Vector2i).x) + 0.5) * tam_lote
 			var ccz := -200.0 + (float((cel as Vector2i).y) + 0.5) * tam_lote
-			mmi.custom_aabb = AABB(Vector3(ccx - metade, -5.0, ccz - metade), Vector3(tam_lote, 30.0, tam_lote))
+			var y_base := float(min_y_lote.get(cel, 0.0)) - 2.0
+			var y_altura := maxf(float(max_y_lote.get(cel, 10.0)) - y_base + 18.0, 15.0)
+			mmi.custom_aabb = AABB(Vector3(ccx - metade, y_base, ccz - metade), Vector3(tam_lote, y_altura, tam_lote))
 			add_child(mmi)
+
 
 
 func _construir_colisao_pedras() -> void:

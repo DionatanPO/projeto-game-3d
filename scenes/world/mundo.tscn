@@ -9,9 +9,12 @@
 [ext_resource type="PackedScene" uid="uid://bv4iws3o55m3c" path="res://scenes/world/cenarios/plantacao.tscn" id="11_na3uo"]
 [ext_resource type="Script" uid="uid://buct2i0ag5r8n" path="res://scripts/world/caminho_rota.gd" id="12_fcn4g"]
 [ext_resource type="PackedScene" uid="uid://bpc1popflov1v" path="res://scenes/world/drone_jogador.tscn" id="15_52jc1"]
+[ext_resource type="PackedScene" uid="uid://bthki85x1ypkk" path="res://scenes/world/cenarios/pico_nebulosa.tscn" id="15_k5g47"]
 [ext_resource type="Script" uid="uid://c5yp5xutt33sj" path="res://scripts/world/troca_drone.gd" id="16_k5g47"]
 [ext_resource type="PackedScene" uid="uid://br4ljesnrpw12" path="res://scenes/world/trator_jogador.tscn" id="19_uth38"]
 [ext_resource type="PackedScene" uid="uid://crbgbbqyqkl40" path="res://scenes/ui/hud.tscn" id="23_4xrqu"]
+[ext_resource type="PackedScene" uid="uid://03ruvkugpqam" path="res://scenes/world/cenarios/caverna.tscn" id="24_cav01"]
+[ext_resource type="PackedScene" path="res://scenes/world/cenarios/lago.tscn" id="25_lago01"]
 
 [sub_resource type="Environment" id="Env_m1"]
 background_mode = 1
@@ -72,6 +75,10 @@ largura = 24.0
 comprimento = 18.0
 grupos_ignorados = PackedStringArray("jogador", "drone_jogador", "trator_jogador", "plantacao")
 nomes_vegetacao = PackedStringArray("grama", "grass", "flor", "flower", "samambaia", "fern", "moita", "bush", "arvore", "árvore", "tree", "vegetacao", "vegetação", "plant", "mato", "erva", "soja", "milho", "trigo", "cana", "cafe", "café", "cultivo", "pedra", "pedrisco", "rock", "pebble", "seixo")
+
+[node name="Caverna" parent="." unique_id=987162541 instance=ExtResource("24_cav01")]
+
+[node name="Lago" parent="." unique_id=686432080 instance=ExtResource("25_lago01")]
 
 [node name="Plantacao2" parent="." unique_id=1673808475 instance=ExtResource("11_na3uo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.17241, -0.016539931, 11.374135)
@@ -162,3 +169,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.38736, 0, 43.09205)
 
 [node name="7" type="Marker3D" parent="EstradaExemplo4" unique_id=826767853]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.935966, 0, 135.32281)
+
+[node name="PicoNebulosa" parent="." unique_id=990988523 instance=ExtResource("15_k5g47")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -135, 54.71, -125)

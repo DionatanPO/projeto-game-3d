@@ -11,6 +11,7 @@ extends Node3D
 ## posicao salva no mapa (o voo aqui nao contamina o save).
 
 const CENA_MAPA := "res://scenes/world/mundo.tscn"
+const CENA_LOADING := "res://scenes/ui/menus/loading.tscn"
 const TEMPO_LIMITE := 90.0
 const QTD_ARGOLAS := 10
 const Z_ARGOLA_INI := -18.0
@@ -398,11 +399,31 @@ func tentar_de_novo() -> void:
 	_estado = Estado.VOANDO
 
 
+var _saindo_tutorial := false
+
+
 func sair_tutorial() -> void:
+	if _saindo_tutorial:
+		return
+	_saindo_tutorial = true
 	SaveSystem.dados["posicao_drone"] = SaveSystem.dados.get("posicao_drone_backup", [15.5, 1.0, 3.4])
 	SaveSystem.dados.erase("posicao_drone_backup")
 	SaveSystem.salvar()
-	get_tree().change_scene_to_file(CENA_MAPA)
+
+	Loading.proxima_cena = CENA_MAPA
+	Loading.titulo_carga = "Retornando à fazenda..."
+
+	if _intro_fade != null:
+		_intro_fade.visible = true
+		_intro_fade.modulate.a = 0.0
+		var tw := create_tween()
+		tw.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+		tw.tween_property(_intro_fade, "modulate:a", 1.0, 0.45)
+		tw.tween_callback(func() -> void:
+			get_tree().change_scene_to_file(CENA_LOADING)
+		)
+	else:
+		get_tree().change_scene_to_file(CENA_LOADING)
 
 
 # ------------------------------------------------------------------

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bthki85x1ypkk"]
+
+[ext_resource type="Script" path="res://scripts/world/pico_nebulosa.gd" id="1_y7xku"]
+
+[node name="PicoNebulosa" type="Area3D" unique_id=990988523]
+script = ExtResource("1_y7xku")

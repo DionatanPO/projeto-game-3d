@@ -298,11 +298,10 @@ func _efeitos_velocidade(delta: float) -> void:
 	if ativo and not _vento.playing:
 		_vento.play()
 	if ativo:
-		# Vento original: -48 dB parado -> -14 dB na velocidade maxima.
-		# (A subida continua suavizada, so pra nao dar salto no volume.)
-		var alvo_db := lerpf(-48.0, -14.0, fator)
+		# Vento: atenuado para não ficar ensurdecedor na velocidade máxima.
+		var alvo_db := lerpf(-54.0, -38.0, fator)
 		_vento.volume_db = lerpf(_vento.volume_db, alvo_db, 1.0 - exp(-5.0 * delta))
-		_vento.pitch_scale = lerpf(0.8, 1.35, fator)
+		_vento.pitch_scale = lerpf(0.85, 1.15, fator)
 
 
 ## Ruido branco filtrado (1 s em loop com crossfade) para o vento.

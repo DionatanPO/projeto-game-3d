@@ -111,8 +111,9 @@ func _iniciar_sons() -> void:
 	_gerador_prancha = AudioStreamGenerator.new()
 	_gerador_prancha.mix_rate = 44100
 	_som_prancha.stream = _gerador_prancha
-	_som_prancha.autoplay = true
 	_som_prancha.volume_db = -20.0
+	# Inicia a reprodução para que get_stream_playback() retorne um valor válido.
+	_som_prancha.play()
 	add_child(_som_prancha)
 
 	# Som de passar por anel (tom agudo curto).
@@ -122,28 +123,33 @@ func _iniciar_sons() -> void:
 	_gerador_anel.mix_rate = 44100
 	_som_anel.stream = _gerador_anel
 	_som_anel.volume_db = -12.0
+	_som_anel.play()
 	add_child(_som_anel)
 
 
 ## Atualiza o som da prancha baseado na velocidade e contato com o chão.
 func _atualizar_som_prancha(delta: float) -> void:
-	if _gerador_prancha == null:
-		return
-	var ativo := _contato_solo and velocidade > 2.0
-	if not ativo:
+	var _ativo_local := _contato_solo and velocidade > 2.0
+	if not _ativo_local:
 		# Fade out quando no ar ou parado.
 		_som_prancha.volume_db = lerp(_som_prancha.volume_db, -60.0, delta * 3.0)
 		return
+	# So acessa o playback se o player estiver ativo (já tocou play() antes).
+	var playback: AudioStreamGeneratorPlayback = _som_prancha.get_stream_playback()
+	if playback == null:
+		# Se o player parou, reinicia a reproducao.
+		_som_prancha.play()
+		playback = _som_prancha.get_stream_playback()
+		if playback == null:
+			return
 	# Volume proporcional à velocidade.
-	var alvo_db := lerp(-30.0, -10.0, clampf(velocidade / velocidade_max, 0.0, 1.0))
+	var alvo_db: float = lerp(-30.0, -10.0, clampf(velocidade / velocidade_max, 0.0, 1.0))
 	_som_prancha.volume_db = lerp(_som_prancha.volume_db, alvo_db, delta * 5.0)
 
 	# Gera ruído de "deslizamento" (pink noise simplificado).
 	var amostras := int(_gerador_prancha.mix_rate * delta)
 	if amostras < 1:
 		amostras = 1
-	# O Godot 4.x usa push_frame para gerar áudio em tempo real.
-	var playback := _gerador_prancha.get_playback()
 	for i in amostras:
 		# Ruído levemente filtrado para soar como prancha no asfalto.
 		var ruido := randf_range(-0.5, 0.5) * 0.15
@@ -154,6 +160,13 @@ func _atualizar_som_prancha(delta: float) -> void:
 func _tocar_som_anel() -> void:
 	if _gerador_anel == null:
 		return
+	var playback: AudioStreamGeneratorPlayback = _som_anel.get_stream_playback()
+	if playback == null:
+		# Se o player parou, reinicia a reproducao.
+		_som_anel.play()
+		playback = _som_anel.get_stream_playback()
+		if playback == null:
+			return
 	# Gera um tom de ~880 Hz por 0.2 segundos com decay.
 	var duracao := 0.2
 	var frequencia := 880.0
@@ -163,7 +176,6 @@ func _tocar_som_anel() -> void:
 	var passo := 2.0 * PI * frequencia / taxa
 	var envelope := 1.0
 	var decaimento := 1.0 / total
-	var playback := _gerador_anel.get_playback()
 	for i in total:
 		var amostra := sin(fase) * 0.2 * envelope
 		playback.push_frame(Vector2(amostra, amostra))

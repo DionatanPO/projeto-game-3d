@@ -3,6 +3,8 @@ extends Node
 class_name VisualizerTools
 ## Crawls a Godot project and parses all GDScript files to build a project map.
 
+const PathGuard = preload("res://addons/godot_mcp/utils/path_guard.gd")
+
 var _editor_plugin: EditorPlugin = null
 var _scene_tools_ref: Node = null
 
@@ -17,8 +19,10 @@ func map_project(args: Dictionary) -> Dictionary:
 	var root_path: String = str(args.get(&"root", "res://"))
 	var include_addons: bool = bool(args.get(&"include_addons", false))
 
-	if not root_path.begins_with("res://"):
-		root_path = "res://" + root_path
+	var guarded := PathGuard.sanitize(root_path)
+	if not guarded[&"ok"]:
+		return {&"ok": false, &"error": guarded[&"error"]}
+	root_path = guarded[&"path"]
 
 	# Collect all .gd files
 	var script_paths: Array = []
@@ -30,10 +34,12 @@ func map_project(args: Dictionary) -> Dictionary:
 	# Parse each script
 	var nodes: Array = []
 	var class_map: Dictionary = {}  # class_name -> path
+	var node_paths: Dictionary = {}  # path -> true, for edge targets
 
 	for path: String in script_paths:
 		var info: Dictionary = _parse_script(path)
 		nodes.append(info)
+		node_paths[path] = true
 		if info.get(&"class_name", "") != "":
 			class_map[info[&"class_name"]] = path
 
@@ -48,8 +54,14 @@ func map_project(args: Dictionary) -> Dictionary:
 			edges.append({&"from": from_path, &"to": class_map[extends_class], &"type": "extends"})
 
 		# preload/load references
+		#
+		# Only to a script the map actually holds. extends and signal edges are
+		# already filtered this way through class_map; preloads were not, so with
+		# addons excluded from the nodes (the default) every preload into
+		# res://addons/ still produced an edge. The map then advertised
+		# "122 connections" while the graph could draw none of them.
 		for ref: String in node.get(&"preloads", []):
-			if ref.ends_with(".gd"):
+			if ref.ends_with(".gd") and node_paths.has(ref):
 				edges.append({&"from": from_path, &"to": ref, &"type": "preload"})
 
 		# signal connections
@@ -342,8 +354,10 @@ func map_scenes(args: Dictionary) -> Dictionary:
 	var root_path: String = str(args.get(&"root", "res://"))
 	var include_addons: bool = bool(args.get(&"include_addons", false))
 
-	if not root_path.begins_with("res://"):
-		root_path = "res://" + root_path
+	var guarded := PathGuard.sanitize(root_path)
+	if not guarded[&"ok"]:
+		return {&"ok": false, &"error": guarded[&"error"]}
+	root_path = guarded[&"path"]
 
 	# Collect all .tscn files
 	var scene_paths: Array = []
@@ -502,9 +516,11 @@ func _internal_create_script_file(args: Dictionary) -> Dictionary:
 	if script_path.is_empty():
 		return {&"ok": false, &"error": "No path provided"}
 	
-	if not script_path.begins_with("res://"):
-		script_path = "res://" + script_path
-	
+	var guarded := PathGuard.sanitize(script_path)
+	if not guarded[&"ok"]:
+		return {&"ok": false, &"error": guarded[&"error"]}
+	script_path = guarded[&"path"]
+
 	if not script_path.ends_with(".gd"):
 		script_path += ".gd"
 	
@@ -553,6 +569,15 @@ func _internal_modify_variable(args: Dictionary) -> Dictionary:
 	if script_path.is_empty():
 		return {&"ok": false, &"error": "No script path provided"}
 	
+	# Same sandbox check the other script-writing entry points use. These are
+	# driven by the local visualizer UI rather than by the MCP agent, so exposure
+	# is low — but an unguarded path in a security boundary is the kind of
+	# inconsistency that stops being harmless the moment someone reuses it.
+	var _g := PathGuard.sanitize(script_path)
+	if not _g[&"ok"]:
+		return {&"ok": false, &"error": _g[&"error"]}
+	script_path = _g[&"path"]
+
 	var file := FileAccess.open(script_path, FileAccess.READ)
 	if file == null:
 		return {&"ok": false, &"error": "Cannot open file: " + script_path}
@@ -616,6 +641,15 @@ func _internal_modify_signal(args: Dictionary) -> Dictionary:
 	if script_path.is_empty():
 		return {&"ok": false, &"error": "No script path provided"}
 	
+	# Same sandbox check the other script-writing entry points use. These are
+	# driven by the local visualizer UI rather than by the MCP agent, so exposure
+	# is low — but an unguarded path in a security boundary is the kind of
+	# inconsistency that stops being harmless the moment someone reuses it.
+	var _g := PathGuard.sanitize(script_path)
+	if not _g[&"ok"]:
+		return {&"ok": false, &"error": _g[&"error"]}
+	script_path = _g[&"path"]
+
 	var file := FileAccess.open(script_path, FileAccess.READ)
 	if file == null:
 		return {&"ok": false, &"error": "Cannot open file: " + script_path}
@@ -676,6 +710,15 @@ func _internal_modify_function(args: Dictionary) -> Dictionary:
 	if script_path.is_empty() or func_name.is_empty():
 		return {&"ok": false, &"error": "Missing path or function name"}
 	
+	# Same sandbox check the other script-writing entry points use. These are
+	# driven by the local visualizer UI rather than by the MCP agent, so exposure
+	# is low — but an unguarded path in a security boundary is the kind of
+	# inconsistency that stops being harmless the moment someone reuses it.
+	var _g := PathGuard.sanitize(script_path)
+	if not _g[&"ok"]:
+		return {&"ok": false, &"error": _g[&"error"]}
+	script_path = _g[&"path"]
+
 	var file := FileAccess.open(script_path, FileAccess.READ)
 	if file == null:
 		return {&"ok": false, &"error": "Cannot open file: " + script_path}
@@ -742,6 +785,15 @@ func _internal_modify_function_delete(args: Dictionary) -> Dictionary:
 	if script_path.is_empty() or func_name.is_empty():
 		return {&"ok": false, &"error": "Missing path or function name"}
 	
+	# Same sandbox check the other script-writing entry points use. These are
+	# driven by the local visualizer UI rather than by the MCP agent, so exposure
+	# is low — but an unguarded path in a security boundary is the kind of
+	# inconsistency that stops being harmless the moment someone reuses it.
+	var _g := PathGuard.sanitize(script_path)
+	if not _g[&"ok"]:
+		return {&"ok": false, &"error": _g[&"error"]}
+	script_path = _g[&"path"]
+
 	var file := FileAccess.open(script_path, FileAccess.READ)
 	if file == null:
 		return {&"ok": false, &"error": "Cannot open file: " + script_path}
@@ -821,6 +873,7 @@ func _internal_find_usages(args: Dictionary) -> Dictionary:
 		pattern.compile("\\b" + name + "\\b")
 	
 	for path: String in script_paths:
+
 		var file := FileAccess.open(path, FileAccess.READ)
 		if file == null:
 			continue

@@ -23,6 +23,34 @@ static func parse_typed_value(value: Variant, type_hint: int) -> Variant:
 	if type_hint == -1:
 		return parse_value(value)
 
+	# A res:// path for an Object-typed property means "load this and assign it".
+	# Every tool here that takes a resource takes a path (attach_script,
+	# set_sprite_texture, assign_shader_material), so an agent naturally writes
+	# one for `texture` too — and set() silently rejects a String for an Object
+	# property, so the call reports success and nothing happens.
+	#
+	# This lives in the codec rather than in one tool because that is exactly how
+	# it went wrong: the fix was applied inside set_node_properties only, and
+	# add_node, create_scene, instance_scene, batch_scene_edit and duplicate_node
+	# kept the bug. Found by building a real scene and watching the texture not
+	# appear.
+	if type_hint == TYPE_OBJECT and value is String:
+		var res_path := str(value)
+		if res_path.begins_with("res://") and ResourceLoader.exists(res_path):
+			var loaded := ResourceLoader.load(res_path)
+			if loaded != null:
+				return loaded
+		# Not loadable: fall through and return the String unchanged, so callers
+		# that report per-property failures can still say what went wrong.
+
+	# "#ff0000" / "ff0000" for a Color-typed value. It is how a colour is written
+	# everywhere else — CSS, Godot's own inspector, Color.html — and the tools
+	# used to answer it with 'color' must be a Color, e.g. {"r":1,...}.
+	if type_hint == TYPE_COLOR and value is String:
+		var html := str(value)
+		if Color.html_is_valid(html):
+			return Color.html(html)
+
 	if value is Dictionary:
 		var dict: Dictionary = value
 		if not str(dict.get(&"type", "")).is_empty():
@@ -54,6 +82,34 @@ static func parse_typed_value(value: Variant, type_hint: int) -> Variant:
 				return _parse_transform3d_dictionary(dict)
 			TYPE_AABB:
 				return _parse_aabb_dictionary(dict)
+
+	# [x, y] / [x, y, z] for a vector-typed property.
+	#
+	# {x, y, z} is the canonical form and what serialize_value emits, but an
+	# agent that has just written `position: [100, 100]` somewhere else will try
+	# an array here too. Without this the value fails to apply — loudly in the
+	# tools that check, silently in the ones that don't — for a shape that reads
+	# perfectly natural. Only reached when a type hint asks for a vector, so a
+	# genuine Array property is unaffected.
+	if value is Array:
+		var arr: Array = value
+		match type_hint:
+			TYPE_VECTOR2:
+				if arr.size() >= 2:
+					return Vector2(float(arr[0]), float(arr[1]))
+			TYPE_VECTOR2I:
+				if arr.size() >= 2:
+					return Vector2i(int(arr[0]), int(arr[1]))
+			TYPE_VECTOR3:
+				if arr.size() >= 3:
+					return Vector3(float(arr[0]), float(arr[1]), float(arr[2]))
+			TYPE_VECTOR3I:
+				if arr.size() >= 3:
+					return Vector3i(int(arr[0]), int(arr[1]), int(arr[2]))
+			TYPE_COLOR:
+				if arr.size() >= 3:
+					return Color(float(arr[0]), float(arr[1]), float(arr[2]),
+						float(arr[3]) if arr.size() >= 4 else 1.0)
 
 	return parse_value(value)
 

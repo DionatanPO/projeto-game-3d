@@ -1,32 +1,28 @@
 extends Control
-## Spinner de carregamento: fundo branco com arco verde girando suavemente.
-## Gira sozinho no desenho, independente do progresso da cena.
+## Spinner minimalista e veloz de carregamento circular.
+## Usa espessura e velocidade refinadas para fluidez mesmo em 60+ FPS.
 
 var angulo := 0.0
-var velocidade := 2.0
-var cor_fundo := Color(1, 1, 1, 1)
-var cor_frente := Color(0.18, 0.49, 0.29)
-var espessura := 10.0
+var velocidade := 4.5
+var cor_fundo := Color(1.0, 1.0, 1.0, 0.12)
+var cor_frente := Color(0.38, 1.0, 0.62, 0.95)
+var espessura := 3.5
 
-
-func _process(_delta: float) -> void:
-	angulo = fmod(angulo + _delta * velocidade, TAU)
+func _process(delta: float) -> void:
+	angulo = fmod(angulo + delta * velocidade, TAU)
 	queue_redraw()
-
 
 func _draw() -> void:
 	var c := size * 0.5
-	var raio := minf(size.x, size.y) * 0.5 - espessura * 0.5 - 2.0
+	var raio := minf(size.x, size.y) * 0.5 - espessura * 0.5 - 1.0
 	if raio <= 0.0:
 		return
-	# Fundo branco (circulo completo).
-	draw_arc(c, raio, 0.0, TAU, 64, cor_fundo, espessura, true)
-	# Frente verde girando.
+	# Trilha de fundo translúcida
+	draw_arc(c, raio, 0.0, TAU, 32, cor_fundo, espessura, true)
+	# Arco em movimento
 	var inicio := -PI * 0.5 + angulo
-	var fim := inicio + TAU * 0.75
-	draw_arc(c, raio, inicio, fim, 64, cor_frente, espessura, true)
+	var fim := inicio + TAU * 0.4
+	draw_arc(c, raio, inicio, fim, 32, cor_frente, espessura, true)
 
-
-## Mantido por compatibilidade; o spinner gira sozinho e nao reflete progresso.
 func definir(_v: float) -> void:
 	pass

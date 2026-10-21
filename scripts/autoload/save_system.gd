@@ -50,6 +50,7 @@ func apagar() -> void:
 	if tem_save():
 		DirAccess.remove_absolute(CAMINHO_SAVE)
 	dados = _dados_padrao()
+	progresso_carregado.emit(dados)
 
 
 func _dados_padrao() -> Dictionary:
@@ -67,4 +68,6 @@ func _dados_padrao() -> Dictionary:
 		"tutorial_drone_concluido": false,
 		"intro_mundo_vista": false,
 		"tempo_jogado_seg": 0.0,
+		"xp": 0,
+		"nivel": 1,
 	}

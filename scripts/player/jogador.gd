@@ -99,6 +99,8 @@ func _ready() -> void:
 			print("ANDAR_NATIVO=", _nativa_andar, " ANDAR_AJUSTADO=", velocidade_andar)
 		_atualizar_animacao("Idle")
 		_intervalo_passo_andar = _intervalo_passo_do_clip("Walk", fator_andar)
+	floor_max_angle = deg_to_rad(50.0)
+	floor_snap_length = 0.4
 	_configurar_sons_passos()
 
 

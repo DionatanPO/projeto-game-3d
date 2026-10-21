@@ -543,25 +543,28 @@ func _criar_rampa(raiz: Node3D, s: float, x: float) -> void:
 	raiz.add_child(area)
 
 	# Anel circular no topo da rampa (lip) para o skatista passar por dentro.
-	var anel := _criar_anel_rampa(x, y_lip_visual, z_tras, largura, angulo)
+	# Elevado acima do chão para o skatista atravessar o furo (como um aro de checkpoint).
+	var altura_anel := altura_pista(s_tras, x) + 1.8
+	var anel := _criar_anel_rampa(x, altura_anel, z_tras, largura, angulo)
 	raiz.add_child(anel)
 	_anéis_ativos.append(anel)
 
 
 ## Cria um anel circular luminoso no topo da rampa, alinhado com o declive.
 ## Fica em pé (vertical) para o skatista passar por dentro dele.
-func _criar_anel_rampa(x: float, y_lip: float, z_tras: float, largura: float, angulo: float) -> Node3D:
+func _criar_anel_rampa(x: float, y_anel: float, z_tras: float, _largura: float, angulo: float) -> Node3D:
 	var grupo := Node3D.new()
 	grupo.name = "AnelRampa"
 	# PI/2 coloca o anel em pé (furo na direcao do movimento, eixo Z).
 	# -angulo inclina o anel seguindo o declive da rampa.
 	grupo.rotation = Vector3(PI / 2.0 - angulo, 0.0, 0.0)
-	grupo.position = Vector3(x, y_lip + 1.6, z_tras)
+	# Posiciona na altura da pista para o skatista passar por dentro.
+	grupo.position = Vector3(x, y_anel, z_tras)
 
 	var anel := MeshInstance3D.new()
 	var torus := TorusMesh.new()
-	torus.inner_radius = 1.8
-	torus.outer_radius = 2.4
+	torus.inner_radius = 2.0   # furo grande para atravessar confortavelmente
+	torus.outer_radius = 2.8   # diametro externo ~5.6 unidades
 	torus.rings = 32
 	torus.ring_segments = 16
 	anel.mesh = torus
@@ -580,10 +583,10 @@ func _criar_anel_rampa(x: float, y_lip: float, z_tras: float, largura: float, an
 	area.name = "AreaAnel"
 	var col := CollisionShape3D.new()
 	var esfera := SphereShape3D.new()
-	esfera.radius = 2.0  # raio de deteccao maior para o anel maior
+	esfera.radius = 2.4  # raio de deteccao maior para o anel maior
 	col.shape = esfera
 	area.add_child(col)
-	area.body_entered.connect(_ao_passar_anel)
+	area.body_entered.connect(func(corpo: Node): _ao_passar_anel(area, corpo))
 	grupo.add_child(area)
 
 	return grupo

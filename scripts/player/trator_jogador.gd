@@ -107,6 +107,9 @@ func _ready() -> void:
 	var pos: Variant = SaveSystem.dados.get("posicao_trator", [HOME_TRATOR.x, HOME_TRATOR.y, HOME_TRATOR.z])
 	if pos is Array and (pos as Array).size() == 3:
 		position = Vector3(float(pos[0]), float(pos[1]), float(pos[2]))
+	floor_max_angle = deg_to_rad(48.0)
+	floor_snap_length = 0.5
+	floor_stop_on_slope = true
 	cam.current = false
 	await get_tree().process_frame
 	await get_tree().process_frame
@@ -188,8 +191,15 @@ func _unhandled_input(evento: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= gravidade * delta
-	elif velocity.y < 0.0:
-		velocity.y = -0.5
+	else:
+		velocity.y = -3.0
+
+	var normal_chao := Vector3.UP
+	if is_on_floor():
+		var n := get_floor_normal()
+		if n.length_squared() > 0.01:
+			normal_chao = n
+
 	if ativo:
 		_gas = Input.get_axis("mover_tras", "mover_frente")
 		var comando_dir := Input.get_axis("mover_dir", "mover_esq")
@@ -201,13 +211,21 @@ func _physics_process(delta: float) -> void:
 			alvo = _gas * velocidade_re
 		var taxa := aceleracao if absf(alvo) > absf(_vel) else freio
 		_vel = move_toward(_vel, alvo, taxa * delta)
+
 		if absf(_vel) > 0.05:
-			rotate_y(_esterco * taxa_guinada * clampf(absf(_vel) / 3.0, 0.0, 1.0) * signf(_vel) * delta)
-		var frente := -global_transform.basis.x
-		frente.y = 0.0
-		frente = frente.normalized()
-		velocity.x = frente.x * _vel
-		velocity.z = frente.z * _vel
+			# Vira no eixo UP da normal do solo para curvas perfeitas em morros
+			rotate_object_local(Vector3.UP, _esterco * taxa_guinada * clampf(absf(_vel) / 3.0, 0.0, 1.0) * signf(_vel) * delta)
+
+		# Vetor frente do trator (-X local) projetado no plano do solo:
+		# Isso faz o trator avançar ao longo da subida, em vez de empurrar reto horizontalmente!
+		var frente_plana := -global_transform.basis.x
+		var frente_chao := (frente_plana - normal_chao * frente_plana.dot(normal_chao)).normalized()
+
+		velocity.x = frente_chao.x * _vel
+		velocity.z = frente_chao.z * _vel
+		if is_on_floor() and absf(_vel) > 0.1:
+			velocity.y = frente_chao.y * _vel
+
 		SaveSystem.dados["posicao_trator"] = [position.x, position.y, position.z]
 	else:
 		_vel = move_toward(_vel, 0.0, freio * delta)
@@ -215,12 +233,37 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0.0, freio * delta)
 		velocity.z = move_toward(velocity.z, 0.0, freio * delta)
 		_sincronizar_proximidade()
+
 	move_and_slide()
+	_adaptar_inclinacao_terreno(delta, normal_chao)
+
 	var levantar_poeira := ativo and absf(_vel) > 1.0 and is_on_floor()
 	if _poeira_roda_te:
 		_poeira_roda_te.emitting = levantar_poeira
 	if _poeira_roda_td:
 		_poeira_roda_td.emitting = levantar_poeira
+
+
+## Alinha o corpo e as rodas do trator com a inclinação real do relevo
+func _adaptar_inclinacao_terreno(delta: float, normal_chao: Vector3) -> void:
+	if not is_on_floor():
+		normal_chao = Vector3.UP
+
+	# Converte a normal do mundo para o espaço do trator
+	var normal_local := global_transform.basis.inverse() * normal_chao
+
+	# No trator:
+	# - O eixo X local aponta para a traseira (-X é a frente)
+	# - O eixo Z local aponta para os lados
+	# Logo a inclinação de subida/descida (pitch) é em Z!
+	# E a inclinação lateral (roll) é em X!
+	var pitch_alvo := clampf(-normal_local.x, -0.80, 0.80)
+	var roll_alvo := clampf(normal_local.z, -0.70, 0.70)
+
+	var suavidade := 1.0 - exp(-14.0 * delta)
+	if modelo != null:
+		modelo.rotation.z = lerpf(modelo.rotation.z, pitch_alvo, suavidade)
+		modelo.rotation.x = lerpf(modelo.rotation.x, roll_alvo, suavidade)
 
 
 func _criar_poeira_roda(nome: String, posicao: Vector3) -> GPUParticles3D:

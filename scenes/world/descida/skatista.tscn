@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://b4ep13cecd7ik"]
+
+[ext_resource type="Script" uid="uid://d10csmdfmh4qj" path="res://scripts/world/descida/skatista_descida.gd" id="1_70gho"]
+
+[node name="Skatista" type="CharacterBody3D" unique_id=1283158103]
+script = ExtResource("1_70gho")
+
+[node name="Colisao" type="CollisionShape3D" parent="." unique_id=1843309307]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88, 0)

@@ -17,6 +17,7 @@ const ACOES: Dictionary = {
 	"buzinar": [KEY_H],
 	"diario": [KEY_TAB],
 	"chuva": [KEY_F1],  # Ativar/desativar simulacao de chuva
+	"camera": [KEY_Y],  # Alternar distancia da camera (fase da descida)
 }
 
 ## Botoes do controle (Xbox): A pula, LB corre, X interage, Y abre o caderno.

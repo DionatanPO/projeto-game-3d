@@ -425,7 +425,8 @@ func _on_continuar_explorando() -> void:
 func _on_voltar_menu() -> void:
 	get_tree().paused = false
 	SaveSystem.salvar()
-	get_tree().change_scene_to_file("res://scenes/world/mundo.tscn")
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	get_tree().change_scene_to_file("res://scenes/ui/menus/menu_inicial.tscn")
 
 func _on_descoberta(_ponto_id: String) -> void:
 	if diario.visible:

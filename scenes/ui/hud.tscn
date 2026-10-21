@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://crbgbbqyqkl40"]
 
 [ext_resource type="Script" uid="uid://dov26k4m8wrns" path="res://scripts/ui/hud.gd" id="1_0mwgc"]
+[ext_resource type="PackedScene" uid="uid://0jvpln1tne0u" path="res://scenes/ui/player_profile.tscn" id="2_guvrm"]
 
 [node name="HUD" type="CanvasLayer" unique_id=657714139]
 script = ExtResource("1_0mwgc")
@@ -420,13 +421,19 @@ text = "Continuar explorando"
 
 [node name="FPS" type="Label" parent="." unique_id=900100200]
 z_index = 5
-offset_left = 12.0
-offset_top = 10.0
-offset_right = 212.0
-offset_bottom = 36.0
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -36.0
+offset_right = 216.0
+offset_bottom = -10.0
+grow_vertical = 0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 18
 text = "60 FPS"
+
+[node name="PlayerProfile" parent="." unique_id=900000001 instance=ExtResource("2_guvrm")]

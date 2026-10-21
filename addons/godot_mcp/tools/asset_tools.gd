@@ -6,6 +6,7 @@ class_name AssetTools
 ##          inspect_runninghub_workflow, customize_and_run_workflow
 
 const MCPPaths = preload("res://addons/godot_mcp/utils/paths.gd")
+const PathGuard = preload("res://addons/godot_mcp/utils/path_guard.gd")
 
 var _editor_plugin: EditorPlugin = null
 
@@ -45,8 +46,10 @@ func generate_2d_asset(args: Dictionary) -> Dictionary:
 	if not filename.ends_with(".png"):
 		filename += ".png"
 
-	if not save_path.begins_with("res://"):
-		save_path = "res://" + save_path
+	var guarded := PathGuard.sanitize(save_path)
+	if not guarded[&"ok"]:
+		return {&"ok": false, &"error": guarded[&"error"]}
+	save_path = guarded[&"path"]
 	if not save_path.ends_with("/"):
 		save_path += "/"
 

@@ -18,7 +18,7 @@ var _sun_day_color: Color = Color.WHITE
 var _lightning_generation: int = 0
 
 ## ---- Cutscene Cinematográfica de Abertura ---------------------------
-const INTRO_CLAREAR := 0.8
+const INTRO_CLAREAR := 0.4
 const INTRO_ESCURECER := 0.6
 const INTRO_VOLTA := 0.5
 const POS_FINAL_JOGADOR := Vector3(0.0, 1.5, -11.91)
@@ -63,7 +63,7 @@ var _intro_texto: Label
 var _intro_dica: Label
 var _intro_fade: ColorRect
 var _musica_cutscene: AudioStreamPlayer
-var _hud_node: Control
+var _hud_node: CanvasLayer
 
 const ORIGENS := {
 	"sede": Vector3(0, 0, 0),
@@ -122,7 +122,7 @@ func _intro_ja_vista() -> bool:
 func _entrar_direto_no_jogo() -> void:
 	_em_cutscene = false
 	_intro_tempo = 0.0
-	_hud_node = get_node_or_null("HUD") as Control
+	_hud_node = get_node_or_null("HUD") as CanvasLayer
 	if _hud_node != null:
 		_hud_node.visible = true
 	if _player_ref != null:
@@ -275,10 +275,15 @@ func _inicializar_sistema_chuva() -> void:
 	# Criar som de chuva
 	_rain_sound = AudioStreamPlayer.new()
 	_rain_sound.name = "RainSound"
-	# Nota: Voce precisaria adicionar um arquivo de audio de chuva aqui
-	# Por enquanto, vamos deixar comentado pois nao temos o audio
-	# _rain_sound.stream = load("res://assets/audio/chuva_loop.wav")
-	# _rain_sound.stream = preload("res://assets/audio/chuva_loop.wav")  # Se existir
+	var audio_chuva := load("res://assets/audio/som_chuva.mp3") as AudioStream
+	if audio_chuva is AudioStreamMP3:
+		(audio_chuva as AudioStreamMP3).loop = true
+	elif audio_chuva is AudioStreamWAV:
+		(audio_chuva as AudioStreamWAV).loop_mode = AudioStreamWAV.LOOP_FORWARD
+	_rain_sound.stream = audio_chuva
+	if AudioServer.get_bus_index("Efeitos") >= 0:
+		_rain_sound.bus = "Efeitos"
+	_rain_sound.volume_db = -4.0
 	add_child(_rain_sound)
 
 	# Criar timer para raios
@@ -350,9 +355,13 @@ func _ativar_chuva() -> void:
 	if _rain_particles:
 		_rain_particles.emitting = true
 
-	# Iniciar som de chuva (se tiver audio)
-	# if _rain_sound.stream:
-	#	 _rain_sound.play()
+	# Iniciar som de chuva com entrada suave
+	if _rain_sound and _rain_sound.stream:
+		_rain_sound.volume_db = -24.0
+		if not _rain_sound.playing:
+			_rain_sound.play()
+		var fade_audio := create_tween()
+		fade_audio.tween_property(_rain_sound, "volume_db", -4.0, 1.2)
 
 	# Iniciar timer de raios
 	if _lightning_timer:
@@ -372,9 +381,14 @@ func _desativar_chuva() -> void:
 	if _rain_particles:
 		_rain_particles.emitting = false
 
-	# Parar som de chuva
+	# Parar som de chuva com fade-out suave
 	if _rain_sound and _rain_sound.playing:
-		_rain_sound.stop()
+		var fade_saida := create_tween()
+		fade_saida.tween_property(_rain_sound, "volume_db", -36.0, 1.0)
+		fade_saida.tween_callback(func() -> void:
+			if not _rain_active and _rain_sound != null and is_instance_valid(_rain_sound):
+				_rain_sound.stop()
+		)
 
 	# Parar timer de raios
 	if _lightning_timer:
@@ -441,7 +455,7 @@ func _iniciar_cutscene() -> void:
 	for plano in CINEMATICA:
 		_intro_total += float(plano["tempo"])
 
-	_hud_node = get_node_or_null("HUD") as Control
+	_hud_node = get_node_or_null("HUD") as CanvasLayer
 	if _hud_node != null:
 		_hud_node.visible = false
 
@@ -470,8 +484,8 @@ func _iniciar_cutscene() -> void:
 	_intro_texto.text = ""
 	_intro_texto.visible = true
 	_intro_dica.visible = true
-	_intro_fade.visible = true
-	_intro_fade.color.a = 1.0
+	_intro_fade.visible = false
+	_intro_fade.color.a = 0.0
 
 	_camera_cine = Camera3D.new()
 	_camera_cine.name = "CameraCinematografica"
@@ -509,12 +523,11 @@ func _processar_cutscene(delta: float) -> void:
 
 	# Reta final: escurece e devolve o controle ao jogador
 	if _intro_tempo >= _intro_total:
+		_intro_fade.visible = true
 		_intro_fade.color.a = clampf((_intro_tempo - _intro_total) / INTRO_ESCURECER, 0.0, 1.0)
 		if _intro_fade.color.a >= 1.0:
 			_devolver_controle()
 		return
-	# Fade de abertura: clareia a tela nos primeiros INTRO_CLAREAR segundos
-	_intro_fade.color.a = clampf(1.0 - _intro_tempo / INTRO_CLAREAR, 0.0, 1.0)
 
 	var acumulado := 0.0
 	for i in CINEMATICA.size():
